@@ -14,6 +14,7 @@ import com.lys.beans.Maquina;
 import com.lys.beans.Menu;
 import com.lys.beans.MenuDB;
 import com.lys.beans.Parametros;
+import com.lys.beans.PeriodoInspeccionDB;
 import com.lys.beans.SubMenu;
 import com.lys.beans.SubMenuBotones;
 import com.lys.beans.UsuarioDB;
@@ -463,6 +464,32 @@ public class SOAPLYS {
         }
         
         return listMaquinas;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "GetPeriodosInspeccion")
+    public ArrayList<PeriodoInspeccionDB> GetPeriodosInspeccion() throws Exception {
+        
+        ArrayList<PeriodoInspeccionDB> listPeriodos = new ArrayList<PeriodoInspeccionDB>();
+        String query = "SELECT * FROM dbo.MTP_PERIODOINSPECCION";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()){
+        
+            PeriodoInspeccionDB p = new PeriodoInspeccionDB();
+            p.setC_periodoinspeccion(rs.getString(1));
+            p.setC_descripcion(rs.getString(2));
+            p.setC_estado(rs.getString(3));
+            p.setC_ultimousuario(rs.getString(4));
+            p.setD_ultimafechamodificacion(rs.getString(5));
+            listPeriodos.add(p);
+            
+            
+        }
+        
+        return listPeriodos;
     }
 
 }
