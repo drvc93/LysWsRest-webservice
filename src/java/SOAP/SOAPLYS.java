@@ -10,6 +10,7 @@ import com.lys.beans.InspeccionesGenCab;
 import com.lys.beans.InspeccionesGenDet;
 import com.lys.beans.InspeccionesMaqCab;
 import com.lys.beans.InspeccionesMaqDet;
+import com.lys.beans.Maquina;
 import com.lys.beans.Menu;
 import com.lys.beans.MenuDB;
 import com.lys.beans.Parametros;
@@ -431,6 +432,37 @@ public class SOAPLYS {
         
         
         return listUsers;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "GetMaquinas")
+    public ArrayList<Maquina> GetMaquinas() throws Exception {
+        ArrayList<Maquina>  listMaquinas = new ArrayList<Maquina>();
+         String query = "SELECT c_compania, c_maquina, c_descripcion, CASE WHEN  c_codigobarras IS NULL THEN '-' ELSE c_codigobarras END c_codigobarras," +
+        "c_familiainspeccion, c_centrocosto, c_estado, c_ultimousuario," +
+        " d_ultimafechamodificacion FROM  dbo.MTP_MAQUINAS";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        
+        while (rs.next()){
+         
+            Maquina mq = new Maquina ();
+            mq.setC_ompania(rs.getString(1));
+            mq.setC_maquina(rs.getString(2));
+            mq.setC_descripcion(rs.getString(3));
+            mq.setC_codigobarras(rs.getString(4));
+            mq.setC_familiainspeccion(rs.getString(5));
+            mq.setC_centrocosto(rs.getString(6));
+            mq.setC_estado(rs.getString(7));
+            mq.setC_ultimousuario(rs.getString(8));
+            mq.setD_ultimafechamodificacion(rs.getString(9));
+            listMaquinas.add(mq);
+        
+        }
+        
+        return listMaquinas;
     }
 
 }

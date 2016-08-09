@@ -12,50 +12,14 @@
   <message name="helloResponse">
     <part name="parameters" element="tns:helloResponse"/>
   </message>
-  <message name="ListaMenu">
-    <part name="parameters" element="tns:ListaMenu"/>
+  <message name="GetInspeccionesGenDet">
+    <part name="parameters" element="tns:GetInspeccionesGenDet"/>
   </message>
-  <message name="ListaMenuResponse">
-    <part name="parameters" element="tns:ListaMenuResponse"/>
+  <message name="GetInspeccionesGenDetResponse">
+    <part name="parameters" element="tns:GetInspeccionesGenDetResponse"/>
   </message>
   <message name="Exception">
     <part name="fault" element="tns:Exception"/>
-  </message>
-  <message name="ListUsers">
-    <part name="parameters" element="tns:ListUsers"/>
-  </message>
-  <message name="ListUsersResponse">
-    <part name="parameters" element="tns:ListUsersResponse"/>
-  </message>
-  <message name="GetDataMenu">
-    <part name="parameters" element="tns:GetDataMenu"/>
-  </message>
-  <message name="GetDataMenuResponse">
-    <part name="parameters" element="tns:GetDataMenuResponse"/>
-  </message>
-  <message name="GetUsuarios">
-    <part name="parameters" element="tns:GetUsuarios"/>
-  </message>
-  <message name="GetUsuariosResponse">
-    <part name="parameters" element="tns:GetUsuariosResponse"/>
-  </message>
-  <message name="saveImage">
-    <part name="parameters" element="tns:saveImage"/>
-  </message>
-  <message name="saveImageResponse">
-    <part name="parameters" element="tns:saveImageResponse"/>
-  </message>
-  <message name="ListSubMenu">
-    <part name="parameters" element="tns:ListSubMenu"/>
-  </message>
-  <message name="ListSubMenuResponse">
-    <part name="parameters" element="tns:ListSubMenuResponse"/>
-  </message>
-  <message name="GetDataAccesos">
-    <part name="parameters" element="tns:GetDataAccesos"/>
-  </message>
-  <message name="GetDataAccesosResponse">
-    <part name="parameters" element="tns:GetDataAccesosResponse"/>
   </message>
   <message name="ListSubMenuBotones">
     <part name="parameters" element="tns:ListSubMenuBotones"/>
@@ -75,57 +39,69 @@
   <message name="GetInspeccionesMaqDetResponse">
     <part name="parameters" element="tns:GetInspeccionesMaqDetResponse"/>
   </message>
-  <message name="GetInspeccionesGenDet">
-    <part name="parameters" element="tns:GetInspeccionesGenDet"/>
-  </message>
-  <message name="GetInspeccionesGenDetResponse">
-    <part name="parameters" element="tns:GetInspeccionesGenDetResponse"/>
-  </message>
   <message name="GetInspeccionesGenCab">
     <part name="parameters" element="tns:GetInspeccionesGenCab"/>
   </message>
   <message name="GetInspeccionesGenCabResponse">
     <part name="parameters" element="tns:GetInspeccionesGenCabResponse"/>
   </message>
+  <message name="saveImage">
+    <part name="parameters" element="tns:saveImage"/>
+  </message>
+  <message name="saveImageResponse">
+    <part name="parameters" element="tns:saveImageResponse"/>
+  </message>
+  <message name="ListSubMenu">
+    <part name="parameters" element="tns:ListSubMenu"/>
+  </message>
+  <message name="ListSubMenuResponse">
+    <part name="parameters" element="tns:ListSubMenuResponse"/>
+  </message>
+  <message name="ListaMenu">
+    <part name="parameters" element="tns:ListaMenu"/>
+  </message>
+  <message name="ListaMenuResponse">
+    <part name="parameters" element="tns:ListaMenuResponse"/>
+  </message>
+  <message name="GetMaquinas">
+    <part name="parameters" element="tns:GetMaquinas"/>
+  </message>
+  <message name="GetMaquinasResponse">
+    <part name="parameters" element="tns:GetMaquinasResponse"/>
+  </message>
+  <message name="GetDataMenu">
+    <part name="parameters" element="tns:GetDataMenu"/>
+  </message>
+  <message name="GetDataMenuResponse">
+    <part name="parameters" element="tns:GetDataMenuResponse"/>
+  </message>
+  <message name="GetDataAccesos">
+    <part name="parameters" element="tns:GetDataAccesos"/>
+  </message>
+  <message name="GetDataAccesosResponse">
+    <part name="parameters" element="tns:GetDataAccesosResponse"/>
+  </message>
+  <message name="GetUsuarios">
+    <part name="parameters" element="tns:GetUsuarios"/>
+  </message>
+  <message name="GetUsuariosResponse">
+    <part name="parameters" element="tns:GetUsuariosResponse"/>
+  </message>
+  <message name="ListUsers">
+    <part name="parameters" element="tns:ListUsers"/>
+  </message>
+  <message name="ListUsersResponse">
+    <part name="parameters" element="tns:ListUsersResponse"/>
+  </message>
   <portType name="SOAPLYS">
     <operation name="hello">
       <input wsam:Action="http://SOAP/SOAPLYS/helloRequest" message="tns:hello"/>
       <output wsam:Action="http://SOAP/SOAPLYS/helloResponse" message="tns:helloResponse"/>
     </operation>
-    <operation name="ListaMenu">
-      <input wsam:Action="http://SOAP/SOAPLYS/ListaMenuRequest" message="tns:ListaMenu"/>
-      <output wsam:Action="http://SOAP/SOAPLYS/ListaMenuResponse" message="tns:ListaMenuResponse"/>
-      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/ListaMenu/Fault/Exception"/>
-    </operation>
-    <operation name="ListUsers">
-      <input wsam:Action="http://SOAP/SOAPLYS/ListUsersRequest" message="tns:ListUsers"/>
-      <output wsam:Action="http://SOAP/SOAPLYS/ListUsersResponse" message="tns:ListUsersResponse"/>
-      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/ListUsers/Fault/Exception"/>
-    </operation>
-    <operation name="GetDataMenu">
-      <input wsam:Action="http://SOAP/SOAPLYS/GetDataMenuRequest" message="tns:GetDataMenu"/>
-      <output wsam:Action="http://SOAP/SOAPLYS/GetDataMenuResponse" message="tns:GetDataMenuResponse"/>
-      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetDataMenu/Fault/Exception"/>
-    </operation>
-    <operation name="GetUsuarios">
-      <input wsam:Action="http://SOAP/SOAPLYS/GetUsuariosRequest" message="tns:GetUsuarios"/>
-      <output wsam:Action="http://SOAP/SOAPLYS/GetUsuariosResponse" message="tns:GetUsuariosResponse"/>
-      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetUsuarios/Fault/Exception"/>
-    </operation>
-    <operation name="saveImage">
-      <input wsam:Action="http://SOAP/SOAPLYS/saveImageRequest" message="tns:saveImage"/>
-      <output wsam:Action="http://SOAP/SOAPLYS/saveImageResponse" message="tns:saveImageResponse"/>
-      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/saveImage/Fault/Exception"/>
-    </operation>
-    <operation name="ListSubMenu">
-      <input wsam:Action="http://SOAP/SOAPLYS/ListSubMenuRequest" message="tns:ListSubMenu"/>
-      <output wsam:Action="http://SOAP/SOAPLYS/ListSubMenuResponse" message="tns:ListSubMenuResponse"/>
-      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/ListSubMenu/Fault/Exception"/>
-    </operation>
-    <operation name="GetDataAccesos">
-      <input wsam:Action="http://SOAP/SOAPLYS/GetDataAccesosRequest" message="tns:GetDataAccesos"/>
-      <output wsam:Action="http://SOAP/SOAPLYS/GetDataAccesosResponse" message="tns:GetDataAccesosResponse"/>
-      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetDataAccesos/Fault/Exception"/>
+    <operation name="GetInspeccionesGenDet">
+      <input wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesGenDetRequest" message="tns:GetInspeccionesGenDet"/>
+      <output wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesGenDetResponse" message="tns:GetInspeccionesGenDetResponse"/>
+      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesGenDet/Fault/Exception"/>
     </operation>
     <operation name="ListSubMenuBotones">
       <input wsam:Action="http://SOAP/SOAPLYS/ListSubMenuBotonesRequest" message="tns:ListSubMenuBotones"/>
@@ -142,15 +118,50 @@
       <output wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesMaqDetResponse" message="tns:GetInspeccionesMaqDetResponse"/>
       <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesMaqDet/Fault/Exception"/>
     </operation>
-    <operation name="GetInspeccionesGenDet">
-      <input wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesGenDetRequest" message="tns:GetInspeccionesGenDet"/>
-      <output wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesGenDetResponse" message="tns:GetInspeccionesGenDetResponse"/>
-      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesGenDet/Fault/Exception"/>
-    </operation>
     <operation name="GetInspeccionesGenCab">
       <input wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesGenCabRequest" message="tns:GetInspeccionesGenCab"/>
       <output wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesGenCabResponse" message="tns:GetInspeccionesGenCabResponse"/>
       <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesGenCab/Fault/Exception"/>
+    </operation>
+    <operation name="saveImage">
+      <input wsam:Action="http://SOAP/SOAPLYS/saveImageRequest" message="tns:saveImage"/>
+      <output wsam:Action="http://SOAP/SOAPLYS/saveImageResponse" message="tns:saveImageResponse"/>
+      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/saveImage/Fault/Exception"/>
+    </operation>
+    <operation name="ListSubMenu">
+      <input wsam:Action="http://SOAP/SOAPLYS/ListSubMenuRequest" message="tns:ListSubMenu"/>
+      <output wsam:Action="http://SOAP/SOAPLYS/ListSubMenuResponse" message="tns:ListSubMenuResponse"/>
+      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/ListSubMenu/Fault/Exception"/>
+    </operation>
+    <operation name="ListaMenu">
+      <input wsam:Action="http://SOAP/SOAPLYS/ListaMenuRequest" message="tns:ListaMenu"/>
+      <output wsam:Action="http://SOAP/SOAPLYS/ListaMenuResponse" message="tns:ListaMenuResponse"/>
+      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/ListaMenu/Fault/Exception"/>
+    </operation>
+    <operation name="GetMaquinas">
+      <input wsam:Action="http://SOAP/SOAPLYS/GetMaquinasRequest" message="tns:GetMaquinas"/>
+      <output wsam:Action="http://SOAP/SOAPLYS/GetMaquinasResponse" message="tns:GetMaquinasResponse"/>
+      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetMaquinas/Fault/Exception"/>
+    </operation>
+    <operation name="GetDataMenu">
+      <input wsam:Action="http://SOAP/SOAPLYS/GetDataMenuRequest" message="tns:GetDataMenu"/>
+      <output wsam:Action="http://SOAP/SOAPLYS/GetDataMenuResponse" message="tns:GetDataMenuResponse"/>
+      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetDataMenu/Fault/Exception"/>
+    </operation>
+    <operation name="GetDataAccesos">
+      <input wsam:Action="http://SOAP/SOAPLYS/GetDataAccesosRequest" message="tns:GetDataAccesos"/>
+      <output wsam:Action="http://SOAP/SOAPLYS/GetDataAccesosResponse" message="tns:GetDataAccesosResponse"/>
+      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetDataAccesos/Fault/Exception"/>
+    </operation>
+    <operation name="GetUsuarios">
+      <input wsam:Action="http://SOAP/SOAPLYS/GetUsuariosRequest" message="tns:GetUsuarios"/>
+      <output wsam:Action="http://SOAP/SOAPLYS/GetUsuariosResponse" message="tns:GetUsuariosResponse"/>
+      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetUsuarios/Fault/Exception"/>
+    </operation>
+    <operation name="ListUsers">
+      <input wsam:Action="http://SOAP/SOAPLYS/ListUsersRequest" message="tns:ListUsers"/>
+      <output wsam:Action="http://SOAP/SOAPLYS/ListUsersResponse" message="tns:ListUsersResponse"/>
+      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/ListUsers/Fault/Exception"/>
     </operation>
   </portType>
   <binding name="SOAPLYSPortBinding" type="tns:SOAPLYS">
@@ -164,79 +175,7 @@
         <soap:body use="literal"/>
       </output>
     </operation>
-    <operation name="ListaMenu">
-      <soap:operation soapAction=""/>
-      <input>
-        <soap:body use="literal"/>
-      </input>
-      <output>
-        <soap:body use="literal"/>
-      </output>
-      <fault name="Exception">
-        <soap:fault name="Exception" use="literal"/>
-      </fault>
-    </operation>
-    <operation name="ListUsers">
-      <soap:operation soapAction=""/>
-      <input>
-        <soap:body use="literal"/>
-      </input>
-      <output>
-        <soap:body use="literal"/>
-      </output>
-      <fault name="Exception">
-        <soap:fault name="Exception" use="literal"/>
-      </fault>
-    </operation>
-    <operation name="GetDataMenu">
-      <soap:operation soapAction=""/>
-      <input>
-        <soap:body use="literal"/>
-      </input>
-      <output>
-        <soap:body use="literal"/>
-      </output>
-      <fault name="Exception">
-        <soap:fault name="Exception" use="literal"/>
-      </fault>
-    </operation>
-    <operation name="GetUsuarios">
-      <soap:operation soapAction=""/>
-      <input>
-        <soap:body use="literal"/>
-      </input>
-      <output>
-        <soap:body use="literal"/>
-      </output>
-      <fault name="Exception">
-        <soap:fault name="Exception" use="literal"/>
-      </fault>
-    </operation>
-    <operation name="saveImage">
-      <soap:operation soapAction=""/>
-      <input>
-        <soap:body use="literal"/>
-      </input>
-      <output>
-        <soap:body use="literal"/>
-      </output>
-      <fault name="Exception">
-        <soap:fault name="Exception" use="literal"/>
-      </fault>
-    </operation>
-    <operation name="ListSubMenu">
-      <soap:operation soapAction=""/>
-      <input>
-        <soap:body use="literal"/>
-      </input>
-      <output>
-        <soap:body use="literal"/>
-      </output>
-      <fault name="Exception">
-        <soap:fault name="Exception" use="literal"/>
-      </fault>
-    </operation>
-    <operation name="GetDataAccesos">
+    <operation name="GetInspeccionesGenDet">
       <soap:operation soapAction=""/>
       <input>
         <soap:body use="literal"/>
@@ -284,7 +223,7 @@
         <soap:fault name="Exception" use="literal"/>
       </fault>
     </operation>
-    <operation name="GetInspeccionesGenDet">
+    <operation name="GetInspeccionesGenCab">
       <soap:operation soapAction=""/>
       <input>
         <soap:body use="literal"/>
@@ -296,7 +235,91 @@
         <soap:fault name="Exception" use="literal"/>
       </fault>
     </operation>
-    <operation name="GetInspeccionesGenCab">
+    <operation name="saveImage">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+      <fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </fault>
+    </operation>
+    <operation name="ListSubMenu">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+      <fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </fault>
+    </operation>
+    <operation name="ListaMenu">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+      <fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </fault>
+    </operation>
+    <operation name="GetMaquinas">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+      <fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </fault>
+    </operation>
+    <operation name="GetDataMenu">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+      <fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </fault>
+    </operation>
+    <operation name="GetDataAccesos">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+      <fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </fault>
+    </operation>
+    <operation name="GetUsuarios">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+      <fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </fault>
+    </operation>
+    <operation name="ListUsers">
       <soap:operation soapAction=""/>
       <input>
         <soap:body use="literal"/>

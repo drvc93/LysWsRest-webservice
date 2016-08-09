@@ -27,6 +27,10 @@
 
   <xs:element name="GetInspeccionesMaqDetResponse" type="tns:GetInspeccionesMaqDetResponse"/>
 
+  <xs:element name="GetMaquinas" type="tns:GetMaquinas"/>
+
+  <xs:element name="GetMaquinasResponse" type="tns:GetMaquinasResponse"/>
+
   <xs:element name="GetUsuarios" type="tns:GetUsuarios"/>
 
   <xs:element name="GetUsuariosResponse" type="tns:GetUsuariosResponse"/>
@@ -295,6 +299,30 @@
       <xs:element name="flagmantto" type="xs:string" minOccurs="0"/>
       <xs:element name="nombre" type="xs:string" minOccurs="0"/>
       <xs:element name="nroPersona" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetMaquinas">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="GetMaquinasResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:maquina" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="maquina">
+    <xs:sequence>
+      <xs:element name="c_centrocosto" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_codigobarras" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_descripcion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_estado" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_familiainspeccion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_maquina" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_ompania" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_ultimousuario" type="xs:string" minOccurs="0"/>
+      <xs:element name="d_ultimafechamodificacion" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
