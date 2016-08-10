@@ -6,6 +6,7 @@
 package SOAP;
 
 import com.lys.beans.AccesosDB;
+import com.lys.beans.Inspecciones;
 import com.lys.beans.InspeccionesGenCab;
 import com.lys.beans.InspeccionesGenDet;
 import com.lys.beans.InspeccionesMaqCab;
@@ -441,9 +442,11 @@ public class SOAPLYS {
     @WebMethod(operationName = "GetMaquinas")
     public ArrayList<Maquina> GetMaquinas() throws Exception {
         ArrayList<Maquina>  listMaquinas = new ArrayList<Maquina>();
-         String query = "SELECT c_compania, c_maquina, c_descripcion, CASE WHEN  c_codigobarras IS NULL THEN '-' ELSE c_codigobarras END c_codigobarras," +
-        "c_familiainspeccion, c_centrocosto, c_estado, c_ultimousuario," +
-        " d_ultimafechamodificacion FROM  dbo.MTP_MAQUINAS";
+        String select1 = "SELECT  c_compania , c_maquina , c_descripcion ,";
+        String CaseSql = "CASE WHEN c_codigobarras IS NULL THEN '-'   ELSE c_codigobarras END c_codigobarras ,   CASE LEN(c_familiainspeccion) WHEN 0 THEN '-' ELSE c_familiainspeccion     END c_familiainspeccion ,";
+        String select2 = " c_centrocosto , c_estado ,c_ultimousuario ,d_ultimafechamodificacion ";
+        String fromTable = " FROM    dbo.MTP_MAQUINAS";
+         String query =  select1 + CaseSql+select2 + fromTable;
         GetResultSet cresult = new GetResultSet();
         ResultSet rs = cresult.CreateConection(query);
         
@@ -490,6 +493,37 @@ public class SOAPLYS {
         }
         
         return listPeriodos;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "GetInspecciones")
+    public ArrayList<Inspecciones> GetInspecciones() throws Exception {
+        
+        ArrayList<Inspecciones> listInsp = new ArrayList<Inspecciones>();
+        String query = "SELECT * FROM  dbo.MTP_INSPECCION;";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()){
+        
+            Inspecciones inp = new Inspecciones();
+            inp.setC_inspeccion(rs.getString(1));
+            inp.setC_descripcion(rs.getString(2));
+            inp.setC_tipoinspeccion(rs.getString(3));
+            inp.setN_porcentajeminimo(rs.getString(4));
+            inp.setN_porcentajemaximo(rs.getString(5));
+            inp.setC_familiainspeccion(rs.getString(6));
+            inp.setC_periodoinspeccion(rs.getString(7));
+            inp.setC_estado(rs.getString(8));
+            inp.setC_ultimousuario(rs.getString(9));
+            inp.setD_ultimafechamodificacion(rs.getString(10));
+            listInsp.add(inp);
+            
+            
+        }
+        
+        return listInsp;
     }
 
 }
