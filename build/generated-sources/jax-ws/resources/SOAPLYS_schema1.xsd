@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="http://SOAP/" xmlns:tns="http://SOAP/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="Exception" type="tns:Exception"/>
+
+  <xs:element name="GetDataAccesos" type="tns:GetDataAccesos"/>
+
+  <xs:element name="GetDataAccesosResponse" type="tns:GetDataAccesosResponse"/>
+
+  <xs:element name="GetDataMenu" type="tns:GetDataMenu"/>
+
+  <xs:element name="GetDataMenuResponse" type="tns:GetDataMenuResponse"/>
+
+  <xs:element name="GetInspecciones" type="tns:GetInspecciones"/>
+
+  <xs:element name="GetInspeccionesGenCab" type="tns:GetInspeccionesGenCab"/>
+
+  <xs:element name="GetInspeccionesGenCabResponse" type="tns:GetInspeccionesGenCabResponse"/>
+
+  <xs:element name="GetInspeccionesGenDet" type="tns:GetInspeccionesGenDet"/>
+
+  <xs:element name="GetInspeccionesGenDetResponse" type="tns:GetInspeccionesGenDetResponse"/>
+
+  <xs:element name="GetInspeccionesMaqCab" type="tns:GetInspeccionesMaqCab"/>
+
+  <xs:element name="GetInspeccionesMaqCabResponse" type="tns:GetInspeccionesMaqCabResponse"/>
+
+  <xs:element name="GetInspeccionesMaqDet" type="tns:GetInspeccionesMaqDet"/>
+
+  <xs:element name="GetInspeccionesMaqDetResponse" type="tns:GetInspeccionesMaqDetResponse"/>
+
+  <xs:element name="GetInspeccionesResponse" type="tns:GetInspeccionesResponse"/>
+
+  <xs:element name="GetMaquinas" type="tns:GetMaquinas"/>
+
+  <xs:element name="GetMaquinasResponse" type="tns:GetMaquinasResponse"/>
+
+  <xs:element name="GetPeriodosInspeccion" type="tns:GetPeriodosInspeccion"/>
+
+  <xs:element name="GetPeriodosInspeccionResponse" type="tns:GetPeriodosInspeccionResponse"/>
+
+  <xs:element name="GetUsuarios" type="tns:GetUsuarios"/>
+
+  <xs:element name="GetUsuariosResponse" type="tns:GetUsuariosResponse"/>
+
+  <xs:element name="ListSubMenu" type="tns:ListSubMenu"/>
+
+  <xs:element name="ListSubMenuBotones" type="tns:ListSubMenuBotones"/>
+
+  <xs:element name="ListSubMenuBotonesResponse" type="tns:ListSubMenuBotonesResponse"/>
+
+  <xs:element name="ListSubMenuResponse" type="tns:ListSubMenuResponse"/>
+
+  <xs:element name="ListUsers" type="tns:ListUsers"/>
+
+  <xs:element name="ListUsersResponse" type="tns:ListUsersResponse"/>
+
+  <xs:element name="ListaMenu" type="tns:ListaMenu"/>
+
+  <xs:element name="ListaMenuResponse" type="tns:ListaMenuResponse"/>
+
+  <xs:element name="hello" type="tns:hello"/>
+
+  <xs:element name="helloResponse" type="tns:helloResponse"/>
+
+  <xs:element name="saveImage" type="tns:saveImage"/>
+
+  <xs:element name="saveImageResponse" type="tns:saveImageResponse"/>
+
+  <xs:complexType name="GetInspeccionesMaqDet">
+    <xs:sequence>
+      <xs:element name="Usuario" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetInspeccionesMaqDetResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:inspeccionesMaqDet" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="inspeccionesMaqDet">
+    <xs:sequence>
+      <xs:element name="c_comentario" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_compania" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_estado" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_inpeccion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_rutafoto" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_tipoinspeccion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_ultimousuario" type="xs:string" minOccurs="0"/>
+      <xs:element name="d_ultimafechamodificacion" type="xs:string" minOccurs="0"/>
+      <xs:element name="n_correlativo" type="xs:string" minOccurs="0"/>
+      <xs:element name="n_linea" type="xs:string" minOccurs="0"/>
+      <xs:element name="n_pocentajeinspeccion" type="xs:string" minOccurs="0"/>
+      <xs:element name="n_porcentajemaximo" type="xs:string" minOccurs="0"/>
+      <xs:element name="n_porcentajeminimo" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Exception">
+    <xs:sequence>
+      <xs:element name="message" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetInspecciones">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="GetInspeccionesResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:inspecciones" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="inspecciones">
+    <xs:sequence>
+      <xs:element name="c_descripcion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_estado" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_familiainspeccion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_inspeccion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_periodoinspeccion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_tipoinspeccion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_ultimousuario" type="xs:string" minOccurs="0"/>
+      <xs:element name="d_ultimafechamodificacion" type="xs:string" minOccurs="0"/>
+      <xs:element name="n_porcentajemaximo" type="xs:string" minOccurs="0"/>
+      <xs:element name="n_porcentajeminimo" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetInspeccionesMaqCab">
+    <xs:sequence>
+      <xs:element name="Usuario" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetInspeccionesMaqCabResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:inspeccionesMaqCab" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="inspeccionesMaqCab">
+    <xs:sequence>
+      <xs:element name="c_comentario" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_compania" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_condicionmaquina" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_estado" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_maquina" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_periodoinspeccion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_ultimousuario" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_usuarioInspeccion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_usuarioenvio" type="xs:string" minOccurs="0"/>
+      <xs:element name="d_fechaEnvio" type="xs:string" minOccurs="0"/>
+      <xs:element name="d_fechaFinInspeccion" type="xs:string" minOccurs="0"/>
+      <xs:element name="d_fechaInicioInspeccion" type="xs:string" minOccurs="0"/>
+      <xs:element name="d_ultimafechamodificacion" type="xs:string" minOccurs="0"/>
+      <xs:element name="n_correlativo" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ListaMenu">
+    <xs:sequence>
+      <xs:element name="CodUsuario" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ListaMenuResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:menu" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="menu">
+    <xs:sequence>
+      <xs:element name="codAplicacion" type="xs:string" minOccurs="0"/>
+      <xs:element name="codMenu" type="xs:string" minOccurs="0"/>
+      <xs:element name="descripcionMenu" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ListUsers">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="ListUsersResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:parametros" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="parametros">
+    <xs:sequence>
+      <xs:element name="codParametro" type="xs:string" minOccurs="0"/>
+      <xs:element name="descripcion" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetInspeccionesGenDet">
+    <xs:sequence>
+      <xs:element name="Usuario" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetInspeccionesGenDetResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:inspeccionesGenDet" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="inspeccionesGenDet">
+    <xs:sequence>
+      <xs:element name="c_comentario" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_compania" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_flagadictipo" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_rutafoto" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_tiporevisiong" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_ultimousuario" type="xs:string" minOccurs="0"/>
+      <xs:element name="d_ultimafechamodificacion" type="xs:string" minOccurs="0"/>
+      <xs:element name="n_correlativo" type="xs:string" minOccurs="0"/>
+      <xs:element name="n_linea" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ListSubMenu">
+    <xs:sequence>
+      <xs:element name="CodUsuario" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ListSubMenuResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:subMenu" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="subMenu">
+    <xs:sequence>
+      <xs:element name="codPadre" type="xs:string" minOccurs="0"/>
+      <xs:element name="codSubMenu" type="xs:string" minOccurs="0"/>
+      <xs:element name="descripcionSubmenu" type="xs:string" minOccurs="0"/>
+      <xs:element name="estado" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="saveImage">
+    <xs:sequence>
+      <xs:element name="imgeByte" type="xs:base64Binary" form="qualified" nillable="true" minOccurs="0"/>
+      <xs:element name="fileName" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="saveImageResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetDataMenu">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="GetDataMenuResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:menuDB" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="menuDB">
+    <xs:sequence>
+      <xs:element name="appCodigo" type="xs:string" minOccurs="0"/>
+      <xs:element name="descripcion" type="xs:string" minOccurs="0"/>
+      <xs:element name="nivel1" type="xs:string" minOccurs="0"/>
+      <xs:element name="nivel2" type="xs:string" minOccurs="0"/>
+      <xs:element name="nivel3" type="xs:string" minOccurs="0"/>
+      <xs:element name="nivel4" type="xs:string" minOccurs="0"/>
+      <xs:element name="nivel5" type="xs:string" minOccurs="0"/>
+      <xs:element name="nombreMenu" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="hello">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="helloResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ListSubMenuBotones">
+    <xs:sequence>
+      <xs:element name="CodPadre" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="CodSubMenu" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="CodUsuario" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ListSubMenuBotonesResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:subMenuBotones" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="subMenuBotones">
+    <xs:sequence>
+      <xs:element name="codMenuBoton" type="xs:string" minOccurs="0"/>
+      <xs:element name="codPadre" type="xs:string" minOccurs="0"/>
+      <xs:element name="codSubmenu" type="xs:string" minOccurs="0"/>
+      <xs:element name="descripcion" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetPeriodosInspeccion">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="GetPeriodosInspeccionResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:periodoInspeccionDB" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="periodoInspeccionDB">
+    <xs:sequence>
+      <xs:element name="c_descripcion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_estado" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_periodoinspeccion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_ultimousuario" type="xs:string" minOccurs="0"/>
+      <xs:element name="d_ultimafechamodificacion" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetUsuarios">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="GetUsuariosResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:usuarioDB" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="usuarioDB">
+    <xs:sequence>
+      <xs:element name="clave" type="xs:string" minOccurs="0"/>
+      <xs:element name="codigoUsuario" type="xs:string" minOccurs="0"/>
+      <xs:element name="estado" type="xs:string" minOccurs="0"/>
+      <xs:element name="flagmantto" type="xs:string" minOccurs="0"/>
+      <xs:element name="nombre" type="xs:string" minOccurs="0"/>
+      <xs:element name="nroPersona" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetMaquinas">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="GetMaquinasResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:maquina" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="maquina">
+    <xs:sequence>
+      <xs:element name="c_centrocosto" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_codigobarras" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_descripcion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_estado" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_familiainspeccion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_maquina" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_ompania" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_ultimousuario" type="xs:string" minOccurs="0"/>
+      <xs:element name="d_ultimafechamodificacion" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetInspeccionesGenCab">
+    <xs:sequence>
+      <xs:element name="Usuario" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetInspeccionesGenCabResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:inspeccionesGenCab" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="inspeccionesGenCab">
+    <xs:sequence>
+      <xs:element name="c_centrocosto" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_comentario" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_compania" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_estado" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_maquina" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_tipoinspeccion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_ultimousuario" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_usuarioenvio" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_usuarioinspeccion" type="xs:string" minOccurs="0"/>
+      <xs:element name="d_fechaenvio" type="xs:string" minOccurs="0"/>
+      <xs:element name="d_fechainspeccion" type="xs:string" minOccurs="0"/>
+      <xs:element name="d_ultimafechamodificacion" type="xs:string" minOccurs="0"/>
+      <xs:element name="n_correlativo" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetDataAccesos">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="GetDataAccesosResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:accesosDB" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="accesosDB">
+    <xs:sequence>
+      <xs:element name="acceso" type="xs:string" minOccurs="0"/>
+      <xs:element name="appCodigo" type="xs:string" minOccurs="0"/>
+      <xs:element name="eliminar" type="xs:string" minOccurs="0"/>
+      <xs:element name="modificar" type="xs:string" minOccurs="0"/>
+      <xs:element name="nivelAcc" type="xs:string" minOccurs="0"/>
+      <xs:element name="nuevo" type="xs:string" minOccurs="0"/>
+      <xs:element name="otros" type="xs:string" minOccurs="0"/>
+      <xs:element name="usuario" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+
