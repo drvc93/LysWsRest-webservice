@@ -11,6 +11,8 @@
 
   <xs:element name="GetDataMenuResponse" type="tns:GetDataMenuResponse"/>
 
+  <xs:element name="GetInspecciones" type="tns:GetInspecciones"/>
+
   <xs:element name="GetInspeccionesGenCab" type="tns:GetInspeccionesGenCab"/>
 
   <xs:element name="GetInspeccionesGenCabResponse" type="tns:GetInspeccionesGenCabResponse"/>
@@ -27,9 +29,15 @@
 
   <xs:element name="GetInspeccionesMaqDetResponse" type="tns:GetInspeccionesMaqDetResponse"/>
 
+  <xs:element name="GetInspeccionesResponse" type="tns:GetInspeccionesResponse"/>
+
   <xs:element name="GetMaquinas" type="tns:GetMaquinas"/>
 
   <xs:element name="GetMaquinasResponse" type="tns:GetMaquinasResponse"/>
+
+  <xs:element name="GetPeriodosInspeccion" type="tns:GetPeriodosInspeccion"/>
+
+  <xs:element name="GetPeriodosInspeccionResponse" type="tns:GetPeriodosInspeccionResponse"/>
 
   <xs:element name="GetUsuarios" type="tns:GetUsuarios"/>
 
@@ -92,6 +100,31 @@
   <xs:complexType name="Exception">
     <xs:sequence>
       <xs:element name="message" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetInspecciones">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="GetInspeccionesResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:inspecciones" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="inspecciones">
+    <xs:sequence>
+      <xs:element name="c_descripcion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_estado" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_familiainspeccion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_inspeccion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_periodoinspeccion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_tipoinspeccion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_ultimousuario" type="xs:string" minOccurs="0"/>
+      <xs:element name="d_ultimafechamodificacion" type="xs:string" minOccurs="0"/>
+      <xs:element name="n_porcentajemaximo" type="xs:string" minOccurs="0"/>
+      <xs:element name="n_porcentajeminimo" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -278,6 +311,26 @@
       <xs:element name="codPadre" type="xs:string" minOccurs="0"/>
       <xs:element name="codSubmenu" type="xs:string" minOccurs="0"/>
       <xs:element name="descripcion" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetPeriodosInspeccion">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="GetPeriodosInspeccionResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:periodoInspeccionDB" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="periodoInspeccionDB">
+    <xs:sequence>
+      <xs:element name="c_descripcion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_estado" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_periodoinspeccion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_ultimousuario" type="xs:string" minOccurs="0"/>
+      <xs:element name="d_ultimafechamodificacion" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
