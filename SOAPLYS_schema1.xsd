@@ -3,6 +3,10 @@
 
   <xs:element name="Exception" type="tns:Exception"/>
 
+  <xs:element name="GetCorrelativo" type="tns:GetCorrelativo"/>
+
+  <xs:element name="GetCorrelativoResponse" type="tns:GetCorrelativoResponse"/>
+
   <xs:element name="GetDataAccesos" type="tns:GetDataAccesos"/>
 
   <xs:element name="GetDataAccesosResponse" type="tns:GetDataAccesosResponse"/>
@@ -43,6 +47,14 @@
 
   <xs:element name="GetUsuariosResponse" type="tns:GetUsuariosResponse"/>
 
+  <xs:element name="InsertInspMaqCab" type="tns:InsertInspMaqCab"/>
+
+  <xs:element name="InsertInspMaqCabResponse" type="tns:InsertInspMaqCabResponse"/>
+
+  <xs:element name="InsertInspMaqDet" type="tns:InsertInspMaqDet"/>
+
+  <xs:element name="InsertInspMaqDetResponse" type="tns:InsertInspMaqDetResponse"/>
+
   <xs:element name="ListSubMenu" type="tns:ListSubMenu"/>
 
   <xs:element name="ListSubMenuBotones" type="tns:ListSubMenuBotones"/>
@@ -66,6 +78,35 @@
   <xs:element name="saveImage" type="tns:saveImage"/>
 
   <xs:element name="saveImageResponse" type="tns:saveImageResponse"/>
+
+  <xs:complexType name="InsertInspMaqDet">
+    <xs:sequence>
+      <xs:element name="compania" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="correlativo" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="linea" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="codInspeccion" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="tipoInsp" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="porcentMin" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="porcentMax" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="porcentInsp" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="estado" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="comentario" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="rutafoto" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="ultimoUser" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="InsertInspMaqDetResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Exception">
+    <xs:sequence>
+      <xs:element name="message" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
 
   <xs:complexType name="GetInspeccionesMaqDet">
     <xs:sequence>
@@ -94,12 +135,6 @@
       <xs:element name="n_pocentajeinspeccion" type="xs:string" minOccurs="0"/>
       <xs:element name="n_porcentajemaximo" type="xs:string" minOccurs="0"/>
       <xs:element name="n_porcentajeminimo" type="xs:string" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="Exception">
-    <xs:sequence>
-      <xs:element name="message" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -291,6 +326,26 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="GetPeriodosInspeccion">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="GetPeriodosInspeccionResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:periodoInspeccionDB" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="periodoInspeccionDB">
+    <xs:sequence>
+      <xs:element name="c_descripcion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_estado" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_periodoinspeccion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_ultimousuario" type="xs:string" minOccurs="0"/>
+      <xs:element name="d_ultimafechamodificacion" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="ListSubMenuBotones">
     <xs:sequence>
       <xs:element name="CodPadre" type="xs:string" form="qualified" minOccurs="0"/>
@@ -314,23 +369,26 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="GetPeriodosInspeccion">
-    <xs:sequence/>
-  </xs:complexType>
-
-  <xs:complexType name="GetPeriodosInspeccionResponse">
+  <xs:complexType name="InsertInspMaqCab">
     <xs:sequence>
-      <xs:element name="return" type="tns:periodoInspeccionDB" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="correlativo" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="compania" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="maquina" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="condicionMaquina" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="comentario" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="estado" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="fechaIniInsp" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="fechaFinInsp" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="periodoInsp" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="usuarioInsp" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="usuaruioEnv" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="ultimoUsuario" type="xs:string" form="qualified" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="periodoInspeccionDB">
+  <xs:complexType name="InsertInspMaqCabResponse">
     <xs:sequence>
-      <xs:element name="c_descripcion" type="xs:string" minOccurs="0"/>
-      <xs:element name="c_estado" type="xs:string" minOccurs="0"/>
-      <xs:element name="c_periodoinspeccion" type="xs:string" minOccurs="0"/>
-      <xs:element name="c_ultimousuario" type="xs:string" minOccurs="0"/>
-      <xs:element name="d_ultimafechamodificacion" type="xs:string" minOccurs="0"/>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -352,6 +410,16 @@
       <xs:element name="flagmantto" type="xs:string" minOccurs="0"/>
       <xs:element name="nombre" type="xs:string" minOccurs="0"/>
       <xs:element name="nroPersona" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetCorrelativo">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="GetCorrelativoResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
