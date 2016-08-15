@@ -19,12 +19,15 @@ import com.lys.beans.PeriodoInspeccionDB;
 import com.lys.beans.SubMenu;
 import com.lys.beans.SubMenuBotones;
 import com.lys.beans.UsuarioDB;
+import com.lys.conection.ConectaDB;
 import com.lys.conection.GetResultSet;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import javax.jws.WebService;
@@ -525,5 +528,109 @@ public class SOAPLYS {
         
         return listInsp;
     }
+
+    /**
+     * Web service operation
+     */
+    
+    
+    @WebMethod(operationName = "InsertInspMaqCab")
+    public String InsertInspMaqCab(@WebParam(name = "correlativo",targetNamespace = "http://SOAP/") String correlativo,@WebParam(name = "compania",targetNamespace = "http://SOAP/") String compania, @WebParam(name = "maquina",targetNamespace = "http://SOAP/") String maquina, @WebParam(name = "condicionMaquina",targetNamespace = "http://SOAP/") String condicionMaquina, @WebParam(name = "comentario",targetNamespace = "http://SOAP/") String comentario, @WebParam(name = "estado",targetNamespace = "http://SOAP/") String estado, @WebParam(name = "fechaIniInsp",targetNamespace = "http://SOAP/") String fechaIniInsp, @WebParam(name = "fechaFinInsp",targetNamespace = "http://SOAP/") String fechaFinInsp, @WebParam(name = "periodoInsp",targetNamespace = "http://SOAP/") String periodoInsp, @WebParam(name = "usuarioInsp",targetNamespace = "http://SOAP/") String usuarioInsp, @WebParam(name = "usuaruioEnv",targetNamespace = "http://SOAP/") String usuaruioEnv, @WebParam(name = "ultimoUsuario",targetNamespace = "http://SOAP/") String ultimoUsuario) throws Exception {
+        
+        String result = "0";
+        long  var_correlativo = Long.valueOf(correlativo);
+        ConectaDB cndb = new ConectaDB();
+         Connection connection = cndb.getConexion();
+         String SQL_INSERT = "EXEC SPI_INSPECCION_MAQ_CABECERA ?,?,?,?,?,?,?,?,?,?,?,?";
+        PreparedStatement statement = connection.prepareStatement(SQL_INSERT,
+                                      Statement.RETURN_GENERATED_KEYS);
+        statement.setEscapeProcessing(true);
+        statement.setQueryTimeout(90);
+        statement.setString(1, compania);
+        statement.setLong(2,var_correlativo);
+        statement.setString(3,maquina);
+        statement.setString(4,condicionMaquina);
+        statement.setString(5,comentario);
+        statement.setString(6,estado);
+        statement.setString(7,fechaIniInsp);
+        statement.setString(8,fechaFinInsp);
+        statement.setString(9,periodoInsp);
+        statement.setString(10,usuarioInsp);
+        statement.setString(11, usuaruioEnv);
+        statement.setString(12, ultimoUsuario);
+        
+        int rowAfect = statement.executeUpdate();
+        
+        if (rowAfect >0 ){
+        
+            result = String.valueOf(rowAfect);
+        }
+        //  String query = "EXEC dbo.SPI_INSPECCION_MAQ_CABECERA @compania = '"+compania+"' ,  @maquina = '"+maquina+"',  @condicionMaquina = '"+condicionMaquina+"',  @comentario = '"+comentario+"',  @estado = '"+estado+"', @fechaInicioInp = '"+fechaIniInsp+"',   @fechaFinInsp = '"+fechaFinInsp+"',  @periodoInsp = '"+periodoInsp+"', @usuarioInsp = '"+usuarioInsp+"',  @usuarioEnvio = '"+usuaruioEnv+"',  @ultUsuario = '"+ultimoUsuario+"' ";
+       // GetResultSet cresult = new GetResultSet();
+       // ResultSet rs = cresult.CreateConection(query);
+        
+        
+        return result;
+    }
+
+    
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "GetCorrelativo")
+    public String GetCorrelativo() throws Exception {
+        String result = "0";
+        String query = "SELECT n_ultimocorrelativo FROM  dbo.ma_Correlativos ";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()){
+          result = rs.getString(1);
+        }
+        return result;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "InsertInspMaqDet")
+    public String InsertInspMaqDet(@WebParam(name = "compania",targetNamespace = "http://SOAP/") String compania, @WebParam(name = "correlativo",targetNamespace = "http://SOAP/") String correlativo, @WebParam(name = "linea",targetNamespace = "http://SOAP/") String linea, @WebParam(name = "codInspeccion",targetNamespace = "http://SOAP/") String codInspeccion, @WebParam(name = "tipoInsp",targetNamespace = "http://SOAP/") String tipoInsp, @WebParam(name = "porcentMin",targetNamespace = "http://SOAP/") String porcentMin, @WebParam(name = "porcentMax",targetNamespace = "http://SOAP/") String porcentMax, @WebParam(name = "porcentInsp",targetNamespace = "http://SOAP/") String porcentInsp, @WebParam(name = "estado",targetNamespace = "http://SOAP/") String estado, @WebParam(name = "comentario",targetNamespace = "http://SOAP/") String comentario, @WebParam(name = "rutafoto",targetNamespace = "http://SOAP/") String rutafoto, @WebParam(name = "ultimoUser",targetNamespace = "http://SOAP/") String ultimoUser) throws Exception {
+       String result = "0";
+        long  var_correlativo = Long.valueOf(correlativo);
+        ConectaDB cndb = new ConectaDB();
+         Connection connection = cndb.getConexion();
+         String SQL_INSERT = "EXEC SPI_INSPECCION_MAQ_DETALLE ?,?,?,?,?,?,?,?,?,?,?,?";
+        PreparedStatement statement = connection.prepareStatement(SQL_INSERT,
+                                      Statement.RETURN_GENERATED_KEYS);
+        statement.setEscapeProcessing(true);
+        statement.setQueryTimeout(90);
+        statement.setString(1, compania);
+        statement.setLong(2,var_correlativo);
+        statement.setInt(3, Integer.valueOf(linea));
+        statement.setString(4,codInspeccion);
+        statement.setString(5, tipoInsp);
+        statement.setString(6, porcentMin);
+        statement.setString(7, porcentMax);
+        statement.setString(8, porcentInsp);
+        statement.setString(9, estado);
+        statement.setString(10, comentario);
+        statement.setString(11, rutafoto);
+        statement.setString(12, ultimoUser);
+        
+        int rowAfect = statement.executeUpdate();
+        
+        if (rowAfect >0 ){
+        
+            result = "OK";
+        }
+        //  String query = "EXEC dbo.SPI_INSPECCION_MAQ_CABECERA @compania = '"+compania+"' ,  @maquina = '"+maquina+"',  @condicionMaquina = '"+condicionMaquina+"',  @comentario = '"+comentario+"',  @estado = '"+estado+"', @fechaInicioInp = '"+fechaIniInsp+"',   @fechaFinInsp = '"+fechaFinInsp+"',  @periodoInsp = '"+periodoInsp+"', @usuarioInsp = '"+usuarioInsp+"',  @usuarioEnvio = '"+usuaruioEnv+"',  @ultUsuario = '"+ultimoUsuario+"' ";
+       // GetResultSet cresult = new GetResultSet();
+       // ResultSet rs = cresult.CreateConection(query);
+        
+        
+        return result;
+        
+        
+    }
+
 
 }
