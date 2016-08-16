@@ -6,6 +6,8 @@
 package SOAP;
 
 import com.lys.beans.AccesosDB;
+import com.lys.beans.CentroCostoDB;
+import com.lys.beans.HistorialInspMaq;
 import com.lys.beans.Inspecciones;
 import com.lys.beans.InspeccionesGenCab;
 import com.lys.beans.InspeccionesGenDet;
@@ -630,6 +632,63 @@ public class SOAPLYS {
         return result;
         
         
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "GetCentroCosto")
+    public ArrayList<CentroCostoDB> GetCentroCosto() throws Exception {
+        ArrayList<CentroCostoDB> result = new ArrayList<CentroCostoDB>();
+        GetResultSet cresult = new GetResultSet();
+        String Sql = "SELECT * FROM dbo.MTP_CENTROCOSTO";
+        ResultSet rs = cresult.CreateConection(Sql);
+        while (rs.next()){
+        
+            CentroCostoDB c = new CentroCostoDB();
+            c.setC_compania(rs.getString(1));
+            c.setC_centrocosto(rs.getString(2));
+            c.setC_descripcion(rs.getString(3));
+            c.setC_estado(rs.getString(4));
+            result.add(c);
+            
+        }
+        return result;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "GetHistorialInspMaq")
+    public ArrayList<HistorialInspMaq> GetHistorialInspMaq(@WebParam(name = "accion",targetNamespace = "http://SOAP/") String accion, @WebParam(name = "maquina",targetNamespace = "http://SOAP/") String maquina, @WebParam(name = "centrocosto",targetNamespace = "http://SOAP/") String centrocosto, @WebParam(name = "fechaIni",targetNamespace = "http://SOAP/") String fechaIni, @WebParam(name = "fechaFin",targetNamespace = "http://SOAP/") String fechaFin) throws Exception {
+         ArrayList<HistorialInspMaq> result = new ArrayList<HistorialInspMaq>();
+         ConectaDB cndb = new ConectaDB();
+         Connection connection = cndb.getConexion();
+         String SQL_INSERT = "EXEC SP_CONSULTAS_LINEA_INSP ?,?,?,?,?";
+        PreparedStatement statement = connection.prepareStatement(SQL_INSERT,
+                                      Statement.RETURN_GENERATED_KEYS);
+        
+        statement.setEscapeProcessing(true);
+        statement.setQueryTimeout(90);
+        statement.setString(1, accion);
+        statement.setString(2, maquina);
+        statement.setString(3, centrocosto);
+        statement.setString(4, fechaIni);
+        statement.setString(5, fechaFin);
+        
+        ResultSet res = statement.executeQuery();
+        while (res.next()){
+          HistorialInspMaq h = new HistorialInspMaq();
+          h.setNumero(res.getString(1));
+          h.setFecha(res.getString(2));
+          h.setCod_maquina(res.getString(3));
+          h.setCentro_costo(res.getString(4));
+          h.setFrecuencia(res.getString(5));
+          h.setUsuario(res.getString(6));
+          h.setComentario(res.getString(7));
+          result.add(h);
+        }
+        return result;
     }
 
 
