@@ -3,6 +3,10 @@
 
   <xs:element name="Exception" type="tns:Exception"/>
 
+  <xs:element name="GetCentroCosto" type="tns:GetCentroCosto"/>
+
+  <xs:element name="GetCentroCostoResponse" type="tns:GetCentroCostoResponse"/>
+
   <xs:element name="GetCorrelativo" type="tns:GetCorrelativo"/>
 
   <xs:element name="GetCorrelativoResponse" type="tns:GetCorrelativoResponse"/>
@@ -14,6 +18,10 @@
   <xs:element name="GetDataMenu" type="tns:GetDataMenu"/>
 
   <xs:element name="GetDataMenuResponse" type="tns:GetDataMenuResponse"/>
+
+  <xs:element name="GetHistorialInspMaq" type="tns:GetHistorialInspMaq"/>
+
+  <xs:element name="GetHistorialInspMaqResponse" type="tns:GetHistorialInspMaqResponse"/>
 
   <xs:element name="GetInspecciones" type="tns:GetInspecciones"/>
 
@@ -79,6 +87,31 @@
 
   <xs:element name="saveImageResponse" type="tns:saveImageResponse"/>
 
+  <xs:complexType name="GetCentroCosto">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="GetCentroCostoResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:centroCostoDB" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="centroCostoDB">
+    <xs:sequence>
+      <xs:element name="c_centrocosto" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_compania" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_descripcion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_estado" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Exception">
+    <xs:sequence>
+      <xs:element name="message" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="InsertInspMaqDet">
     <xs:sequence>
       <xs:element name="compania" type="xs:string" form="qualified" minOccurs="0"/>
@@ -99,12 +132,6 @@
   <xs:complexType name="InsertInspMaqDetResponse">
     <xs:sequence>
       <xs:element name="return" type="xs:string" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="Exception">
-    <xs:sequence>
-      <xs:element name="message" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -275,6 +302,34 @@
       <xs:element name="codSubMenu" type="xs:string" minOccurs="0"/>
       <xs:element name="descripcionSubmenu" type="xs:string" minOccurs="0"/>
       <xs:element name="estado" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetHistorialInspMaq">
+    <xs:sequence>
+      <xs:element name="accion" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="maquina" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="centrocosto" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="fechaIni" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="fechaFin" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetHistorialInspMaqResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:historialInspMaq" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="historialInspMaq">
+    <xs:sequence>
+      <xs:element name="centro_costo" type="xs:string" minOccurs="0"/>
+      <xs:element name="cod_maquina" type="xs:string" minOccurs="0"/>
+      <xs:element name="comentario" type="xs:string" minOccurs="0"/>
+      <xs:element name="fecha" type="xs:string" minOccurs="0"/>
+      <xs:element name="frecuencia" type="xs:string" minOccurs="0"/>
+      <xs:element name="numero" type="xs:string" minOccurs="0"/>
+      <xs:element name="usuario" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
