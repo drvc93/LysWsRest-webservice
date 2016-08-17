@@ -686,8 +686,36 @@ public class SOAPLYS {
           h.setFrecuencia(res.getString(5));
           h.setUsuario(res.getString(6));
           h.setComentario(res.getString(7));
+          h.setEstado(res.getString(8));
           result.add(h);
         }
+        return result;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "TrasnferirInsp")
+    public String TrasnferirInsp(@WebParam(name = "tipoIns",targetNamespace = "http://SOAP/") String tipoIns, @WebParam(name = "correlativo",targetNamespace = "http://SOAP/") String correlativo) throws Exception {
+        String result ="NO";
+        int var_correlativo = Integer.valueOf(correlativo);
+        ConectaDB cndb = new ConectaDB();
+         Connection connection = cndb.getConexion();
+         String SQL_INSERT = "EXEC SP_TRANSFERIR_INSPECCION ?,?,?";
+        PreparedStatement statement = connection.prepareStatement(SQL_INSERT,
+                                      Statement.RETURN_GENERATED_KEYS);
+        statement.setEscapeProcessing(true);
+        statement.setQueryTimeout(90);
+        statement.setString(1, tipoIns);
+        statement.setInt(2, var_correlativo);
+        statement.setInt(3, 0);
+        
+        int rowAffect = statement.executeUpdate();
+        if(rowAffect>0){
+        
+            result= "OK";
+        }
+        //TODO write your implementation code here:
         return result;
     }
 
