@@ -20,6 +20,7 @@ import com.lys.beans.Parametros;
 import com.lys.beans.PeriodoInspeccionDB;
 import com.lys.beans.SubMenu;
 import com.lys.beans.SubMenuBotones;
+import com.lys.beans.TipoRevisionGBD;
 import com.lys.beans.UsuarioDB;
 import com.lys.conection.ConectaDB;
 import com.lys.conection.GetResultSet;
@@ -634,6 +635,7 @@ public class SOAPLYS {
         
     }
 
+    
     /**
      * Web service operation
      */
@@ -717,6 +719,33 @@ public class SOAPLYS {
         }
         //TODO write your implementation code here:
         return result;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "GetTipoRevisionG")
+    public ArrayList<TipoRevisionGBD> GetTipoRevisionG() throws Exception  {
+        //TODO write your implementation code here:
+        ArrayList<TipoRevisionGBD>  listresult = new ArrayList<TipoRevisionGBD>();
+         GetResultSet cresult = new GetResultSet();
+        String Sql = "SELECT * FROM dbo.MTP_TIPOREVISIONG";
+        ResultSet rs = cresult.CreateConection(Sql);
+        
+        while (rs.next()){
+        
+            TipoRevisionGBD  t = new TipoRevisionGBD();
+            t.setCod_tiporevision(rs.getString(1));
+            t.setDescripcion(rs.getString(2));
+            t.setEstado(rs.getString(3));
+            t.setUltimoUsuario(rs.getString(4));
+            t.setUltFechaMod(rs.getString(5));
+            listresult.add(t);
+            
+            
+            
+        }
+        return listresult;
     }
 
 

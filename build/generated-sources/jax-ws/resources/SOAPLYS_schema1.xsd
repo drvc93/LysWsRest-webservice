@@ -51,6 +51,10 @@
 
   <xs:element name="GetPeriodosInspeccionResponse" type="tns:GetPeriodosInspeccionResponse"/>
 
+  <xs:element name="GetTipoRevisionG" type="tns:GetTipoRevisionG"/>
+
+  <xs:element name="GetTipoRevisionGResponse" type="tns:GetTipoRevisionGResponse"/>
+
   <xs:element name="GetUsuarios" type="tns:GetUsuarios"/>
 
   <xs:element name="GetUsuariosResponse" type="tns:GetUsuariosResponse"/>
@@ -91,6 +95,31 @@
 
   <xs:element name="saveImageResponse" type="tns:saveImageResponse"/>
 
+  <xs:complexType name="GetCentroCosto">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="GetCentroCostoResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:centroCostoDB" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="centroCostoDB">
+    <xs:sequence>
+      <xs:element name="c_centrocosto" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_compania" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_descripcion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_estado" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Exception">
+    <xs:sequence>
+      <xs:element name="message" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="InsertInspMaqDet">
     <xs:sequence>
       <xs:element name="compania" type="xs:string" form="qualified" minOccurs="0"/>
@@ -111,31 +140,6 @@
   <xs:complexType name="InsertInspMaqDetResponse">
     <xs:sequence>
       <xs:element name="return" type="xs:string" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="Exception">
-    <xs:sequence>
-      <xs:element name="message" type="xs:string" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="GetCentroCosto">
-    <xs:sequence/>
-  </xs:complexType>
-
-  <xs:complexType name="GetCentroCostoResponse">
-    <xs:sequence>
-      <xs:element name="return" type="tns:centroCostoDB" minOccurs="0" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="centroCostoDB">
-    <xs:sequence>
-      <xs:element name="c_centrocosto" type="xs:string" minOccurs="0"/>
-      <xs:element name="c_compania" type="xs:string" minOccurs="0"/>
-      <xs:element name="c_descripcion" type="xs:string" minOccurs="0"/>
-      <xs:element name="c_estado" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -225,6 +229,23 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="ListUsers">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="ListUsersResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:parametros" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="parametros">
+    <xs:sequence>
+      <xs:element name="codParametro" type="xs:string" minOccurs="0"/>
+      <xs:element name="descripcion" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="ListaMenu">
     <xs:sequence>
       <xs:element name="CodUsuario" type="xs:string" form="qualified" minOccurs="0"/>
@@ -242,23 +263,6 @@
       <xs:element name="codAplicacion" type="xs:string" minOccurs="0"/>
       <xs:element name="codMenu" type="xs:string" minOccurs="0"/>
       <xs:element name="descripcionMenu" type="xs:string" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="ListUsers">
-    <xs:sequence/>
-  </xs:complexType>
-
-  <xs:complexType name="ListUsersResponse">
-    <xs:sequence>
-      <xs:element name="return" type="tns:parametros" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="parametros">
-    <xs:sequence>
-      <xs:element name="codParametro" type="xs:string" minOccurs="0"/>
-      <xs:element name="descripcion" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -449,6 +453,26 @@
   <xs:complexType name="InsertInspMaqCabResponse">
     <xs:sequence>
       <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetTipoRevisionG">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="GetTipoRevisionGResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:tipoRevisionGBD" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="tipoRevisionGBD">
+    <xs:sequence>
+      <xs:element name="cod_tiporevision" type="xs:string" minOccurs="0"/>
+      <xs:element name="descripcion" type="xs:string" minOccurs="0"/>
+      <xs:element name="estado" type="xs:string" minOccurs="0"/>
+      <xs:element name="ultFechaMod" type="xs:string" minOccurs="0"/>
+      <xs:element name="ultimoUsuario" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 

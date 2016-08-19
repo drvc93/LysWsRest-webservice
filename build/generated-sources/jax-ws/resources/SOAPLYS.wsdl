@@ -6,26 +6,14 @@
       <xsd:import namespace="http://SOAP/" schemaLocation="SOAPLYS_schema1.xsd"/>
     </xsd:schema>
   </types>
-  <message name="hello">
-    <part name="parameters" element="tns:hello"/>
+  <message name="GetHistorialInspMaq">
+    <part name="parameters" element="tns:GetHistorialInspMaq"/>
   </message>
-  <message name="helloResponse">
-    <part name="parameters" element="tns:helloResponse"/>
-  </message>
-  <message name="ListSubMenuBotones">
-    <part name="parameters" element="tns:ListSubMenuBotones"/>
-  </message>
-  <message name="ListSubMenuBotonesResponse">
-    <part name="parameters" element="tns:ListSubMenuBotonesResponse"/>
+  <message name="GetHistorialInspMaqResponse">
+    <part name="parameters" element="tns:GetHistorialInspMaqResponse"/>
   </message>
   <message name="Exception">
     <part name="fault" element="tns:Exception"/>
-  </message>
-  <message name="GetInspeccionesMaqCab">
-    <part name="parameters" element="tns:GetInspeccionesMaqCab"/>
-  </message>
-  <message name="GetInspeccionesMaqCabResponse">
-    <part name="parameters" element="tns:GetInspeccionesMaqCabResponse"/>
   </message>
   <message name="GetInspeccionesMaqDet">
     <part name="parameters" element="tns:GetInspeccionesMaqDet"/>
@@ -33,11 +21,11 @@
   <message name="GetInspeccionesMaqDetResponse">
     <part name="parameters" element="tns:GetInspeccionesMaqDetResponse"/>
   </message>
-  <message name="GetHistorialInspMaq">
-    <part name="parameters" element="tns:GetHistorialInspMaq"/>
+  <message name="ListSubMenuBotones">
+    <part name="parameters" element="tns:ListSubMenuBotones"/>
   </message>
-  <message name="GetHistorialInspMaqResponse">
-    <part name="parameters" element="tns:GetHistorialInspMaqResponse"/>
+  <message name="ListSubMenuBotonesResponse">
+    <part name="parameters" element="tns:ListSubMenuBotonesResponse"/>
   </message>
   <message name="GetInspeccionesGenCab">
     <part name="parameters" element="tns:GetInspeccionesGenCab"/>
@@ -45,35 +33,35 @@
   <message name="GetInspeccionesGenCabResponse">
     <part name="parameters" element="tns:GetInspeccionesGenCabResponse"/>
   </message>
-  <message name="GetInspeccionesGenDet">
-    <part name="parameters" element="tns:GetInspeccionesGenDet"/>
-  </message>
-  <message name="GetInspeccionesGenDetResponse">
-    <part name="parameters" element="tns:GetInspeccionesGenDetResponse"/>
-  </message>
   <message name="GetPeriodosInspeccion">
     <part name="parameters" element="tns:GetPeriodosInspeccion"/>
   </message>
   <message name="GetPeriodosInspeccionResponse">
     <part name="parameters" element="tns:GetPeriodosInspeccionResponse"/>
   </message>
-  <message name="saveImage">
-    <part name="parameters" element="tns:saveImage"/>
+  <message name="GetInspeccionesMaqCab">
+    <part name="parameters" element="tns:GetInspeccionesMaqCab"/>
   </message>
-  <message name="saveImageResponse">
-    <part name="parameters" element="tns:saveImageResponse"/>
+  <message name="GetInspeccionesMaqCabResponse">
+    <part name="parameters" element="tns:GetInspeccionesMaqCabResponse"/>
   </message>
-  <message name="GetMaquinas">
-    <part name="parameters" element="tns:GetMaquinas"/>
+  <message name="GetInspeccionesGenDet">
+    <part name="parameters" element="tns:GetInspeccionesGenDet"/>
   </message>
-  <message name="GetMaquinasResponse">
-    <part name="parameters" element="tns:GetMaquinasResponse"/>
+  <message name="GetInspeccionesGenDetResponse">
+    <part name="parameters" element="tns:GetInspeccionesGenDetResponse"/>
   </message>
-  <message name="ListaMenu">
-    <part name="parameters" element="tns:ListaMenu"/>
+  <message name="hello">
+    <part name="parameters" element="tns:hello"/>
   </message>
-  <message name="ListaMenuResponse">
-    <part name="parameters" element="tns:ListaMenuResponse"/>
+  <message name="helloResponse">
+    <part name="parameters" element="tns:helloResponse"/>
+  </message>
+  <message name="GetDataAccesos">
+    <part name="parameters" element="tns:GetDataAccesos"/>
+  </message>
+  <message name="GetDataAccesosResponse">
+    <part name="parameters" element="tns:GetDataAccesosResponse"/>
   </message>
   <message name="ListSubMenu">
     <part name="parameters" element="tns:ListSubMenu"/>
@@ -87,29 +75,11 @@
   <message name="GetDataMenuResponse">
     <part name="parameters" element="tns:GetDataMenuResponse"/>
   </message>
-  <message name="GetUsuarios">
-    <part name="parameters" element="tns:GetUsuarios"/>
+  <message name="InsertInspMaqCab">
+    <part name="parameters" element="tns:InsertInspMaqCab"/>
   </message>
-  <message name="GetUsuariosResponse">
-    <part name="parameters" element="tns:GetUsuariosResponse"/>
-  </message>
-  <message name="ListUsers">
-    <part name="parameters" element="tns:ListUsers"/>
-  </message>
-  <message name="ListUsersResponse">
-    <part name="parameters" element="tns:ListUsersResponse"/>
-  </message>
-  <message name="GetDataAccesos">
-    <part name="parameters" element="tns:GetDataAccesos"/>
-  </message>
-  <message name="GetDataAccesosResponse">
-    <part name="parameters" element="tns:GetDataAccesosResponse"/>
-  </message>
-  <message name="InsertInspMaqDet">
-    <part name="parameters" element="tns:InsertInspMaqDet"/>
-  </message>
-  <message name="InsertInspMaqDetResponse">
-    <part name="parameters" element="tns:InsertInspMaqDetResponse"/>
+  <message name="InsertInspMaqCabResponse">
+    <part name="parameters" element="tns:InsertInspMaqCabResponse"/>
   </message>
   <message name="GetInspecciones">
     <part name="parameters" element="tns:GetInspecciones"/>
@@ -117,11 +87,41 @@
   <message name="GetInspeccionesResponse">
     <part name="parameters" element="tns:GetInspeccionesResponse"/>
   </message>
-  <message name="GetCorrelativo">
-    <part name="parameters" element="tns:GetCorrelativo"/>
+  <message name="ListUsers">
+    <part name="parameters" element="tns:ListUsers"/>
   </message>
-  <message name="GetCorrelativoResponse">
-    <part name="parameters" element="tns:GetCorrelativoResponse"/>
+  <message name="ListUsersResponse">
+    <part name="parameters" element="tns:ListUsersResponse"/>
+  </message>
+  <message name="GetMaquinas">
+    <part name="parameters" element="tns:GetMaquinas"/>
+  </message>
+  <message name="GetMaquinasResponse">
+    <part name="parameters" element="tns:GetMaquinasResponse"/>
+  </message>
+  <message name="ListaMenu">
+    <part name="parameters" element="tns:ListaMenu"/>
+  </message>
+  <message name="ListaMenuResponse">
+    <part name="parameters" element="tns:ListaMenuResponse"/>
+  </message>
+  <message name="saveImage">
+    <part name="parameters" element="tns:saveImage"/>
+  </message>
+  <message name="saveImageResponse">
+    <part name="parameters" element="tns:saveImageResponse"/>
+  </message>
+  <message name="GetUsuarios">
+    <part name="parameters" element="tns:GetUsuarios"/>
+  </message>
+  <message name="GetUsuariosResponse">
+    <part name="parameters" element="tns:GetUsuariosResponse"/>
+  </message>
+  <message name="GetTipoRevisionG">
+    <part name="parameters" element="tns:GetTipoRevisionG"/>
+  </message>
+  <message name="GetTipoRevisionGResponse">
+    <part name="parameters" element="tns:GetTipoRevisionGResponse"/>
   </message>
   <message name="TrasnferirInsp">
     <part name="parameters" element="tns:TrasnferirInsp"/>
@@ -135,66 +135,62 @@
   <message name="GetCentroCostoResponse">
     <part name="parameters" element="tns:GetCentroCostoResponse"/>
   </message>
-  <message name="InsertInspMaqCab">
-    <part name="parameters" element="tns:InsertInspMaqCab"/>
+  <message name="GetCorrelativo">
+    <part name="parameters" element="tns:GetCorrelativo"/>
   </message>
-  <message name="InsertInspMaqCabResponse">
-    <part name="parameters" element="tns:InsertInspMaqCabResponse"/>
+  <message name="GetCorrelativoResponse">
+    <part name="parameters" element="tns:GetCorrelativoResponse"/>
+  </message>
+  <message name="InsertInspMaqDet">
+    <part name="parameters" element="tns:InsertInspMaqDet"/>
+  </message>
+  <message name="InsertInspMaqDetResponse">
+    <part name="parameters" element="tns:InsertInspMaqDetResponse"/>
   </message>
   <portType name="SOAPLYS">
-    <operation name="hello">
-      <input wsam:Action="http://SOAP/SOAPLYS/helloRequest" message="tns:hello"/>
-      <output wsam:Action="http://SOAP/SOAPLYS/helloResponse" message="tns:helloResponse"/>
-    </operation>
-    <operation name="ListSubMenuBotones">
-      <input wsam:Action="http://SOAP/SOAPLYS/ListSubMenuBotonesRequest" message="tns:ListSubMenuBotones"/>
-      <output wsam:Action="http://SOAP/SOAPLYS/ListSubMenuBotonesResponse" message="tns:ListSubMenuBotonesResponse"/>
-      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/ListSubMenuBotones/Fault/Exception"/>
-    </operation>
-    <operation name="GetInspeccionesMaqCab">
-      <input wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesMaqCabRequest" message="tns:GetInspeccionesMaqCab"/>
-      <output wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesMaqCabResponse" message="tns:GetInspeccionesMaqCabResponse"/>
-      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesMaqCab/Fault/Exception"/>
+    <operation name="GetHistorialInspMaq">
+      <input wsam:Action="http://SOAP/SOAPLYS/GetHistorialInspMaqRequest" message="tns:GetHistorialInspMaq"/>
+      <output wsam:Action="http://SOAP/SOAPLYS/GetHistorialInspMaqResponse" message="tns:GetHistorialInspMaqResponse"/>
+      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetHistorialInspMaq/Fault/Exception"/>
     </operation>
     <operation name="GetInspeccionesMaqDet">
       <input wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesMaqDetRequest" message="tns:GetInspeccionesMaqDet"/>
       <output wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesMaqDetResponse" message="tns:GetInspeccionesMaqDetResponse"/>
       <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesMaqDet/Fault/Exception"/>
     </operation>
-    <operation name="GetHistorialInspMaq">
-      <input wsam:Action="http://SOAP/SOAPLYS/GetHistorialInspMaqRequest" message="tns:GetHistorialInspMaq"/>
-      <output wsam:Action="http://SOAP/SOAPLYS/GetHistorialInspMaqResponse" message="tns:GetHistorialInspMaqResponse"/>
-      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetHistorialInspMaq/Fault/Exception"/>
+    <operation name="ListSubMenuBotones">
+      <input wsam:Action="http://SOAP/SOAPLYS/ListSubMenuBotonesRequest" message="tns:ListSubMenuBotones"/>
+      <output wsam:Action="http://SOAP/SOAPLYS/ListSubMenuBotonesResponse" message="tns:ListSubMenuBotonesResponse"/>
+      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/ListSubMenuBotones/Fault/Exception"/>
     </operation>
     <operation name="GetInspeccionesGenCab">
       <input wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesGenCabRequest" message="tns:GetInspeccionesGenCab"/>
       <output wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesGenCabResponse" message="tns:GetInspeccionesGenCabResponse"/>
       <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesGenCab/Fault/Exception"/>
     </operation>
-    <operation name="GetInspeccionesGenDet">
-      <input wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesGenDetRequest" message="tns:GetInspeccionesGenDet"/>
-      <output wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesGenDetResponse" message="tns:GetInspeccionesGenDetResponse"/>
-      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesGenDet/Fault/Exception"/>
-    </operation>
     <operation name="GetPeriodosInspeccion">
       <input wsam:Action="http://SOAP/SOAPLYS/GetPeriodosInspeccionRequest" message="tns:GetPeriodosInspeccion"/>
       <output wsam:Action="http://SOAP/SOAPLYS/GetPeriodosInspeccionResponse" message="tns:GetPeriodosInspeccionResponse"/>
       <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetPeriodosInspeccion/Fault/Exception"/>
     </operation>
-    <operation name="saveImage">
-      <input wsam:Action="http://SOAP/SOAPLYS/saveImageRequest" message="tns:saveImage"/>
-      <output wsam:Action="http://SOAP/SOAPLYS/saveImageResponse" message="tns:saveImageResponse"/>
-      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/saveImage/Fault/Exception"/>
+    <operation name="GetInspeccionesMaqCab">
+      <input wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesMaqCabRequest" message="tns:GetInspeccionesMaqCab"/>
+      <output wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesMaqCabResponse" message="tns:GetInspeccionesMaqCabResponse"/>
+      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesMaqCab/Fault/Exception"/>
     </operation>
-    <operation name="GetMaquinas">
-      <input wsam:Action="http://SOAP/SOAPLYS/GetMaquinasRequest" message="tns:GetMaquinas"/>
-      <output wsam:Action="http://SOAP/SOAPLYS/GetMaquinasResponse" message="tns:GetMaquinasResponse"/>
-      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetMaquinas/Fault/Exception"/>
+    <operation name="GetInspeccionesGenDet">
+      <input wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesGenDetRequest" message="tns:GetInspeccionesGenDet"/>
+      <output wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesGenDetResponse" message="tns:GetInspeccionesGenDetResponse"/>
+      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesGenDet/Fault/Exception"/>
     </operation>
-    <operation name="ListaMenu">
-      <input wsam:Action="http://SOAP/SOAPLYS/ListaMenuRequest" message="tns:ListaMenu"/>
-      <output wsam:Action="http://SOAP/SOAPLYS/ListaMenuResponse" message="tns:ListaMenuResponse"/>
-      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/ListaMenu/Fault/Exception"/>
+    <operation name="hello">
+      <input wsam:Action="http://SOAP/SOAPLYS/helloRequest" message="tns:hello"/>
+      <output wsam:Action="http://SOAP/SOAPLYS/helloResponse" message="tns:helloResponse"/>
+    </operation>
+    <operation name="GetDataAccesos">
+      <input wsam:Action="http://SOAP/SOAPLYS/GetDataAccesosRequest" message="tns:GetDataAccesos"/>
+      <output wsam:Action="http://SOAP/SOAPLYS/GetDataAccesosResponse" message="tns:GetDataAccesosResponse"/>
+      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetDataAccesos/Fault/Exception"/>
     </operation>
     <operation name="ListSubMenu">
       <input wsam:Action="http://SOAP/SOAPLYS/ListSubMenuRequest" message="tns:ListSubMenu"/>
@@ -206,35 +202,45 @@
       <output wsam:Action="http://SOAP/SOAPLYS/GetDataMenuResponse" message="tns:GetDataMenuResponse"/>
       <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetDataMenu/Fault/Exception"/>
     </operation>
-    <operation name="GetUsuarios">
-      <input wsam:Action="http://SOAP/SOAPLYS/GetUsuariosRequest" message="tns:GetUsuarios"/>
-      <output wsam:Action="http://SOAP/SOAPLYS/GetUsuariosResponse" message="tns:GetUsuariosResponse"/>
-      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetUsuarios/Fault/Exception"/>
-    </operation>
-    <operation name="ListUsers">
-      <input wsam:Action="http://SOAP/SOAPLYS/ListUsersRequest" message="tns:ListUsers"/>
-      <output wsam:Action="http://SOAP/SOAPLYS/ListUsersResponse" message="tns:ListUsersResponse"/>
-      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/ListUsers/Fault/Exception"/>
-    </operation>
-    <operation name="GetDataAccesos">
-      <input wsam:Action="http://SOAP/SOAPLYS/GetDataAccesosRequest" message="tns:GetDataAccesos"/>
-      <output wsam:Action="http://SOAP/SOAPLYS/GetDataAccesosResponse" message="tns:GetDataAccesosResponse"/>
-      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetDataAccesos/Fault/Exception"/>
-    </operation>
-    <operation name="InsertInspMaqDet">
-      <input wsam:Action="http://SOAP/SOAPLYS/InsertInspMaqDetRequest" message="tns:InsertInspMaqDet"/>
-      <output wsam:Action="http://SOAP/SOAPLYS/InsertInspMaqDetResponse" message="tns:InsertInspMaqDetResponse"/>
-      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/InsertInspMaqDet/Fault/Exception"/>
+    <operation name="InsertInspMaqCab">
+      <input wsam:Action="http://SOAP/SOAPLYS/InsertInspMaqCabRequest" message="tns:InsertInspMaqCab"/>
+      <output wsam:Action="http://SOAP/SOAPLYS/InsertInspMaqCabResponse" message="tns:InsertInspMaqCabResponse"/>
+      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/InsertInspMaqCab/Fault/Exception"/>
     </operation>
     <operation name="GetInspecciones">
       <input wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesRequest" message="tns:GetInspecciones"/>
       <output wsam:Action="http://SOAP/SOAPLYS/GetInspeccionesResponse" message="tns:GetInspeccionesResponse"/>
       <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetInspecciones/Fault/Exception"/>
     </operation>
-    <operation name="GetCorrelativo">
-      <input wsam:Action="http://SOAP/SOAPLYS/GetCorrelativoRequest" message="tns:GetCorrelativo"/>
-      <output wsam:Action="http://SOAP/SOAPLYS/GetCorrelativoResponse" message="tns:GetCorrelativoResponse"/>
-      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetCorrelativo/Fault/Exception"/>
+    <operation name="ListUsers">
+      <input wsam:Action="http://SOAP/SOAPLYS/ListUsersRequest" message="tns:ListUsers"/>
+      <output wsam:Action="http://SOAP/SOAPLYS/ListUsersResponse" message="tns:ListUsersResponse"/>
+      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/ListUsers/Fault/Exception"/>
+    </operation>
+    <operation name="GetMaquinas">
+      <input wsam:Action="http://SOAP/SOAPLYS/GetMaquinasRequest" message="tns:GetMaquinas"/>
+      <output wsam:Action="http://SOAP/SOAPLYS/GetMaquinasResponse" message="tns:GetMaquinasResponse"/>
+      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetMaquinas/Fault/Exception"/>
+    </operation>
+    <operation name="ListaMenu">
+      <input wsam:Action="http://SOAP/SOAPLYS/ListaMenuRequest" message="tns:ListaMenu"/>
+      <output wsam:Action="http://SOAP/SOAPLYS/ListaMenuResponse" message="tns:ListaMenuResponse"/>
+      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/ListaMenu/Fault/Exception"/>
+    </operation>
+    <operation name="saveImage">
+      <input wsam:Action="http://SOAP/SOAPLYS/saveImageRequest" message="tns:saveImage"/>
+      <output wsam:Action="http://SOAP/SOAPLYS/saveImageResponse" message="tns:saveImageResponse"/>
+      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/saveImage/Fault/Exception"/>
+    </operation>
+    <operation name="GetUsuarios">
+      <input wsam:Action="http://SOAP/SOAPLYS/GetUsuariosRequest" message="tns:GetUsuarios"/>
+      <output wsam:Action="http://SOAP/SOAPLYS/GetUsuariosResponse" message="tns:GetUsuariosResponse"/>
+      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetUsuarios/Fault/Exception"/>
+    </operation>
+    <operation name="GetTipoRevisionG">
+      <input wsam:Action="http://SOAP/SOAPLYS/GetTipoRevisionGRequest" message="tns:GetTipoRevisionG"/>
+      <output wsam:Action="http://SOAP/SOAPLYS/GetTipoRevisionGResponse" message="tns:GetTipoRevisionGResponse"/>
+      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetTipoRevisionG/Fault/Exception"/>
     </operation>
     <operation name="TrasnferirInsp">
       <input wsam:Action="http://SOAP/SOAPLYS/TrasnferirInspRequest" message="tns:TrasnferirInsp"/>
@@ -246,36 +252,20 @@
       <output wsam:Action="http://SOAP/SOAPLYS/GetCentroCostoResponse" message="tns:GetCentroCostoResponse"/>
       <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetCentroCosto/Fault/Exception"/>
     </operation>
-    <operation name="InsertInspMaqCab">
-      <input wsam:Action="http://SOAP/SOAPLYS/InsertInspMaqCabRequest" message="tns:InsertInspMaqCab"/>
-      <output wsam:Action="http://SOAP/SOAPLYS/InsertInspMaqCabResponse" message="tns:InsertInspMaqCabResponse"/>
-      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/InsertInspMaqCab/Fault/Exception"/>
+    <operation name="GetCorrelativo">
+      <input wsam:Action="http://SOAP/SOAPLYS/GetCorrelativoRequest" message="tns:GetCorrelativo"/>
+      <output wsam:Action="http://SOAP/SOAPLYS/GetCorrelativoResponse" message="tns:GetCorrelativoResponse"/>
+      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/GetCorrelativo/Fault/Exception"/>
+    </operation>
+    <operation name="InsertInspMaqDet">
+      <input wsam:Action="http://SOAP/SOAPLYS/InsertInspMaqDetRequest" message="tns:InsertInspMaqDet"/>
+      <output wsam:Action="http://SOAP/SOAPLYS/InsertInspMaqDetResponse" message="tns:InsertInspMaqDetResponse"/>
+      <fault message="tns:Exception" name="Exception" wsam:Action="http://SOAP/SOAPLYS/InsertInspMaqDet/Fault/Exception"/>
     </operation>
   </portType>
   <binding name="SOAPLYSPortBinding" type="tns:SOAPLYS">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-    <operation name="hello">
-      <soap:operation soapAction=""/>
-      <input>
-        <soap:body use="literal"/>
-      </input>
-      <output>
-        <soap:body use="literal"/>
-      </output>
-    </operation>
-    <operation name="ListSubMenuBotones">
-      <soap:operation soapAction=""/>
-      <input>
-        <soap:body use="literal"/>
-      </input>
-      <output>
-        <soap:body use="literal"/>
-      </output>
-      <fault name="Exception">
-        <soap:fault name="Exception" use="literal"/>
-      </fault>
-    </operation>
-    <operation name="GetInspeccionesMaqCab">
+    <operation name="GetHistorialInspMaq">
       <soap:operation soapAction=""/>
       <input>
         <soap:body use="literal"/>
@@ -299,7 +289,7 @@
         <soap:fault name="Exception" use="literal"/>
       </fault>
     </operation>
-    <operation name="GetHistorialInspMaq">
+    <operation name="ListSubMenuBotones">
       <soap:operation soapAction=""/>
       <input>
         <soap:body use="literal"/>
@@ -323,18 +313,6 @@
         <soap:fault name="Exception" use="literal"/>
       </fault>
     </operation>
-    <operation name="GetInspeccionesGenDet">
-      <soap:operation soapAction=""/>
-      <input>
-        <soap:body use="literal"/>
-      </input>
-      <output>
-        <soap:body use="literal"/>
-      </output>
-      <fault name="Exception">
-        <soap:fault name="Exception" use="literal"/>
-      </fault>
-    </operation>
     <operation name="GetPeriodosInspeccion">
       <soap:operation soapAction=""/>
       <input>
@@ -347,7 +325,7 @@
         <soap:fault name="Exception" use="literal"/>
       </fault>
     </operation>
-    <operation name="saveImage">
+    <operation name="GetInspeccionesMaqCab">
       <soap:operation soapAction=""/>
       <input>
         <soap:body use="literal"/>
@@ -359,7 +337,7 @@
         <soap:fault name="Exception" use="literal"/>
       </fault>
     </operation>
-    <operation name="GetMaquinas">
+    <operation name="GetInspeccionesGenDet">
       <soap:operation soapAction=""/>
       <input>
         <soap:body use="literal"/>
@@ -371,7 +349,16 @@
         <soap:fault name="Exception" use="literal"/>
       </fault>
     </operation>
-    <operation name="ListaMenu">
+    <operation name="hello">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+    <operation name="GetDataAccesos">
       <soap:operation soapAction=""/>
       <input>
         <soap:body use="literal"/>
@@ -407,43 +394,7 @@
         <soap:fault name="Exception" use="literal"/>
       </fault>
     </operation>
-    <operation name="GetUsuarios">
-      <soap:operation soapAction=""/>
-      <input>
-        <soap:body use="literal"/>
-      </input>
-      <output>
-        <soap:body use="literal"/>
-      </output>
-      <fault name="Exception">
-        <soap:fault name="Exception" use="literal"/>
-      </fault>
-    </operation>
-    <operation name="ListUsers">
-      <soap:operation soapAction=""/>
-      <input>
-        <soap:body use="literal"/>
-      </input>
-      <output>
-        <soap:body use="literal"/>
-      </output>
-      <fault name="Exception">
-        <soap:fault name="Exception" use="literal"/>
-      </fault>
-    </operation>
-    <operation name="GetDataAccesos">
-      <soap:operation soapAction=""/>
-      <input>
-        <soap:body use="literal"/>
-      </input>
-      <output>
-        <soap:body use="literal"/>
-      </output>
-      <fault name="Exception">
-        <soap:fault name="Exception" use="literal"/>
-      </fault>
-    </operation>
-    <operation name="InsertInspMaqDet">
+    <operation name="InsertInspMaqCab">
       <soap:operation soapAction=""/>
       <input>
         <soap:body use="literal"/>
@@ -467,7 +418,67 @@
         <soap:fault name="Exception" use="literal"/>
       </fault>
     </operation>
-    <operation name="GetCorrelativo">
+    <operation name="ListUsers">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+      <fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </fault>
+    </operation>
+    <operation name="GetMaquinas">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+      <fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </fault>
+    </operation>
+    <operation name="ListaMenu">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+      <fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </fault>
+    </operation>
+    <operation name="saveImage">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+      <fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </fault>
+    </operation>
+    <operation name="GetUsuarios">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+      <fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </fault>
+    </operation>
+    <operation name="GetTipoRevisionG">
       <soap:operation soapAction=""/>
       <input>
         <soap:body use="literal"/>
@@ -503,7 +514,19 @@
         <soap:fault name="Exception" use="literal"/>
       </fault>
     </operation>
-    <operation name="InsertInspMaqCab">
+    <operation name="GetCorrelativo">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+      <fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </fault>
+    </operation>
+    <operation name="InsertInspMaqDet">
       <soap:operation soapAction=""/>
       <input>
         <soap:body use="literal"/>
