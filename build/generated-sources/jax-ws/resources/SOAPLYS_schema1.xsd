@@ -59,6 +59,10 @@
 
   <xs:element name="GetUsuariosResponse" type="tns:GetUsuariosResponse"/>
 
+  <xs:element name="InsertInspGenCab" type="tns:InsertInspGenCab"/>
+
+  <xs:element name="InsertInspGenCabResponse" type="tns:InsertInspGenCabResponse"/>
+
   <xs:element name="InsertInspMaqCab" type="tns:InsertInspMaqCab"/>
 
   <xs:element name="InsertInspMaqCabResponse" type="tns:InsertInspMaqCabResponse"/>
@@ -95,31 +99,6 @@
 
   <xs:element name="saveImageResponse" type="tns:saveImageResponse"/>
 
-  <xs:complexType name="GetCentroCosto">
-    <xs:sequence/>
-  </xs:complexType>
-
-  <xs:complexType name="GetCentroCostoResponse">
-    <xs:sequence>
-      <xs:element name="return" type="tns:centroCostoDB" minOccurs="0" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="centroCostoDB">
-    <xs:sequence>
-      <xs:element name="c_centrocosto" type="xs:string" minOccurs="0"/>
-      <xs:element name="c_compania" type="xs:string" minOccurs="0"/>
-      <xs:element name="c_descripcion" type="xs:string" minOccurs="0"/>
-      <xs:element name="c_estado" type="xs:string" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="Exception">
-    <xs:sequence>
-      <xs:element name="message" type="xs:string" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
-
   <xs:complexType name="InsertInspMaqDet">
     <xs:sequence>
       <xs:element name="compania" type="xs:string" form="qualified" minOccurs="0"/>
@@ -140,6 +119,31 @@
   <xs:complexType name="InsertInspMaqDetResponse">
     <xs:sequence>
       <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Exception">
+    <xs:sequence>
+      <xs:element name="message" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetCentroCosto">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="GetCentroCostoResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:centroCostoDB" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="centroCostoDB">
+    <xs:sequence>
+      <xs:element name="c_centrocosto" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_compania" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_descripcion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_estado" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -385,6 +389,28 @@
   </xs:complexType>
 
   <xs:complexType name="helloResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="InsertInspGenCab">
+    <xs:sequence>
+      <xs:element name="compania" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="correlativo" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="tipoInsp" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="codMaq" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="codCentroC" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="comentario" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="usuarioInsp" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="fechaInsp" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="estado" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="usuarioEnv" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="UltUsuario" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="InsertInspGenCabResponse">
     <xs:sequence>
       <xs:element name="return" type="xs:string" minOccurs="0"/>
     </xs:sequence>

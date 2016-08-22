@@ -535,7 +535,40 @@ public class SOAPLYS {
     /**
      * Web service operation
      */
-    
+     @WebMethod(operationName = "InsertInspGenCab")
+    public String InsertInspGenCab(@WebParam(name = "compania",targetNamespace = "http://SOAP/") String compania, @WebParam(name = "correlativo",targetNamespace = "http://SOAP/") String correlativo, @WebParam(name = "tipoInsp",targetNamespace = "http://SOAP/") String tipoInsp, @WebParam(name = "codMaq",targetNamespace = "http://SOAP/") String codMaq, @WebParam(name = "codCentroC",targetNamespace = "http://SOAP/") String codCentroC, @WebParam(name = "comentario",targetNamespace = "http://SOAP/") String comentario, @WebParam(name = "usuarioInsp",targetNamespace = "http://SOAP/") String usuarioInsp, @WebParam(name = "fechaInsp",targetNamespace = "http://SOAP/") String fechaInsp, @WebParam(name = "estado",targetNamespace = "http://SOAP/") String estado, @WebParam(name = "usuarioEnv",targetNamespace = "http://SOAP/") String usuarioEnv, @WebParam(name = "UltUsuario",targetNamespace = "http://SOAP/") String UltUsuario) throws Exception {
+        //TODO write your implementation code here:
+        String result = "0";
+        long  var_correlativo = Long.valueOf(correlativo);
+        ConectaDB cndb = new ConectaDB();
+         Connection connection = cndb.getConexion();
+         String SQL_INSERT = "EXEC SPI_INSPECCION_GEN_CABECERA ?,?,?,?,?,?,?,?,?,?,?";
+        PreparedStatement statement = connection.prepareStatement(SQL_INSERT,
+                                      Statement.RETURN_GENERATED_KEYS);
+        statement.setEscapeProcessing(true);
+        statement.setQueryTimeout(90);
+        statement.setString(1, compania);
+        statement.setLong(2, var_correlativo);
+        statement.setString(3, tipoInsp);
+        statement.setString(4, codMaq);
+        statement.setString(5, codCentroC);
+        statement.setString(6, comentario);
+        statement.setString(7, usuarioInsp);
+        statement.setString(8, fechaInsp);
+        statement.setString(9, estado);
+        statement.setString(10, usuarioEnv);
+        statement.setString(11, UltUsuario);
+        
+         int rowAfect = statement.executeUpdate();
+        
+        if (rowAfect >0 ){
+        
+            result = String.valueOf(rowAfect);
+        }
+        
+        
+        return result;
+    }
     
     @WebMethod(operationName = "InsertInspMaqCab")
     public String InsertInspMaqCab(@WebParam(name = "correlativo",targetNamespace = "http://SOAP/") String correlativo,@WebParam(name = "compania",targetNamespace = "http://SOAP/") String compania, @WebParam(name = "maquina",targetNamespace = "http://SOAP/") String maquina, @WebParam(name = "condicionMaquina",targetNamespace = "http://SOAP/") String condicionMaquina, @WebParam(name = "comentario",targetNamespace = "http://SOAP/") String comentario, @WebParam(name = "estado",targetNamespace = "http://SOAP/") String estado, @WebParam(name = "fechaIniInsp",targetNamespace = "http://SOAP/") String fechaIniInsp, @WebParam(name = "fechaFinInsp",targetNamespace = "http://SOAP/") String fechaFinInsp, @WebParam(name = "periodoInsp",targetNamespace = "http://SOAP/") String periodoInsp, @WebParam(name = "usuarioInsp",targetNamespace = "http://SOAP/") String usuarioInsp, @WebParam(name = "usuaruioEnv",targetNamespace = "http://SOAP/") String usuaruioEnv, @WebParam(name = "ultimoUsuario",targetNamespace = "http://SOAP/") String ultimoUsuario) throws Exception {
@@ -747,6 +780,11 @@ public class SOAPLYS {
         }
         return listresult;
     }
+
+    /**
+     * Web service operation
+     */
+   
 
 
 }
