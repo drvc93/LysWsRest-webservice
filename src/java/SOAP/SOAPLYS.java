@@ -7,6 +7,7 @@ package SOAP;
 
 import com.lys.beans.AccesosDB;
 import com.lys.beans.CentroCostoDB;
+import com.lys.beans.HistorialInspGen;
 import com.lys.beans.HistorialInspMaq;
 import com.lys.beans.Inspecciones;
 import com.lys.beans.InspeccionesGenCab;
@@ -570,6 +571,7 @@ public class SOAPLYS {
         return result;
     }
     
+    
     @WebMethod(operationName = "InsertInspMaqCab")
     public String InsertInspMaqCab(@WebParam(name = "correlativo",targetNamespace = "http://SOAP/") String correlativo,@WebParam(name = "compania",targetNamespace = "http://SOAP/") String compania, @WebParam(name = "maquina",targetNamespace = "http://SOAP/") String maquina, @WebParam(name = "condicionMaquina",targetNamespace = "http://SOAP/") String condicionMaquina, @WebParam(name = "comentario",targetNamespace = "http://SOAP/") String comentario, @WebParam(name = "estado",targetNamespace = "http://SOAP/") String estado, @WebParam(name = "fechaIniInsp",targetNamespace = "http://SOAP/") String fechaIniInsp, @WebParam(name = "fechaFinInsp",targetNamespace = "http://SOAP/") String fechaFinInsp, @WebParam(name = "periodoInsp",targetNamespace = "http://SOAP/") String periodoInsp, @WebParam(name = "usuarioInsp",targetNamespace = "http://SOAP/") String usuarioInsp, @WebParam(name = "usuaruioEnv",targetNamespace = "http://SOAP/") String usuaruioEnv, @WebParam(name = "ultimoUsuario",targetNamespace = "http://SOAP/") String ultimoUsuario) throws Exception {
         
@@ -628,6 +630,37 @@ public class SOAPLYS {
     /**
      * Web service operation
      */
+    
+    @WebMethod(operationName = "InsertInspGenDet")
+    public String InsertInspGenDet(@WebParam(name = "compania",targetNamespace = "http://SOAP/") String compania, @WebParam(name = "correlativo",targetNamespace = "http://SOAP/") String correlativo, @WebParam(name = "linea",targetNamespace = "http://SOAP/") String linea, @WebParam(name = "comentario",targetNamespace = "http://SOAP/") String comentario, @WebParam(name = "rutaFoto",targetNamespace = "http://SOAP/") String rutaFoto, @WebParam(name = "ultUsuario",targetNamespace = "http://SOAP/") String ultUsuario, @WebParam(name = "tipoRev",targetNamespace = "http://SOAP/") String tipoRev, @WebParam(name = "flagAdic",targetNamespace = "http://SOAP/") String flagAdic) throws Exception {
+        //TODO write your implementation code here:
+         String result = "0";
+        long  var_correlativo = Long.valueOf(correlativo);
+        ConectaDB cndb = new ConectaDB();
+         Connection connection = cndb.getConexion();
+         String SQL_INSERT = "EXEC SPI_INSPECCION_GEN_DETALLE ?,?,?,?,?,?,?,?";
+          PreparedStatement statement = connection.prepareStatement(SQL_INSERT,
+                                      Statement.RETURN_GENERATED_KEYS);
+        statement.setEscapeProcessing(true);
+        statement.setQueryTimeout(90);
+        statement.setString(1, compania);
+        statement.setLong(2, var_correlativo);
+        statement.setInt(3, Integer.valueOf(linea));
+        statement.setString(4, comentario);
+        statement.setString(5, rutaFoto);
+        statement.setString(6, ultUsuario);
+        statement.setString(7, tipoRev);
+        statement.setString(8, flagAdic);
+        int rowAfect = statement.executeUpdate();
+        
+        if (rowAfect >0 ){
+        
+            result = "OK";
+        }
+        return result;
+    }
+    
+    
     @WebMethod(operationName = "InsertInspMaqDet")
     public String InsertInspMaqDet(@WebParam(name = "compania",targetNamespace = "http://SOAP/") String compania, @WebParam(name = "correlativo",targetNamespace = "http://SOAP/") String correlativo, @WebParam(name = "linea",targetNamespace = "http://SOAP/") String linea, @WebParam(name = "codInspeccion",targetNamespace = "http://SOAP/") String codInspeccion, @WebParam(name = "tipoInsp",targetNamespace = "http://SOAP/") String tipoInsp, @WebParam(name = "porcentMin",targetNamespace = "http://SOAP/") String porcentMin, @WebParam(name = "porcentMax",targetNamespace = "http://SOAP/") String porcentMax, @WebParam(name = "porcentInsp",targetNamespace = "http://SOAP/") String porcentInsp, @WebParam(name = "estado",targetNamespace = "http://SOAP/") String estado, @WebParam(name = "comentario",targetNamespace = "http://SOAP/") String comentario, @WebParam(name = "rutafoto",targetNamespace = "http://SOAP/") String rutafoto, @WebParam(name = "ultimoUser",targetNamespace = "http://SOAP/") String ultimoUser) throws Exception {
        String result = "0";
@@ -693,13 +726,50 @@ public class SOAPLYS {
 
     /**
      * Web service operation
-     */
+    
+    */
+    
+     @WebMethod(operationName = "GetHistorialInspGen")
+    public ArrayList<HistorialInspGen> GetHistorialInspGen(@WebParam(name = "accion",targetNamespace = "http://SOAP/") String accion, @WebParam(name = "tipoInsp",targetNamespace = "http://SOAP/") String tipoInsp, @WebParam(name = "FInicio",targetNamespace = "http://SOAP/") String FInicio, @WebParam(name = "FFin",targetNamespace = "http://SOAP/") String FFin) throws Exception {
+        ArrayList<HistorialInspGen> result = new ArrayList<HistorialInspGen>();
+       ConectaDB cndb = new ConectaDB();
+        Connection connection = cndb.getConexion();
+         String SQL_INSERT = "EXEC SP_CONSULTAS_LINEA_INSP_GEN ?,?,?,?";
+        PreparedStatement statement = connection.prepareStatement(SQL_INSERT,
+                                      Statement.RETURN_GENERATED_KEYS);
+        
+        statement.setEscapeProcessing(true);
+        statement.setQueryTimeout(90);
+        statement.setString(1, accion);
+        statement.setString(2, tipoInsp);
+        statement.setString(3, FInicio);
+        statement.setString(4, FFin);
+        ResultSet res = statement.executeQuery();
+        while (res.next()){
+        
+            HistorialInspGen h = new HistorialInspGen();
+            h.setNumero(res.getString(1));
+            h.setTipoInsp(res.getString(2));
+            h.setCodMaq(res.getString(3));
+            h.setCodCosto(res.getString(4));
+            h.setUsarioInp(res.getString(5));
+            h.setFecha(res.getString(6));
+            h.setComentario(res.getString(7));
+            h.setEstado(res.getString(8));
+            result.add(h);
+            
+        }
+        
+        return result;
+    }
+    
+    
     @WebMethod(operationName = "GetHistorialInspMaq")
     public ArrayList<HistorialInspMaq> GetHistorialInspMaq(@WebParam(name = "accion",targetNamespace = "http://SOAP/") String accion, @WebParam(name = "maquina",targetNamespace = "http://SOAP/") String maquina, @WebParam(name = "centrocosto",targetNamespace = "http://SOAP/") String centrocosto, @WebParam(name = "fechaIni",targetNamespace = "http://SOAP/") String fechaIni, @WebParam(name = "fechaFin",targetNamespace = "http://SOAP/") String fechaFin) throws Exception {
          ArrayList<HistorialInspMaq> result = new ArrayList<HistorialInspMaq>();
          ConectaDB cndb = new ConectaDB();
          Connection connection = cndb.getConexion();
-         String SQL_INSERT = "EXEC SP_CONSULTAS_LINEA_INSP ?,?,?,?,?";
+         String SQL_INSERT = "EXEC SP_CONSULTAS_LINEA_INSP_MAQ ?,?,?,?,?";
         PreparedStatement statement = connection.prepareStatement(SQL_INSERT,
                                       Statement.RETURN_GENERATED_KEYS);
         
@@ -780,6 +850,16 @@ public class SOAPLYS {
         }
         return listresult;
     }
+
+    /**
+     * Web service operation
+     */
+   
+
+    /**
+     * Web service operation
+     */
+    
 
     /**
      * Web service operation
