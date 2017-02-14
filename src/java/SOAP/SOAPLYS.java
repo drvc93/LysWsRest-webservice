@@ -27,7 +27,12 @@ import com.lys.conection.ConectaDB;
 import com.lys.conection.GetResultSet;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,10 +43,18 @@ import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 
+
 /**
  *
  * @author dvillanueva
  */
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.spi.DirStateFactory;
+import org.apache.catalina.tribes.util.Arrays;
 @WebService(serviceName = "SOAPLYS")
 public class SOAPLYS {
 
@@ -50,7 +63,26 @@ public class SOAPLYS {
      */
     @WebMethod(operationName = "hello")
     public String hello(@WebParam(name = "name") String txt) {
-        return "Hello " + txt + " !";
+        
+        String TextObt = "" ;
+        Properties propiedades = new Properties();
+        InputStream entrada = null;
+        Path currentRelativePath = Paths.get("");
+        String pathF = currentRelativePath.toAbsolutePath().toString();
+        try {
+            entrada = new FileInputStream(pathF+ File.separator +"webapps"+File.separator+"LysWsRest"+ File.separator+"propiedades"+File.separator+"configuracion.properties");
+            propiedades.load(entrada);
+            TextObt =  propiedades.getProperty("password");
+             
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(SOAPLYS.class.getName()).log(Level.SEVERE, null, ex);
+            TextObt = ex.getMessage();
+        } catch (IOException ex) {
+            Logger.getLogger(SOAPLYS.class.getName()).log(Level.SEVERE, null, ex);
+            TextObt = ex.getMessage();
+        }
+        TextObt = TextObt + " - " + pathF;
+        return TextObt;
     }
 
     @WebMethod(operationName = "ListUsers")
@@ -804,23 +836,36 @@ public class SOAPLYS {
     public String TrasnferirInsp(@WebParam(name = "tipoIns",targetNamespace = "http://SOAP/") String tipoIns, @WebParam(name = "correlativo",targetNamespace = "http://SOAP/") String correlativo) throws Exception {
         String result ="NO";
         int var_correlativo = Integer.valueOf(correlativo);
+        int cont = 0;
+        
+        try {
         ConectaDB cndb = new ConectaDB();
-         Connection connection = cndb.getConexion();
-         String SQL_INSERT = "EXEC SP_TRANSFERIR_INSPECCION ?,?,?";
-        PreparedStatement statement = connection.prepareStatement(SQL_INSERT,
-                                      Statement.RETURN_GENERATED_KEYS);
-        statement.setEscapeProcessing(true);
-        statement.setQueryTimeout(90);
-        statement.setString(1, tipoIns);
-        statement.setInt(2, var_correlativo);
-        statement.setInt(3, 0);
+        Connection connection = cndb.getConexion();
+        String SQL_INSERT = "EXEC SP_TRANSFERIR_INSPECCION  @tipoInspeccion  = '"+ tipoIns + "', @correlativo = " +correlativo +" , @correlativoInsert = 0 " ;
+        Statement statement = connection.createStatement();
+       // CreateStatement statement = connection.prepareStatement(SQL_INSERT);
+      //  statement.setEscapeProcessing(true);
+       // statement.setQueryTimeout(90);
+       // statement.setString(1, tipoIns);
+       // statement.setLong(2, var_correlativo);
+        //statement.setLong(3, 0);
+        ResultSet res = statement.executeQuery(SQL_INSERT);
+        //  int rowAfect = statement.executeUpdate();
+         // ResultSet rs = statement.getResultSet();
+           //  statement.set
+          //result = String.valueOf(rowAfect);
+           
+         while (res.next()){
+         result =  res.getString(1);
+          }
+         
+         }
         
-        int rowAffect = statement.executeUpdate();
-        if(rowAffect>0){
+        catch(Exception e) {
         
-            result= "OK";
+            result = e.getMessage();
         }
-        //TODO write your implementation code here:
+        //result  = result + String.valueOf(rowAfect);
         return result;
     }
 
@@ -854,17 +899,187 @@ public class SOAPLYS {
     /**
      * Web service operation
      */
-   
-
-    /**
-     * Web service operation
-     */
     
+     @WebMethod(operationName = "GetInspeccionMaqDetCor")
+    public ArrayList<InspeccionesMaqDet> GetInspeccionMaqDetCor(@WebParam(name = "correlativo",targetNamespace = "http://SOAP/") String correlativo) throws Exception {
+        
+        ArrayList<InspeccionesMaqDet> result = new ArrayList<InspeccionesMaqDet>();
+        int val_correlativo = Integer.valueOf(correlativo);
+         String query = "SELECT * FROM lys.dbo.MT_INSPECCIONMAQUINA_DET WHERE n_correlativo = " + val_correlativo+ " ;";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()){
+        
+            InspeccionesMaqDet det = new InspeccionesMaqDet();
+            det.setC_compania(rs.getString(1));
+            det.setN_correlativo(rs.getString(2));
+            det.setN_linea(rs.getString(3));
+            det.setC_inpeccion(rs.getString(4));
+            det.setC_tipoinspeccion(rs.getString(5));
+            det.setN_porcentajeminimo(rs.getString(6));
+            det.setN_porcentajemaximo(rs.getString(7));
+            det.setN_pocentajeinspeccion(rs.getString(8));
+            det.setC_estado(rs.getString(9));
+            det.setC_comentario(rs.getString(10));
+            det.setC_rutafoto(rs.getString(11));
+            det.setC_ultimousuario(rs.getString(13));
+            det.setD_ultimafechamodificacion(rs.getString(14));
+            result.add(det);
+        }
+        return result;
+    }
+    
+    @WebMethod(operationName = "GetInspeccionMaqCabCor")
+    public ArrayList<InspeccionesMaqCab> GetInspeccionMaqCabCor(@WebParam(name = "correlativo",targetNamespace = "http://SOAP/") String correlativo) throws Exception {
+        //TODO write your implementation code here:
+        ArrayList<InspeccionesMaqCab>  result = new ArrayList<InspeccionesMaqCab>();
+        int val_correlativo = Integer.valueOf(correlativo);
+         String query = "SELECT * FROM lys.dbo.MT_INSPECCIONMAQUINA_CAB WHERE n_correlativo = " + val_correlativo+ " ;";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while(rs.next()){
+        
+        InspeccionesMaqCab inp = new InspeccionesMaqCab();
+        inp.setC_compania(rs.getString(1));
+        inp.setN_correlativo(rs.getString(2));
+        inp.setC_maquina(rs.getString(3));
+        inp.setC_condicionmaquina(rs.getString(4));
+        inp.setC_comentario(rs.getString(5));
+        inp.setC_estado(rs.getString(6));
+        inp.setD_fechaInicioInspeccion(rs.getString(7));
+        inp.setD_fechaFinInspeccion(rs.getString(8));
+        inp.setC_periodoinspeccion(rs.getString(9));
+        inp.setC_usuarioInspeccion(rs.getString(10));
+        inp.setC_ultimousuario(rs.getString(11));
+        inp.setD_ultimafechamodificacion(rs.getString(12));
+        result.add(inp);
+               
+        }
+     return result;
+    }
+    
+    @WebMethod(operationName = "GetInspeccionGenCabCor")
+    public ArrayList<InspeccionesGenCab>  GetInspeccionGenCabCor(@WebParam(name = "correlativo",targetNamespace = "http://SOAP/") String correlativo) throws Exception {
+        //TODO write your implementation code here:
+         ArrayList<InspeccionesGenCab> result  = new ArrayList<InspeccionesGenCab>();
+         int val_correlativo = Integer.valueOf(correlativo);
+         String query = "SELECT * FROM lys.dbo.MT_INSPECCIONGENERAL_CAB WHERE n_correlativo = "+val_correlativo+";";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        
+        while (rs.next()){
+        
+            InspeccionesGenCab insp = new InspeccionesGenCab();
+            insp.setC_compania(rs.getString(1));
+            insp.setN_correlativo(rs.getString(2));
+            insp.setC_tipoinspeccion(rs.getString(3));
+            insp.setC_maquina(rs.getString(4));
+            insp.setC_centrocosto(rs.getString(5));
+            insp.setC_comentario(rs.getString(6));
+            insp.setC_usuarioinspeccion(rs.getString(7));
+            insp.setD_fechainspeccion(rs.getString(8));
+            insp.setC_estado(rs.getString(9));
+            insp.setC_ultimousuario(rs.getString(10));
+            insp.setD_ultimafechamodificacion(rs.getString(11));
+            
+            result.add(insp);
+            
+            
+        
+        }
+        return result;
+    }
 
     /**
      * Web service operation
      */
-   
+    @WebMethod(operationName = "GetInspeccionGenCDetCor")
+    public  ArrayList<InspeccionesGenDet>  GetInspeccionGenCDetCor(@WebParam(name = "correlativo",targetNamespace = "http://SOAP/") String correlativo) throws Exception {
+        //TODO write your implementation code here:
+         ArrayList<InspeccionesGenDet> result  = new  ArrayList<InspeccionesGenDet> ();
+         int val_correlativo = Integer.valueOf(correlativo);
+         String query = "SELECT * FROM lys.dbo.MT_INSPECCIONGENERAL_DET WHERE n_correlativo = "+val_correlativo+" ;";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        
+        while (rs.next()){
+        
+            InspeccionesGenDet insp = new InspeccionesGenDet();
+            insp.setC_compania(rs.getString(1));
+            insp.setN_correlativo(rs.getString(2));
+            insp.setN_linea(rs.getString(3));
+            insp.setC_comentario(rs.getString(4));
+            insp.setC_rutafoto(rs.getString(5));
+            insp.setC_ultimousuario(rs.getString(7));
+            insp.setD_ultimafechamodificacion(rs.getString(8));
+            insp.setC_tiporevisiong(rs.getString(9));
+            insp.setC_flagadictipo(rs.getString(10));
+            
+                 
+            
+            result.add(insp);
+            
+            
+        
+        }
+        return result;
+    }
 
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "GetFoto")
+    public byte [] GetFoto(@WebParam(name = "filename",targetNamespace = "http://SOAP/") String filename) throws Exception {
+        //TODO write your implementation code here:
+        String  filePathServer =  File.separator+File.separator+"IBSERVER_1"+File.separator+"Servidor de Archivos"+File.separator+"Fotos_Tablet"+File.separator + filename;
+        Path path = Paths.get(filePathServer);
+        byte[] result = Files.readAllBytes(path);
+    
+        
+        return result;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "GetTipoIp")
+    public String GetTipoIp(@WebParam(name = "sTipo",targetNamespace = "http://SOAP/") String sTipo) throws Exception  {
+        //TODO write your implementation code here:
+         String sIpLocal = "", sIpExt ="" ;
+         String sResult = "" ;
+        Properties propiedades = new Properties();
+        InputStream entrada = null;
+        Path currentRelativePath = Paths.get("");
+        String pathF = currentRelativePath.toAbsolutePath().toString();
+        try {
+            entrada = new FileInputStream(pathF+ File.separator +"webapps"+File.separator+"LysWsRest"+ File.separator+"propiedades"+File.separator+"configuracion.properties");
+            propiedades.load(entrada);
+            sIpLocal =  propiedades.getProperty("iplocal");
+            sIpExt   =  propiedades.getProperty("ipexterna");
+            
+             
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(SOAPLYS.class.getName()).log(Level.SEVERE, null, ex);
+            sResult = ex.getMessage();
+        } catch (IOException ex) {
+            Logger.getLogger(SOAPLYS.class.getName()).log(Level.SEVERE, null, ex);
+            sResult = ex.getMessage();
+        }
+        
+         if (sTipo.equals("EX")) {
+            
+             sResult = sIpExt; 
+         }
+         else if (sTipo.equals("LO")){
+         
+              sResult = sIpLocal; 
+         }
+        
+        return sResult;
+    }
+
+    
+   
+   
 
 }

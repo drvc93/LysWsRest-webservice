@@ -19,9 +19,11 @@ public class GetResultSet {
 
     public String ExecProcedure(String procedureName) throws java.lang.Exception {
         String resul ="";
+        ConectaDB dbcon = new ConectaDB();
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        Connection conn = DriverManager.getConnection("jdbc:sqlserver://ibserver_29;user=desarrollador2;password=@desit39;database=pprodmant");
-        //System.out.println("test");
+        //Connection conn = DriverManager.getConnection("jdbc:sqlserver://ibserver_29;user=desarrollador2;password=@desit39;database=pprodmant");
+        Connection conn  = dbcon.getConexion();
+//System.out.println("test");
         try {
         Statement sta = conn.createStatement();
 
@@ -42,9 +44,13 @@ public class GetResultSet {
 
     public ResultSet CreateConection(String query) throws java.lang.Exception {
 
+         
+        
+        ConectaDB dbcon = new ConectaDB();
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        Connection conn = DriverManager.getConnection("jdbc:sqlserver://ibserver_29;user=desarrollador2;password=@desit39;database=pprodmant");
-        //System.out.println("test");
+        //Connection conn = DriverManager.getConnection("jdbc:sqlserver://ibserver_29;user=desarrollador2;password=@desit39;database=pprodmant");
+        Connection conn  = dbcon.getConexion();
+//System.out.println("test");
         Statement sta = conn.createStatement();
 
         ResultSet rs = sta.executeQuery(query);
@@ -52,7 +58,7 @@ public class GetResultSet {
     }
 
     public ResultSet CreateConectionBDLys(String query) throws java.lang.Exception {
-
+        
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         Connection conn = DriverManager.getConnection("jdbc:sqlserver://ibserver_29;user=desarrollador2;password=@desit39;database=lys");
         //System.out.println("test");
@@ -65,7 +71,9 @@ public class GetResultSet {
     public PreparedStatement StamenteForSP(String query) throws java.lang.Exception {
 
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        Connection conn = DriverManager.getConnection("jdbc:sqlserver://ibserver_29;user=desarrollador2;password=@desit39;database=pprodmant");
+       // Connection conn = DriverManager.getConnection("jdbc:sqlserver://ibserver_29;user=desarrollador2;password=@desit39;database=pprodmant");
+        ConectaDB dbcon = new ConectaDB();
+        Connection conn  = dbcon.getConexion();
         PreparedStatement ps = conn.prepareStatement(query);
         ps.setEscapeProcessing(true);
         ps.setQueryTimeout(90);//System.out.println("test");
