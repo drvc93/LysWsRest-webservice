@@ -4,12 +4,21 @@
  */
 package com.lys.conection;
 
+import SOAP.SOAPLYS;
 import com.lys.util.Propiedades;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,21 +26,45 @@ import java.util.Properties;
  */
 public class ConectaDB {
 
-    /*
-     * private String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-     * private String url =
-     * "jdbc:sqlserver://ibserver_29;databaseName=pprodmant"; private String
-     * usuario = "desarrollador"; private String password = "@sist@8";
-     */
-    public Connection getConexion() throws IOException {
+    
+     private String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+      private String url ="jdbc:sqlserver://ibserver_29;databaseName=pprodmant";
+     // private String  usuario = "desarrollador";
+      ///private String password = "@sist@8";
+     
+     public Connection getConexion() throws IOException {
         Connection cn = null;
        // Properties prop = new Properties();
         //prop.load(Propiedades.class.getResourceAsStream("configuracion.properties"));
 
+        String TextObt = "" ,  sUsuario  = "" , sPass = "" , sStringConect = "" , sDB = "" , sServer="" ; 
+        Properties propiedades = new Properties();
+        InputStream entrada = null;
+        Path currentRelativePath = Paths.get("");
+        String pathF = currentRelativePath.toAbsolutePath().toString();
+        
+        try {
+            entrada = new FileInputStream(pathF+ File.separator +"webapps"+File.separator+"LysWsRest"+ File.separator+"propiedades"+File.separator+"configuracion.properties");
+            propiedades.load(entrada);
+            sDB= propiedades.getProperty("database");
+            sServer = propiedades.getProperty("server");
+            sUsuario = propiedades.getProperty("usuario");
+            sPass = propiedades.getProperty("password");
+            
+            url ="jdbc:sqlserver://"+sServer+";databaseName="+sDB;
+             
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(SOAPLYS.class.getName()).log(Level.SEVERE, null, ex);
+            TextObt = ex.getMessage();
+        } catch (IOException ex) {
+            Logger.getLogger(SOAPLYS.class.getName()).log(Level.SEVERE, null, ex);
+            TextObt = ex.getMessage();
+        }
+       
 
         try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver").newInstance();
-       cn = DriverManager.getConnection("jdbc:sqlserver://ibserver_29;user=desarrollador2;password=@desit39;database=pprodmant");
+          Class.forName(driver).newInstance();
+          cn = DriverManager.getConnection(url,sUsuario,sPass);
         //System.out.println("test");
         } catch (SQLException e) {
             System.out.println(e.toString());
