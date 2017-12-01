@@ -4,25 +4,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/JAVAWS/LysWsRest%20webservice/src/java/com/lys/beans/HistorialInspGen.java</file>
-            <file>file:/D:/JAVAWS/LysWsRest%20webservice/web/propiedades/configuracion.properties</file>
-            <file>file:/D:/JAVAWS/LysWsRest%20webservice/src/java/com/lys/beans/InspeccionesMaqCab.java</file>
-            <file>file:/D:/JAVAWS/LysWsRest%20webservice/src/java/com/lys/beans/PeriodoInspeccionDB.java</file>
-            <file>file:/D:/JAVAWS/LysWsRest%20webservice/src/java/com/lys/beans/HistorialInspMaq.java</file>
-            <file>file:/D:/JAVAWS/LysWsRest%20webservice/src/java/servicecom/lys/restfull/InspeccionFacadeREST.java</file>
-            <file>file:/D:/JAVAWS/LysWsRest%20webservice/src/java/com/lys/beans/InspeccionesMaqDet.java</file>
-            <file>file:/D:/JAVAWS/LysWsRest%20webservice/src/java/com/lys/beans/UsuarioDB.java</file>
-            <file>file:/D:/JAVAWS/LysWsRest%20webservice/src/java/com/lys/conection/GetResultSet.java</file>
-            <file>file:/D:/JAVAWS/LysWsRest%20webservice/src/java/com/lys/conection/ConectaDB.java</file>
-            <file>file:/D:/JAVAWS/LysWsRest%20webservice/src/java/com/lys/beans/TipoRevisionGBD.java</file>
-            <file>file:/D:/JAVAWS/LysWsRest%20webservice/src/java/com/lys/util/Propiedades.java</file>
-            <file>file:/D:/JAVAWS/LysWsRest%20webservice/src/java/com/lys/beans/CentroCostoDB.java</file>
-            <file>file:/D:/JAVAWS/LysWsRest%20webservice/src/java/SOAP/SOAPLYS.java</file>
-            <file>file:/D:/JAVAWS/LysWsRest%20webservice/src/java/com/lys/beans/InspeccionesGenCab.java</file>
-            <file>file:/D:/JAVAWS/LysWsRest%20webservice/web/index.jsp</file>
-            <file>file:/D:/JAVAWS/LysWsRest%20webservice/src/java/com/lys/beans/Menu.java</file>
-            <file>file:/D:/JAVAWS/LysWsRest%20webservice/src/java/com/lys/beans/Maquina.java</file>
-            <file>file:/D:/JAVAWS/LysWsRest%20webservice/src/java/com/lys/beans/Inspecciones.java</file>
+            <file>file:/D:/DVILLANUEVA/JAVAWS/LysWsRest%20webservice/src/java/com/lys/beans/RequisicionLogCab.java</file>
+            <file>file:/D:/DVILLANUEVA/JAVAWS/LysWsRest%20webservice/src/java/com/lys/beans/EmpAsigSolicitud.java</file>
+            <file>file:/D:/DVILLANUEVA/JAVAWS/LysWsRest%20webservice/src/java/com/lys/beans/Rechazos.java</file>
+            <file>file:/D:/DVILLANUEVA/JAVAWS/LysWsRest%20webservice/src/java/SOAP/SOAPLYS.java</file>
+            <file>file:/D:/DVILLANUEVA/JAVAWS/LysWsRest%20webservice/src/java/com/lys/conection/GetResultSet.java</file>
         </group>
     </open-files>
 </project-private>

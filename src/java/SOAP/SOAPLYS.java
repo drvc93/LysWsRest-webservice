@@ -1062,14 +1062,14 @@ public class SOAPLYS {
             @WebParam(name = "flagfecha", targetNamespace = "http://SOAP/") String flagfecha, @WebParam(name = "fechaini", targetNamespace = "http://SOAP/") String fechaini,
             @WebParam(name = "fechafin", targetNamespace = "http://SOAP/") String fechafin, @WebParam(name = "maquina", targetNamespace = "http://SOAP/") String maquina,
             @WebParam(name = "prioridad", targetNamespace = "http://SOAP/") String prioridad, @WebParam(name = "estado", targetNamespace = "http://SOAP/") String estado,
-            @WebParam(name = "personasolicit", targetNamespace = "http://SOAP/") String personasolicit) throws Exception {
+            @WebParam(name = "personasolicit", targetNamespace = "http://SOAP/") String personasolicit,@WebParam(name = "nsolicitud", targetNamespace = "http://SOAP/") String nsolicitud) throws Exception {
         ArrayList<SolicitudServicio> result = new ArrayList<SolicitudServicio>();
         /*ConectaDB cndb = new ConectaDB();
         Connection connection =  connection = cndb.getConexion();*/
 
         ConectaDB cndb = new ConectaDB();
         Connection connection = cndb.getConexion();
-        String SQL_INSERT = "EXEC SP_MT_LISTA_SOLIC_SERVIC_MOVIL ?,?,?,?,?,?,?,?";
+        String SQL_INSERT = "EXEC SP_MT_LISTA_SOLIC_SERVIC_MOVIL ?,?,?,?,?,?,?,?,?";
         PreparedStatement statement = connection.prepareStatement(SQL_INSERT,
                 Statement.RETURN_GENERATED_KEYS);
 
@@ -1083,6 +1083,7 @@ public class SOAPLYS {
         statement.setString(6, prioridad);
         statement.setString(7, estado);
         statement.setInt(8, Integer.valueOf(personasolicit));
+        statement.setInt(9, Integer.valueOf(nsolicitud));
         ResultSet res = statement.executeQuery();
 
         while (res.next()) {
@@ -1103,6 +1104,7 @@ public class SOAPLYS {
             s.setC_estado(res.getString(12));
             s.setC_fechareg(res.getString(13));
             s.setC_tiposolcitud(res.getString(14));
+            s.setC_empleadosAsignados(res.getString(15));
             result.add(s);
         }
 
@@ -1341,12 +1343,13 @@ public class SOAPLYS {
     @WebMethod(operationName = "ListReqLogistica")
     public ArrayList<RequisicionLogCab> ListReqLogistica(@WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania,
             @WebParam(name = "ccosto", targetNamespace = "http://SOAP/") String ccosto, @WebParam(name = "estado", targetNamespace = "http://SOAP/") String estado,
-            @WebParam(name = "fechainicio", targetNamespace = "http://SOAP/") String fechainicio, @WebParam(name = "fechafin", targetNamespace = "http://SOAP/") String fechafin) throws Exception {
+            @WebParam(name = "fechainicio", targetNamespace = "http://SOAP/") String fechainicio, @WebParam(name = "fechafin", targetNamespace = "http://SOAP/") String fechafin,
+            @WebParam(name = "nroreq", targetNamespace = "http://SOAP/") String nroreq) throws Exception {
         ArrayList<RequisicionLogCab> result = new ArrayList<RequisicionLogCab>();
 
         ConectaDB cndb = new ConectaDB();
         Connection connection = cndb.getConexion();
-        String SQL_INSERT = "EXEC SP_MT_LISTA_REQUISICIONES ?,?,?,?,?";
+        String SQL_INSERT = "EXEC SP_MT_LISTA_REQUISICIONES ?,?,?,?,?,?";
         PreparedStatement statement = connection.prepareStatement(SQL_INSERT,
                 Statement.RETURN_GENERATED_KEYS);
 
@@ -1357,6 +1360,7 @@ public class SOAPLYS {
         statement.setString(3, estado);
         statement.setString(4, fechainicio);
         statement.setString(5, fechafin);
+        statement.setString(6, nroreq);
 
         ResultSet res = statement.executeQuery();
 
@@ -1375,8 +1379,11 @@ public class SOAPLYS {
             r.setC_ccosto(res.getString(9));
             r.setC_ccostonomb(res.getString(10));
             r.setC_cometario(res.getString(11));
+            r.setC_clasificacion(res.getString(12));
             r.setC_estado(res.getString(13));
             r.setC_estadonomb(res.getString(14));
+            r.setC_almacennomb(res.getString(15));
+            r.setC_reposicionstock(res.getString(16));
 
             result.add(r);
         }
@@ -1389,7 +1396,7 @@ public class SOAPLYS {
         //TODO write your implementation code here:
         ArrayList<RequisicionLogDet> result = new ArrayList<RequisicionLogDet>();
         //int val_correlativo = Integer.valueOf(correlativo);
-        String query = "SELECT     c_Compania , c_item , c_descripcion , n_cantidadpedida , n_stockdisponible,n_stockminimo   "
+        String query = "SELECT     c_Compania , isnull(c_item,'-') c_item , c_descripcion , n_cantidadpedida , n_stockdisponible,n_stockminimo  ,isnull(c_Commoditycodigo,'-') c_Commoditycodigo  ,c_Centrocosto  "
                 + " from  lys..lo_requisicionesdetalle  "
                 + " where  c_Compania = '" + compania + "' and c_numerorequisicion = '" + numeroreq + "'";
         GetResultSet cresult = new GetResultSet();
@@ -1404,6 +1411,8 @@ public class SOAPLYS {
             det.setC_cantidadpedida(rs.getString(4));
             det.setC_stockdisponible(rs.getString(5));
             det.setC_stockminimo(rs.getString(6));
+            det.setC_comoditycodigo(rs.getString(7));
+            det.setC_centrocosto(rs.getString(8));
 
             result.add(det);
         }
@@ -1747,5 +1756,109 @@ public class SOAPLYS {
         return result;
 
     }
+    
+    @WebMethod(operationName = "GetCentroCostoXCompania")
+    public ArrayList<CentroCostoDB> GetCentroCostoXCompania(@WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania) throws Exception {
+        //TODO write your implementation code here:
+        ArrayList<CentroCostoDB> result = new ArrayList<CentroCostoDB>();
+        //int val_correlativo = Integer.valueOf(correlativo);
+        String query = "SELECT  c_Compania,c_Centrocosto ,upper(c_Nombres ) c_ccostonomb , c_Estado "+
+                        "from   lys..ma_centrocostos  "+
+                        " where c_Compania = '"+compania+"'"+
+                        " order  by c_ccostonomb asc";
+
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+
+        while (rs.next()) {
+
+            CentroCostoDB cc = new CentroCostoDB();
+            cc.setC_compania(rs.getString(1));
+            cc.setC_centrocosto(rs.getString(2));
+            cc.setC_descripcion(rs.getString(3));
+            cc.setC_estado(rs.getString(4));
+            result.add(cc);
+        }
+        return result;
+    }
+    
+    @WebMethod(operationName = "GetMaquinaXCompania")
+    public ArrayList<Maquina> GetMaquinaXCompania(@WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania) throws Exception {
+        //TODO write your implementation code here:
+        ArrayList<Maquina> result = new ArrayList<Maquina>();
+        //int val_correlativo = Integer.valueOf(correlativo);
+        String query =  "SELECT c_compania , c_maquina , c_descripcion ,  isnull(c_codigobarra,'-')c_codigobarra , "+
+                        " isnull(c_familiainspeccion,'-') c_familiainspeccion,c_centrocosto ,c_estado , c_ultimousuario , "+
+                        " convert(varchar(10) ,d_ultimafechamodificacion,103) d_ultimafechamodificacion "+
+                         " FROM  lys..MT_MAQUINA"+
+                        " where c_compania  = '"+compania+"' order by  c_descripcion asc" ;
+
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+
+        while (rs.next()) {
+
+            Maquina mq = new Maquina();
+            mq.setC_ompania(rs.getString(1));
+            mq.setC_maquina(rs.getString(2));
+            mq.setC_descripcion(rs.getString(3));
+            mq.setC_codigobarras(rs.getString(4));
+            mq.setC_familiainspeccion(rs.getString(5));
+            mq.setC_centrocosto(rs.getString(6));
+            mq.setC_estado(rs.getString(7));
+            mq.setC_ultimousuario(rs.getString(8));
+            mq.setD_ultimafechamodificacion(rs.getString(9));
+            result.add(mq);
+        }
+        return result;
+    }
+    
+    @WebMethod(operationName = "GetDefaultCompania")
+    public String GetDefaultCompania() throws Exception {
+         //TODO write your implementation code here:
+        String sIpLocal = "", sIpExt = "";
+        String CompGeneral = "" ;
+        String sResult = "";
+        Properties propiedades = new Properties();
+        InputStream entrada = null;
+        Path currentRelativePath = Paths.get("");
+        String pathF = currentRelativePath.toAbsolutePath().toString();
+        try {
+            entrada = new FileInputStream(pathF + File.separator + "webapps" + File.separator + "LysWsRest" + File.separator + "propiedades" + File.separator + "configuracion.properties");
+            propiedades.load(entrada);
+            CompGeneral = propiedades.getProperty("Compania");
+           // sIpExt = propiedades.getProperty("ipexterna");
+
+        } catch (Exception ex) {
+           // Logger.getLogger(SOAPLYS.class.getName()).log(Level.SEVERE, null, ex);
+            sResult = ex.getMessage();
+        } 
+         sResult = CompGeneral;
+        return sResult;
+    }
+    
+    @WebMethod(operationName = "ActulizarMaestros")
+    public String ActulizarMaestros() throws Exception {
+        String result = "OK";
+        
+        try {
+            ConectaDB cndb = new ConectaDB();
+            Connection connection = cndb.getConexion();
+            String SQL_INSERT = "EXEC sp_mt_cargadata " ;
+
+            Statement statement = connection.createStatement();
+            ResultSet res = statement.executeQuery(SQL_INSERT);
+
+            while (res.next()) {
+                result = res.getString(1);
+            }
+        } catch (Exception e) {
+            result = e.getMessage();
+        }
+
+        return result;
+
+    }
+    
 
 }

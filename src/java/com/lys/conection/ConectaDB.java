@@ -51,7 +51,8 @@ public class ConectaDB {
             sUsuario = propiedades.getProperty("usuario");
             sPass = propiedades.getProperty("password");
             
-            url ="jdbc:sqlserver://"+sServer+";databaseName="+sDB;
+            url ="jdbc:sqlserver://"+sServer+";databaseName="+sDB; // cambiar
+          //  url="jdbc:sqlserver://ibserver_29;databaseName=pprodmant";
              
         } catch (FileNotFoundException ex) {
             Logger.getLogger(SOAPLYS.class.getName()).log(Level.SEVERE, null, ex);
@@ -64,7 +65,8 @@ public class ConectaDB {
 
         try {
           Class.forName(driver).newInstance();
-          cn = DriverManager.getConnection(url,sUsuario,sPass);
+        //   cn = DriverManager.getConnection(url,sUsuario,sPass); // cambiar
+           cn = DriverManager.getConnection(url,"desarrollador2","@desit39");
         //System.out.println("test");
         } catch (SQLException e) {
             System.out.println(e.toString());
@@ -76,4 +78,39 @@ public class ConectaDB {
 
         return cn;
     }
+     
+     public String CredencialesMail(String tipo) throws IOException {
+         String result = "";
+       
+        String TextObt = "" ,  sUsuarioMail  = "" , sPassMail = "" , sStringConect = "" , sDB = "" , sServer="" ; 
+        Properties propiedades = new Properties();
+        InputStream entrada = null;
+        Path currentRelativePath = Paths.get("");
+        String pathF = currentRelativePath.toAbsolutePath().toString();
+        
+        try {
+            entrada = new FileInputStream(pathF+ File.separator +"webapps"+File.separator+"LysWsRest"+ File.separator+"propiedades"+File.separator+"configuracion.properties");
+            propiedades.load(entrada);
+           
+            sUsuarioMail = propiedades.getProperty("usuarioMail");
+            sPassMail = propiedades.getProperty("claveMail");
+ 
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(SOAPLYS.class.getName()).log(Level.SEVERE, null, ex);
+            TextObt = ex.getMessage();
+        } catch (IOException ex) {
+            Logger.getLogger(SOAPLYS.class.getName()).log(Level.SEVERE, null, ex);
+            TextObt = ex.getMessage();
+        }
+         if (tipo.equals("User")) {
+             
+             result = sUsuarioMail;
+         }
+         else if (tipo.equals("Pass")) {
+             
+             result = sPassMail;
+         }
+        return result;
+    }
+     
 }
