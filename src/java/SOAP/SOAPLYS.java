@@ -29,6 +29,13 @@ import com.lys.beans.RequisicionLogDet;
 import com.lys.beans.SolicitudServicio;
 import com.lys.beans.SubMenu;
 import com.lys.beans.SubMenuBotones;
+import com.lys.beans.TMACliente;
+import com.lys.beans.TMAFalla;
+import com.lys.beans.TMAMarca;
+import com.lys.beans.TMAModelo;
+import com.lys.beans.TMAPruebaLab;
+import com.lys.beans.TMATipoReclamo;
+import com.lys.beans.TMAVendedor;
 import com.lys.beans.TipoRevisionGBD;
 import com.lys.beans.UsuarioCompania;
 import com.lys.beans.UsuarioDB;
@@ -637,10 +644,6 @@ public class SOAPLYS {
 
             result = String.valueOf(rowAfect);
         }
-        //  String query = "EXEC dbo.SPI_INSPECCION_MAQ_CABECERA @compania = '"+compania+"' ,  @maquina = '"+maquina+"',  @condicionMaquina = '"+condicionMaquina+"',  @comentario = '"+comentario+"',  @estado = '"+estado+"', @fechaInicioInp = '"+fechaIniInsp+"',   @fechaFinInsp = '"+fechaFinInsp+"',  @periodoInsp = '"+periodoInsp+"', @usuarioInsp = '"+usuarioInsp+"',  @usuarioEnvio = '"+usuaruioEnv+"',  @ultUsuario = '"+ultimoUsuario+"' ";
-        // GetResultSet cresult = new GetResultSet();
-        // ResultSet rs = cresult.CreateConection(query);
-
         return result;
     }
 
@@ -651,6 +654,19 @@ public class SOAPLYS {
     public String GetCorrelativo() throws Exception {
         String result = "0";
         String query = "SELECT n_ultimocorrelativo FROM  dbo.ma_Correlativos ";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()) {
+            result = rs.getString(1);
+        }
+        return result;
+    }
+    
+    @WebMethod(operationName = "VerificarItemExiste")
+    public String VerificarItemExiste(@WebParam(name = "item", targetNamespace = "http://SOAP/") String item) throws Exception {
+        String result = "0";
+        String query = "SELECT  count(*) n_count FROM  "+
+                        " lys..ma_ItemsMast where c_item ='"+item+"' ";
         GetResultSet cresult = new GetResultSet();
         ResultSet rs = cresult.CreateConection(query);
         while (rs.next()) {
@@ -756,11 +772,11 @@ public class SOAPLYS {
      *
      */
     @WebMethod(operationName = "GetHistorialInspGen")
-    public ArrayList<HistorialInspGen> GetHistorialInspGen(@WebParam(name = "accion", targetNamespace = "http://SOAP/") String accion, @WebParam(name = "tipoInsp", targetNamespace = "http://SOAP/") String tipoInsp, @WebParam(name = "FInicio", targetNamespace = "http://SOAP/") String FInicio, @WebParam(name = "FFin", targetNamespace = "http://SOAP/") String FFin) throws Exception {
+    public ArrayList<HistorialInspGen> GetHistorialInspGen(@WebParam(name = "accion", targetNamespace = "http://SOAP/") String accion, @WebParam(name = "tipoInsp", targetNamespace = "http://SOAP/") String tipoInsp, @WebParam(name = "FInicio", targetNamespace = "http://SOAP/") String FInicio, @WebParam(name = "FFin", targetNamespace = "http://SOAP/") String FFin,  @WebParam(name = "estado", targetNamespace = "http://SOAP/") String estado ) throws Exception {
         ArrayList<HistorialInspGen> result = new ArrayList<HistorialInspGen>();
         ConectaDB cndb = new ConectaDB();
         Connection connection = cndb.getConexion();
-        String SQL_INSERT = "EXEC SP_CONSULTAS_LINEA_INSP_GEN ?,?,?,?";
+        String SQL_INSERT = "EXEC SP_CONSULTAS_LINEA_INSP_GEN ?,?,?,?,?";
         PreparedStatement statement = connection.prepareStatement(SQL_INSERT,
                 Statement.RETURN_GENERATED_KEYS);
 
@@ -770,6 +786,7 @@ public class SOAPLYS {
         statement.setString(2, tipoInsp);
         statement.setString(3, FInicio);
         statement.setString(4, FFin);
+        statement.setString(5, estado);
         ResultSet res = statement.executeQuery();
         while (res.next()) {
 
@@ -1458,6 +1475,9 @@ public class SOAPLYS {
 
     }
     
+    
+    
+    
     @WebMethod(operationName = "EjecutarAprobReqLog")
     public String EjecutarAprobReqLog(@WebParam(name = "compania",targetNamespace = "http://SOAP/") String compania, @WebParam(name = "nroreq",targetNamespace = "http://SOAP/") String nroreq,
                                     @WebParam(name = "usuarioaprobacion",targetNamespace = "http://SOAP/") String usuarioaprobacion) throws Exception
@@ -1577,37 +1597,24 @@ public class SOAPLYS {
              msjSubject = "Se rechazó la requisicón # " + nroreq  ;
         }
         
-        
-        String result ="ERROR";
-         // Recipient's email ID needs to be mentioned.
-     // String to = "abcd@gmail.com";
-      // Sender's email ID needs to be mentioned
+      String result ="ERROR";
       String from = "sistemas@filtroslys.com.pe";
-      // Assuming you are sending email from localhost
       String host = "smtp.office365.com";
-      // Get system properties
       Properties properties = System.getProperties();
-      // Setup mail server
       properties.setProperty("mail.smtp.host", host);
       properties.setProperty("mail.smtp.port", "587");
-     
       properties.setProperty("mail.smtp.auth", "true");
       properties.setProperty("mail.smtp.starttls.enable", "true");
-     
       final String sUsuarioMail =  this.CredencialesMail("User");
       final String  sClaveMail  = this.CredencialesMail("Pass") ;      
-       
       Session session = Session.getDefaultInstance(properties,new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
 				return new PasswordAuthentication( sUsuarioMail , sClaveMail);
 			}
 		  });
         try {
-         // Create a default MimeMessage object.
          MimeMessage message = new MimeMessage(session);
-         // Set From: header field of the header.
          message.setFrom(new InternetAddress(from));
-         // Set To: header field of the header.
          if (estado.equals("AP")) {
             if(ListCorreoMsj.size()>0){
                 CorreoApReqLog c =  ListCorreoMsj.get(0);
@@ -1623,7 +1630,6 @@ public class SOAPLYS {
 
             }
          }
-         
          else if (estado.equals("RE")){
              if(ListCorreoMsj.size()>0){
                 CorreoApReqLog c =  ListCorreoMsj.get(0);
@@ -1631,24 +1637,15 @@ public class SOAPLYS {
                     message.addRecipient(Message.RecipientType.TO, new InternetAddress(c.getC_correocreacion()));
             }
          }
-         // Set Subject: header field
          message.setSubject(msjSubject);
-
-         // Send the actual HTML message, as big as you like
-        
           if (ListCorreoMsj.size()>0) {
                message.setContent(ListCorreoMsj.get(0).getC_mensajeHtml(), "text/html");
           }
-        
-         
-         // Send message
          Transport.send(message);
          result = "OK";
       } catch (Exception mex) {
           result = mex.getMessage();
       }
-        
-       
         return result;
     }
     
@@ -1859,6 +1856,134 @@ public class SOAPLYS {
         return result;
 
     }
+    
+     @WebMethod(operationName = "GetClientes")
+    public ArrayList<TMACliente> GetClientes() throws Exception {
+
+        ArrayList<TMACliente> listC = new ArrayList<TMACliente>();
+        String query = "SELECT c_compania, n_cliente, c_razonsocial from TMA_CLIENTES;";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()) {
+
+            TMACliente c = new TMACliente();
+            c.setC_compania(rs.getString(1));
+            c.setN_cliente( rs.getInt(2));
+            c.setC_razonsocial(rs.getString(3));
+            listC.add(c);
+
+        }
+
+        return listC;
+    }
+    
+    @WebMethod(operationName = "GetListFallas")
+    public ArrayList<TMAFalla> GetListFallas() throws Exception {
+
+        ArrayList<TMAFalla> listF = new ArrayList<TMAFalla>();
+        String query = "SELECT c_codigo, c_descripcion FROM  TMA_FALLA";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()) {
+            TMAFalla f = new TMAFalla();
+            f.setC_codigo(rs.getString(1));
+            f.setC_descripcion(rs.getString(2));
+            listF.add(f);
+
+        }
+
+        return listF;
+    }
+    
+      @WebMethod(operationName = "GetListMarcas")
+      public ArrayList<TMAMarca> GetListMarcas() throws Exception {
+        ArrayList<TMAMarca> listM = new ArrayList<TMAMarca>();
+        String query = "SELECT c_marca, c_descripcion, c_estado FROM TMA_MARCA";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()) {
+            TMAMarca m = new TMAMarca();
+            m.setC_marca(rs.getString(1));
+            m.setC_descripcion(rs.getString(2));
+            m.setC_estado(rs.getString(3));
+            listM.add(m);
+        }
+        return listM;
+    }
+      
+      
+      @WebMethod(operationName = "GetListaModelos")
+      public ArrayList<TMAModelo> GetListaModelos() throws Exception {
+        ArrayList<TMAModelo> listM = new ArrayList<TMAModelo>();
+        String query = "select  c_marca, c_modelo, c_descripcion, c_estado FROM  TMA_MODELO";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()) {
+            TMAModelo m = new TMAModelo();
+            m.setC_marca(rs.getString(1));
+            m.setC_modelo(rs.getString(2));
+            m.setC_descripcion(rs.getString(3));
+            m.setC_estado(rs.getString(4));
+            listM.add(m);
+        }
+        return listM;
+    }
+      
+     @WebMethod(operationName = "GetListaPruebasLab")
+      public ArrayList<TMAPruebaLab> GetListaPruebasLab() throws Exception {
+        ArrayList<TMAPruebaLab> listP = new ArrayList<TMAPruebaLab>();
+        String query = "SELECT c_codigo, c_descripcion, isnull( c_tipo , '-') c_tipo, "+
+                        " isnull(c_unidadcodigo,'-') c_unidadcodigo  from  TMA_PRUEBALAB";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()) {
+            TMAPruebaLab p = new TMAPruebaLab();
+            p.setC_codigo(rs.getString(1));
+            p.setC_descripcion(rs.getString(2));
+            p.setC_tipo(rs.getString(3));
+            p.setC_unidadcodigo(rs.getString(4));
+            listP.add(p);
+        }
+        return listP;
+    }
+      
+    @WebMethod(operationName = "GetLisTipoReclamo")
+      public ArrayList<TMATipoReclamo> GetLisTipoReclamo() throws Exception {
+        ArrayList<TMATipoReclamo> listR = new ArrayList<TMATipoReclamo>();
+        String query = "SELECT c_tiporeclamo, c_descripcion, c_estado, c_tipo FROM  dbo.TMA_TIPORECLAMO";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()) {
+            TMATipoReclamo r = new TMATipoReclamo();
+            r.setC_tiporeclamo(rs.getString(1));
+            r.setC_descripcion(rs.getString(2));
+            r.setC_estado(rs.getString(3));
+            r.setC_tipo(rs.getString(4));
+            listR.add(r);
+        }
+        return listR;
+    }
+      
+       @WebMethod(operationName = "GetListaVendedores")
+      public ArrayList<TMAVendedor> GetListaVendedores() throws Exception {
+        ArrayList<TMAVendedor> listV = new ArrayList<TMAVendedor>();
+        String query = "select c_compania, c_vendedor, c_ciasecundaria, c_nombres, c_estado from dbo.TMA_VENDEDOR";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()) {
+            TMAVendedor v = new TMAVendedor();
+            v.setC_compania(rs.getString(1));
+            v.setC_vendedor(rs.getString(2));
+            v.setC_ciasecundaria(rs.getString(3));
+            v.setC_nombres(rs.getString(4));
+            v.setC_estado(rs.getString(5));
+            listV.add(v);
+        }
+        return listV;
+    }
+    
+    
+    
     
 
 }
