@@ -39,6 +39,10 @@
 
   <xs:element name="GetCentroCostoXCompaniaResponse" type="tns:GetCentroCostoXCompaniaResponse"/>
 
+  <xs:element name="GetClientes" type="tns:GetClientes"/>
+
+  <xs:element name="GetClientesResponse" type="tns:GetClientesResponse"/>
+
   <xs:element name="GetCorrelativo" type="tns:GetCorrelativo"/>
 
   <xs:element name="GetCorrelativoResponse" type="tns:GetCorrelativoResponse"/>
@@ -114,6 +118,30 @@
   <xs:element name="GetInspeccionesMaqDetResponse" type="tns:GetInspeccionesMaqDetResponse"/>
 
   <xs:element name="GetInspeccionesResponse" type="tns:GetInspeccionesResponse"/>
+
+  <xs:element name="GetLisTipoReclamo" type="tns:GetLisTipoReclamo"/>
+
+  <xs:element name="GetLisTipoReclamoResponse" type="tns:GetLisTipoReclamoResponse"/>
+
+  <xs:element name="GetListFallas" type="tns:GetListFallas"/>
+
+  <xs:element name="GetListFallasResponse" type="tns:GetListFallasResponse"/>
+
+  <xs:element name="GetListMarcas" type="tns:GetListMarcas"/>
+
+  <xs:element name="GetListMarcasResponse" type="tns:GetListMarcasResponse"/>
+
+  <xs:element name="GetListaModelos" type="tns:GetListaModelos"/>
+
+  <xs:element name="GetListaModelosResponse" type="tns:GetListaModelosResponse"/>
+
+  <xs:element name="GetListaPruebasLab" type="tns:GetListaPruebasLab"/>
+
+  <xs:element name="GetListaPruebasLabResponse" type="tns:GetListaPruebasLabResponse"/>
+
+  <xs:element name="GetListaVendedores" type="tns:GetListaVendedores"/>
+
+  <xs:element name="GetListaVendedoresResponse" type="tns:GetListaVendedoresResponse"/>
 
   <xs:element name="GetMaquinaXCompania" type="tns:GetMaquinaXCompania"/>
 
@@ -219,6 +247,10 @@
 
   <xs:element name="ValidarEmpleadoMantResponse" type="tns:ValidarEmpleadoMantResponse"/>
 
+  <xs:element name="VerificarItemExiste" type="tns:VerificarItemExiste"/>
+
+  <xs:element name="VerificarItemExisteResponse" type="tns:VerificarItemExisteResponse"/>
+
   <xs:element name="hello" type="tns:hello"/>
 
   <xs:element name="helloResponse" type="tns:helloResponse"/>
@@ -243,23 +275,6 @@
   <xs:complexType name="Exception">
     <xs:sequence>
       <xs:element name="message" type="xs:string" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="InsertEmpSolicitud">
-    <xs:sequence>
-      <xs:element name="compania" type="xs:string" form="qualified" minOccurs="0"/>
-      <xs:element name="nrosolicitud" type="xs:string" form="qualified" minOccurs="0"/>
-      <xs:element name="nsecuencia" type="xs:string" form="qualified" minOccurs="0"/>
-      <xs:element name="compempleado" type="xs:string" form="qualified" minOccurs="0"/>
-      <xs:element name="nempleado" type="xs:string" form="qualified" minOccurs="0"/>
-      <xs:element name="ultusuario" type="xs:string" form="qualified" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="InsertEmpSolicitudResponse">
-    <xs:sequence>
-      <xs:element name="return" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -310,6 +325,23 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="InsertEmpSolicitud">
+    <xs:sequence>
+      <xs:element name="compania" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="nrosolicitud" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="nsecuencia" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="compempleado" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="nempleado" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="ultusuario" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="InsertEmpSolicitudResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="GetEmpleadosMant">
     <xs:sequence>
       <xs:element name="compania" type="xs:string" form="qualified" minOccurs="0"/>
@@ -338,6 +370,7 @@
       <xs:element name="tipoInsp" type="xs:string" form="qualified" minOccurs="0"/>
       <xs:element name="FInicio" type="xs:string" form="qualified" minOccurs="0"/>
       <xs:element name="FFin" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="estado" type="xs:string" form="qualified" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -528,6 +561,21 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="EjecutarRechazo">
+    <xs:sequence>
+      <xs:element name="compania" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="nroreq" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="razonrechazo" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="descripcionrechazo" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="EjecutarRechazoResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="GetDataAccesos">
     <xs:sequence/>
   </xs:complexType>
@@ -551,18 +599,22 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="EjecutarRechazo">
+  <xs:complexType name="GetListaModelos">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="GetListaModelosResponse">
     <xs:sequence>
-      <xs:element name="compania" type="xs:string" form="qualified" minOccurs="0"/>
-      <xs:element name="nroreq" type="xs:string" form="qualified" minOccurs="0"/>
-      <xs:element name="razonrechazo" type="xs:string" form="qualified" minOccurs="0"/>
-      <xs:element name="descripcionrechazo" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="return" type="tns:tmaModelo" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="EjecutarRechazoResponse">
+  <xs:complexType name="tmaModelo">
     <xs:sequence>
-      <xs:element name="return" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_descripcion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_estado" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_marca" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_modelo" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -577,6 +629,41 @@
   <xs:complexType name="AprobarSolcitudServResponse">
     <xs:sequence>
       <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetClientes">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="GetClientesResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:tmaCliente" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="tmaCliente">
+    <xs:sequence>
+      <xs:element name="c_compania" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_razonsocial" type="xs:string" minOccurs="0"/>
+      <xs:element name="n_cliente" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetListFallas">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="GetListFallasResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:tmaFalla" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="tmaFalla">
+    <xs:sequence>
+      <xs:element name="c_codigo" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_descripcion" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -833,16 +920,6 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="GetCentroCosto">
-    <xs:sequence/>
-  </xs:complexType>
-
-  <xs:complexType name="GetCentroCostoResponse">
-    <xs:sequence>
-      <xs:element name="return" type="tns:centroCostoDB" minOccurs="0" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
-
   <xs:complexType name="InsertInspMaqDet">
     <xs:sequence>
       <xs:element name="compania" type="xs:string" form="qualified" minOccurs="0"/>
@@ -863,6 +940,16 @@
   <xs:complexType name="InsertInspMaqDetResponse">
     <xs:sequence>
       <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetCentroCosto">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="GetCentroCostoResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:centroCostoDB" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -981,16 +1068,22 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="saveImage">
+  <xs:complexType name="GetLisTipoReclamo">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="GetLisTipoReclamoResponse">
     <xs:sequence>
-      <xs:element name="imgeByte" type="xs:base64Binary" form="qualified" nillable="true" minOccurs="0"/>
-      <xs:element name="fileName" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="return" type="tns:tmaTipoReclamo" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="saveImageResponse">
+  <xs:complexType name="tmaTipoReclamo">
     <xs:sequence>
-      <xs:element name="return" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_descripcion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_estado" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_tipo" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_tiporeclamo" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -1034,6 +1127,19 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="saveImage">
+    <xs:sequence>
+      <xs:element name="imgeByte" type="xs:base64Binary" form="qualified" nillable="true" minOccurs="0"/>
+      <xs:element name="fileName" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="saveImageResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="GetDataMenu">
     <xs:sequence/>
   </xs:complexType>
@@ -1057,6 +1163,37 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="VerificarItemExiste">
+    <xs:sequence>
+      <xs:element name="item" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="VerificarItemExisteResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetListaPruebasLab">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="GetListaPruebasLabResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:tmaPruebaLab" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="tmaPruebaLab">
+    <xs:sequence>
+      <xs:element name="c_codigo" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_descripcion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_tipo" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_unidadcodigo" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="GetUsuarioCompLogistica">
     <xs:sequence>
       <xs:element name="usuario" type="xs:string" form="qualified" minOccurs="0"/>
@@ -1073,26 +1210,6 @@
     <xs:sequence>
       <xs:element name="c_compania" type="xs:string" minOccurs="0"/>
       <xs:element name="c_nombres" type="xs:string" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="GetPeriodosInspeccion">
-    <xs:sequence/>
-  </xs:complexType>
-
-  <xs:complexType name="GetPeriodosInspeccionResponse">
-    <xs:sequence>
-      <xs:element name="return" type="tns:periodoInspeccionDB" minOccurs="0" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="periodoInspeccionDB">
-    <xs:sequence>
-      <xs:element name="c_descripcion" type="xs:string" minOccurs="0"/>
-      <xs:element name="c_estado" type="xs:string" minOccurs="0"/>
-      <xs:element name="c_periodoinspeccion" type="xs:string" minOccurs="0"/>
-      <xs:element name="c_ultimousuario" type="xs:string" minOccurs="0"/>
-      <xs:element name="d_ultimafechamodificacion" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -1116,6 +1233,26 @@
       <xs:element name="codPadre" type="xs:string" minOccurs="0"/>
       <xs:element name="codSubmenu" type="xs:string" minOccurs="0"/>
       <xs:element name="descripcion" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetPeriodosInspeccion">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="GetPeriodosInspeccionResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:periodoInspeccionDB" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="periodoInspeccionDB">
+    <xs:sequence>
+      <xs:element name="c_descripcion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_estado" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_periodoinspeccion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_ultimousuario" type="xs:string" minOccurs="0"/>
+      <xs:element name="d_ultimafechamodificacion" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -1162,6 +1299,24 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="GetListMarcas">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="GetListMarcasResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:tmaMarca" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="tmaMarca">
+    <xs:sequence>
+      <xs:element name="c_descripcion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_estado" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_marca" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="InsertInspGenDet">
     <xs:sequence>
       <xs:element name="compania" type="xs:string" form="qualified" minOccurs="0"/>
@@ -1193,6 +1348,16 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="GetDefaultCompania">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="GetDefaultCompaniaResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="ValidarEmpleadoMant">
     <xs:sequence>
       <xs:element name="usuario" type="xs:string" form="qualified" minOccurs="0"/>
@@ -1200,16 +1365,6 @@
   </xs:complexType>
 
   <xs:complexType name="ValidarEmpleadoMantResponse">
-    <xs:sequence>
-      <xs:element name="return" type="xs:string" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="GetDefaultCompania">
-    <xs:sequence/>
-  </xs:complexType>
-
-  <xs:complexType name="GetDefaultCompaniaResponse">
     <xs:sequence>
       <xs:element name="return" type="xs:string" minOccurs="0"/>
     </xs:sequence>
@@ -1241,6 +1396,26 @@
     <xs:sequence>
       <xs:element name="c_descripcion" type="xs:string" minOccurs="0"/>
       <xs:element name="c_razonrechazo" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetListaVendedores">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="GetListaVendedoresResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:tmaVendedor" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="tmaVendedor">
+    <xs:sequence>
+      <xs:element name="c_ciasecundaria" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_compania" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_estado" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_nombres" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_vendedor" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 

@@ -13,7 +13,8 @@ import javax.xml.bind.annotation.XmlType;
     "accion",
     "tipoInsp",
     "fInicio",
-    "fFin"
+    "fFin",
+    "estado"
 })
 public class GetHistorialInspGen {
 
@@ -25,6 +26,8 @@ public class GetHistorialInspGen {
     private String fInicio;
     @XmlElement(name = "FFin", namespace = "http://SOAP/")
     private String fFin;
+    @XmlElement(name = "estado", namespace = "http://SOAP/")
+    private String estado;
 
     /**
      * 
@@ -96,6 +99,24 @@ public class GetHistorialInspGen {
      */
     public void setFFin(String fFin) {
         this.fFin = fFin;
+    }
+
+    /**
+     * 
+     * @return
+     *     returns String
+     */
+    public String getEstado() {
+        return this.estado;
+    }
+
+    /**
+     * 
+     * @param estado
+     *     the value for the estado property
+     */
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
 }

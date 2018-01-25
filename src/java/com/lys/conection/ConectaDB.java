@@ -65,8 +65,8 @@ public class ConectaDB {
 
         try {
           Class.forName(driver).newInstance();
-        //   cn = DriverManager.getConnection(url,sUsuario,sPass); // cambiar
-           cn = DriverManager.getConnection(url,"desarrollador2","@desit39");
+         cn = DriverManager.getConnection(url,sUsuario,sPass); // cambiar
+           //cn = DriverManager.getConnection(url,"desarrollador2","@desit39");
         //System.out.println("test");
         } catch (SQLException e) {
             System.out.println(e.toString());
