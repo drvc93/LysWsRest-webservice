@@ -6,9 +6,13 @@
 package SOAP;
 
 import com.lys.beans.AccesosDB;
+import com.lys.beans.CapacitacionCliente;
 import com.lys.beans.CentroCostoDB;
 import com.lys.beans.CorreoApReqLog;
 import com.lys.beans.CorreoUsuarioCCosto;
+import com.lys.beans.DocsQuejaCliente;
+import com.lys.beans.DocsReclamoGarantia;
+import com.lys.beans.EFacSerLot;
 import com.lys.beans.EmpAsigSolicitud;
 import com.lys.beans.EmpleadoMant;
 import com.lys.beans.HistorialInspGen;
@@ -23,18 +27,29 @@ import com.lys.beans.Menu;
 import com.lys.beans.MenuDB;
 import com.lys.beans.Parametros;
 import com.lys.beans.PeriodoInspeccionDB;
+import com.lys.beans.QuejaCliente;
 import com.lys.beans.Rechazos;
+import com.lys.beans.ReclamoGarantia;
 import com.lys.beans.RequisicionLogCab;
 import com.lys.beans.RequisicionLogDet;
 import com.lys.beans.SolicitudServicio;
 import com.lys.beans.SubMenu;
 import com.lys.beans.SubMenuBotones;
+import com.lys.beans.SugerenciaCliente;
+import com.lys.beans.TMAAccionesTomar;
+import com.lys.beans.TMACalificacionQueja;
 import com.lys.beans.TMACliente;
+import com.lys.beans.TMADireccionCli;
 import com.lys.beans.TMAFalla;
 import com.lys.beans.TMAMarca;
+import com.lys.beans.TMAMedioRecepcion;
 import com.lys.beans.TMAModelo;
+import com.lys.beans.TMANotificacionQueja;
 import com.lys.beans.TMAPruebaLab;
+import com.lys.beans.TMATemaCapacitacion;
+import com.lys.beans.TMATipoCalificacionQueja;
 import com.lys.beans.TMATipoReclamo;
+import com.lys.beans.TMATipoSugerencia;
 import com.lys.beans.TMAVendedor;
 import com.lys.beans.TipoRevisionGBD;
 import com.lys.beans.UsuarioCompania;
@@ -294,6 +309,47 @@ public class SOAPLYS {
             filePathServer = File.separator + File.separator + "IBSERVER_1" + File.separator + "Servidor de Archivos" + File.separator + "Fotos_Tablet" + File.separator + fileName;
         } else {
             filePathServer = File.separator + File.separator + "IBSERVER_1" + File.separator + "Servidor de Archivos" + File.separator + "Fotos_Tablet" + File.separator + fileName + ".jpg";
+
+        }
+
+        try {
+            FileOutputStream fos = new FileOutputStream(filePathServer);
+            BufferedOutputStream outputStream = new BufferedOutputStream(fos);
+            outputStream.write(imgeByte);
+            outputStream.close();
+
+            msg = "Received file: " + filePathServer;
+            System.out.println("Received file: " + filePathServer);
+
+        } catch (Exception ex) {
+            System.err.println(ex);
+            msg = ex.getMessage();
+            //    throw new WebServiceException(ex);
+        }
+        return msg;
+    }
+    
+    @WebMethod(operationName = "GuardarFotoReclamoG")
+    public String GuardarFotoReclamoG(@WebParam(name = "imgeByte", targetNamespace = "http://SOAP/") byte[] imgeByte, @WebParam(name = "fileName", targetNamespace = "http://SOAP/") String fileName, @WebParam(name = "tipo", targetNamespace = "http://SOAP/") String tipo) throws Exception {
+        String rutaserver = "";
+                if(tipo.equals("RG")){
+                   rutaserver =  GetParametroTexto("00100000", "CO","RECGARRUTA").substring(2);
+                }
+                else   if(tipo.equals("QJ")){
+                   rutaserver =  GetParametroTexto("00100000", "CO","DOCQUJRUTA").substring(2);
+                }
+                else   if(tipo.equals("QJ")){
+                   rutaserver =  GetParametroTexto("00100000", "CO","DOCQUJRUTA").substring(2);
+                }
+                
+        String msg = "";
+        String filePathServer = "";
+        String extension = fileName.substring(fileName.length() - 3);
+        if (extension.toUpperCase().equals("JPG")) {
+
+             filePathServer = File.separator + File.separator + "IBSERVER_1" +"\\Servidor de Archivos\\"+ rutaserver  + fileName;
+        } else {
+           filePathServer = File.separator + File.separator + "IBSERVER_1" +"\\Servidor de Archivos\\"+ rutaserver  + fileName+".jpg";
 
         }
 
@@ -653,7 +709,8 @@ public class SOAPLYS {
     @WebMethod(operationName = "GetCorrelativo")
     public String GetCorrelativo() throws Exception {
         String result = "0";
-        String query = "SELECT n_ultimocorrelativo FROM  dbo.ma_Correlativos ";
+        String query = "SELECT n_ultimocorrelativo FROM  dbo.ma_Correlativos  where c_compania = '00100000' and c_tipodocumento = 'SY' "+
+                        "and c_seriedocumento = 'COIM' and c_aplicacion = 'MT'";
         GetResultSet cresult = new GetResultSet();
         ResultSet rs = cresult.CreateConection(query);
         while (rs.next()) {
@@ -1036,6 +1093,23 @@ public class SOAPLYS {
 
         return result;
     }
+    
+    @WebMethod(operationName = "GetFotoRG")
+    public byte[] GetFotoRG(@WebParam(name = "filename", targetNamespace = "http://SOAP/") String filename,@WebParam(name = "tipo", targetNamespace = "http://SOAP/") String tipo) throws Exception {
+        //TODO write your implementation code here:
+        String rutaserver = "";
+                if(tipo.equals("RG")){
+                   rutaserver =  GetParametroTexto("00100000", "CO","RECGARRUTA").substring(2);
+                }
+                else if (tipo.equals("QJ")){
+                    rutaserver =  GetParametroTexto("00100000", "CO","DOCQUJRUTA").substring(2);
+                }
+        String filePathServer = File.separator + File.separator + "IBSERVER_1" + File.separator + "Servidor de Archivos" + File.separator + rutaserver + File.separator + filename;
+        Path path = Paths.get(filePathServer);
+        byte[] result = Files.readAllBytes(path);
+
+        return result;
+    }
 
     /**
      * Web service operation
@@ -1187,6 +1261,29 @@ public class SOAPLYS {
                         "from lys..ma_compania a,lys..lo_usuariocompania b "+
                         "where a.c_compania = b.c_compania "+
                         " and b.c_codigousuario ='"+usuario+"'";
+
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+
+        while (rs.next()) {
+
+            UsuarioCompania uc = new UsuarioCompania();
+            uc.setC_compania(rs.getString(1));
+            uc.setC_nombres(rs.getString(2));
+            result.add(uc);
+        }
+        return result;
+    }
+    
+     @WebMethod(operationName = "GetUsuarioCompComercial")
+    public ArrayList<UsuarioCompania> GetUsuarioCompComercial(@WebParam(name = "usuario", targetNamespace = "http://SOAP/") String usuario) throws Exception {
+        //TODO write your implementation code here:
+        ArrayList<UsuarioCompania> result = new ArrayList<UsuarioCompania>();
+        //int val_correlativo = Integer.valueOf(correlativo);
+        String query = "Select a.c_compania , b.c_Nombres "+
+                        "from lys..co_usuariocompania a inner join lys..ma_Compania b  "+
+                         "on b.c_Compania = a.c_compania "+
+                          "and a.c_codigousuario = '" +usuario+"';";
 
         GetResultSet cresult = new GetResultSet();
         ResultSet rs = cresult.CreateConection(query);
@@ -1407,6 +1504,38 @@ public class SOAPLYS {
 
         return result;
     }
+    
+    @WebMethod(operationName = "BuscarFiltroGarantia")
+    public ArrayList<EFacSerLot> BuscarFiltroGarantia(@WebParam(name = "tipo", targetNamespace = "http://SOAP/") String tipo,
+            @WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania, @WebParam(name = "cliente", targetNamespace = "http://SOAP/") String cliente,
+            @WebParam(name = "factura", targetNamespace = "http://SOAP/") String factura, @WebParam(name = "item", targetNamespace = "http://SOAP/") String item) throws Exception {
+        ArrayList<EFacSerLot> result = new ArrayList<EFacSerLot>();
+
+        ConectaDB cndb = new ConectaDB();
+        Connection connection = cndb.getConexion();
+        String SQL_INSERT = "EXEC SP_CO_BUSCAR_FILTROGARANTIA ?,?,?,?,?";
+        PreparedStatement statement = connection.prepareStatement(SQL_INSERT,
+                Statement.RETURN_GENERATED_KEYS);
+
+        statement.setEscapeProcessing(true);
+        statement.setQueryTimeout(90);
+        statement.setString(1, tipo);
+        statement.setString(2, compania);
+        statement.setInt(3, Integer.valueOf(cliente));
+        statement.setString(4, factura);
+        statement.setString(5, item);
+        ResultSet res = statement.executeQuery();
+        while (res.next()) {
+            EFacSerLot r = new EFacSerLot();
+            r.setC_factRef(res.getString(1));
+            r.setC_lote(res.getString(2));
+            r.setC_procedencia(res.getString(3));
+            result.add(r);
+        }
+
+        return result;
+    }
+    
 
     @WebMethod(operationName = "GetDetalleReqLog")
     public ArrayList<RequisicionLogDet> GetDetalleReqLog(@WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania, @WebParam(name = "numeroreq", targetNamespace = "http://SOAP/") String numeroreq) throws Exception {
@@ -1459,7 +1588,26 @@ public class SOAPLYS {
         return result;
 
     }
-
+    
+    
+    private String GetParametroTexto (String  comp ,String aplicacion , String parametrocod) throws Exception{
+        String result = "NO";
+        ConectaDB cndb = new ConectaDB();
+        Connection connection = cndb.getConexion();
+        String SQL_QUERY = "Select c_texto from lys..ma_parametros "+
+                 "where c_compania = '"+comp+"' " +
+                 " and c_aplicacion =  '"+aplicacion+"' "+
+                 " and c_parametrocodigo = '"+parametrocod+"'";
+                
+        Statement statement = connection.createStatement();
+        ResultSet res = statement.executeQuery(SQL_QUERY);
+        while (res.next()) {
+            result = res.getString(1);
+        }
+        return result;
+    }
+    
+    
     private String GetHoraServidor() throws Exception {
 
         String result = "NO";
@@ -1981,9 +2129,689 @@ public class SOAPLYS {
         }
         return listV;
     }
+      
+
+@WebMethod(operationName = "GetListaCalificacionQueja")
+    public ArrayList<TMACalificacionQueja> GetListaCalificacionQueja() throws Exception{
+        ArrayList<TMACalificacionQueja> LstData = new ArrayList<TMACalificacionQueja>();
+        String query = "Select c_calificacion,c_descripcion,c_usuarioderivacion,c_correo,c_estado from dbo.TMA_CALIFICACIONQUEJA";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()) {
+            TMACalificacionQueja oEnt = new TMACalificacionQueja();
+            oEnt.setC_calificacion(rs.getString(1));
+            oEnt.setC_descripcion(rs.getString(2));
+            oEnt.setC_usuarioderivacion(rs.getString(3));
+            oEnt.setC_correo(rs.getString(4));
+            oEnt.setC_estado(rs.getString(5));
+            LstData.add(oEnt);
+        }
+        return LstData;
+    }
+
+    @WebMethod(operationName = "GetListMedioRecepcion")
+    public ArrayList<TMAMedioRecepcion> GetListMedioRecepcion() throws Exception{
+        ArrayList<TMAMedioRecepcion> LstData = new ArrayList<TMAMedioRecepcion>();
+        String query = "Select c_mediorecepcion,c_descripcion,c_estado from dbo.TMA_MEDIORECEPCION";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()) {
+            TMAMedioRecepcion oEnt = new TMAMedioRecepcion();
+            oEnt.setC_mediorecepcion(rs.getString(1));
+            oEnt.setC_descripcion(rs.getString(2));
+            oEnt.setC_estado(rs.getString(3));
+            LstData.add(oEnt);
+        }
+        return LstData;
+    }
+
+    @WebMethod(operationName = "GetListTipoCalificacionQueja")
+    public ArrayList<TMATipoCalificacionQueja> GetListTipoCalificacionQueja() throws Exception{
+        ArrayList<TMATipoCalificacionQueja> LstData = new ArrayList<TMATipoCalificacionQueja>();
+        String query = "Select c_tipocalificacion,c_calificacion,c_descripcion,c_estado from dbo.TMA_TIPOCALIFICACIONQUEJA";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()) {
+            TMATipoCalificacionQueja oEnt = new TMATipoCalificacionQueja();
+            oEnt.setC_tipocalificacion(rs.getString(1));
+            oEnt.setC_calificacion(rs.getString(2));
+            oEnt.setC_descripcion(rs.getString(3));
+            oEnt.setC_estado(rs.getString(4));
+            LstData.add(oEnt);
+        }
+        return LstData;
+    }
+
+    @WebMethod(operationName = "GetListAccionesTomar")
+    public ArrayList<TMAAccionesTomar> GetListAccionesTomar() throws Exception{
+        ArrayList<TMAAccionesTomar> LstData = new ArrayList<TMAAccionesTomar>();
+        String query = "Select c_codaccion,c_descripcion,c_estado from dbo.TMA_ACCIONESTOMAR";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()) {
+            TMAAccionesTomar oEnt = new TMAAccionesTomar();
+            oEnt.setC_codaccion(rs.getString(1));
+            oEnt.setC_descripcion(rs.getString(2));
+            oEnt.setC_estado(rs.getString(3));
+            LstData.add(oEnt);
+        }
+        return LstData;
+    }
+
+    @WebMethod(operationName = "GetListNotificacionQueja")
+    public ArrayList<TMANotificacionQueja> GetListNotificacionQueja() throws Exception{
+        ArrayList<TMANotificacionQueja> LstData = new ArrayList<TMANotificacionQueja>();
+        String query = "Select c_notificacion,c_descripcion,c_envianot,c_usuarionot,c_estado from dbo.TMA_NOTIFICACIONQUEJA";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()) {
+            TMANotificacionQueja oEnt = new TMANotificacionQueja();
+            oEnt.setC_notificacion(rs.getString(1));
+            oEnt.setC_descripcion(rs.getString(2));
+            oEnt.setC_envianot(rs.getString(3));
+            oEnt.setC_usuarionot(rs.getString(4));
+            oEnt.setC_estado(rs.getString(5));
+            LstData.add(oEnt);
+        }
+        return LstData;
+    }
+    
+    /*****************************************/
+    /*******MODULO RECLAMO GARANTIA***********/
+    /*****************************************/    
+    @WebMethod(operationName = "GetCorrelativorRecGar")
+    public String GetCorrelativorRecGar() throws Exception {
+        String result = "0";
+        String query = "select  n_ultimocorrelativo from   dbo.MA_CORRELATIVOS "+
+                       "where c_TipoDocumento = 'SY'  and c_seriedocumento = 'RGAR' "+
+                       "and  c_aplicacion = 'CO'";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()) {
+            result = rs.getString(1);
+        }
+        return result;
+    }
+    
+    @WebMethod(operationName = "GetCorrelativorQueja")
+    public String GetCorrelativorQueja() throws Exception {
+        String result = "0";
+        String query = "select  n_ultimocorrelativo from   dbo.MA_CORRELATIVOS "+
+                       "where c_TipoDocumento = 'SY'  and c_seriedocumento = 'QUEJ' "+
+                       "and  c_aplicacion = 'CO'";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()) {
+            result = rs.getString(1);
+        }
+        return result;
+    }
+    
+    @WebMethod(operationName = "InsertReclamoGarantia")
+    public String InsertReclamoGarantia(@WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania, @WebParam(name = "correlativo", targetNamespace = "http://SOAP/") String correlativo, @WebParam(name = "accion", targetNamespace = "http://SOAP/") String accion, @WebParam(name = "usuario", targetNamespace = "http://SOAP/") String usuario, @WebParam(name = "tiporeclamo", targetNamespace = "http://SOAP/") String tiporeclamo, @WebParam(name = "fecha", targetNamespace = "http://SOAP/") String fecha, @WebParam(name = "formato", targetNamespace = "http://SOAP/") String formato, @WebParam(name = "fechaformato", targetNamespace = "http://SOAP/") String fechaformato, @WebParam(name = "cliente", targetNamespace = "http://SOAP/") String cliente, @WebParam(name = "filtro", targetNamespace = "http://SOAP/") String filtro, @WebParam(name = "lotefiltro", targetNamespace = "http://SOAP/") String lotefiltro, @WebParam(name = "procedencia", targetNamespace = "http://SOAP/") String procedencia, @WebParam(name = "facturaref", targetNamespace = "http://SOAP/") String facturaref, @WebParam(name = "lote1", targetNamespace = "http://SOAP/") String lote1, @WebParam(name = "lote2", targetNamespace = "http://SOAP/") String lote2, @WebParam(name = "lote3", targetNamespace = "http://SOAP/") String lote3, @WebParam(name = "cantlote1", targetNamespace = "http://SOAP/") String cantlote1, @WebParam(name = "cantlote2", targetNamespace = "http://SOAP/") String cantlote2, @WebParam(name = "cantlote3", targetNamespace = "http://SOAP/") String cantlote3, @WebParam(name = "tiempouso", targetNamespace = "http://SOAP/") String tiempouso, @WebParam(name = "marca", targetNamespace = "http://SOAP/") String marca, @WebParam(name = "modelo", targetNamespace = "http://SOAP/") String modelo, @WebParam(name = "year", targetNamespace = "http://SOAP/") String year, @WebParam(name = "placavech", targetNamespace = "http://SOAP/") String placavech, @WebParam(name = "obervclie", targetNamespace = "http://SOAP/") String obervclie, @WebParam(name = "pruebalab1", targetNamespace = "http://SOAP/") String pruebalab1, @WebParam(name = "pruebalab2", targetNamespace = "http://SOAP/") String pruebalab2, @WebParam(name = "pruebalab3", targetNamespace = "http://SOAP/") String pruebalab3, @WebParam(name = "ensayo1", targetNamespace = "http://SOAP/") String ensayo1, @WebParam(name = "ensayo2", targetNamespace = "http://SOAP/") String ensayo2, @WebParam(name = "ensayo3", targetNamespace = "http://SOAP/") String ensayo3, @WebParam(name = "ensayo4", targetNamespace = "http://SOAP/") String ensayo4, @WebParam(name = "ensayo5", targetNamespace = "http://SOAP/") String ensayo5, @WebParam(name = "prediagvend", targetNamespace = "http://SOAP/") String prediagvend, @WebParam(name = "prediagobse", targetNamespace = "http://SOAP/") String prediagobse, @WebParam(name = "reembolsocli", targetNamespace = "http://SOAP/") String reembolsocli, @WebParam(name = "reembolsomto", targetNamespace = "http://SOAP/") String reembolsomto, @WebParam(name = "reembolsomon", targetNamespace = "http://SOAP/") String reembolsomon, @WebParam(name = "necesitavisita", targetNamespace = "http://SOAP/") String necesitavisita) throws Exception{
+        //TODO write your implementation code here:
+        String result = "NO";
+
+        try {
+            ConectaDB cndb = new ConectaDB();
+            Connection connection = cndb.getConexion();
+            String SQL_INSERT = "EXEC SP_CO_INSERTARECLAMO '" +compania + "',"+correlativo+",'"+accion+"','"+usuario+"','"+tiporeclamo+"','"+fecha+"',"+formato+",'"+fechaformato+"',"+
+                                cliente+",'"+filtro+"','"+lotefiltro+"','"+procedencia+"','"+facturaref+"','"+lote1+"','"+lote2+"','"+lote3+"',"+
+                                cantlote1+","+cantlote2+","+cantlote3+",'"+ tiempouso+"','" +marca+"','"+modelo+"',"+year+",'"+placavech+"','"+obervclie+"','"+pruebalab1+"','"+
+                                pruebalab2+"','"+pruebalab3+"','"+ensayo1+ "','"+ensayo2+"','"+ensayo3+"','"+ensayo4+"','"+ensayo5+"','"+
+                                prediagvend+"','"+prediagobse+"','"+reembolsocli+"',"+reembolsomto+",'"+reembolsomon+"','"+necesitavisita+"';";
+                               
+            Statement statement = connection.createStatement();
+            ResultSet res = statement.executeQuery(SQL_INSERT);
+
+            while (res.next()) {
+                result = res.getString(1);
+            }
+        } catch (Exception e) {
+            result = e.getMessage();
+        }
+
+        return result;
+    }
+
+    @WebMethod(operationName = "TransferirReclamoGarantia")
+    public String TransferirReclamoGarantia(@WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania, @WebParam(name = "correlativo", targetNamespace = "http://SOAP/") String correlativo, @WebParam(name = "accion", targetNamespace = "http://SOAP/") String accion) throws Exception {
+        String result = "NO";
+        try {
+            ConectaDB cndb = new ConectaDB();
+            Connection connection = cndb.getConexion();
+            String SQL_INSERT = "EXEC SP_CO_TRANSFERIRRECLAMO @Compania  = '" + compania + "', @Correlativo = " + correlativo + " , @Accion = '" + accion + "'";
+            Statement statement = connection.createStatement();
+            ResultSet res = statement.executeQuery(SQL_INSERT);
+            while (res.next()) {
+                result = res.getString(1);
+            }
+        } catch (Exception e) {
+            result = e.getMessage();
+        }
+        return result;
+    }
     
     
+    @WebMethod(operationName = "ListReclamoGarantia")
+    public ArrayList<ReclamoGarantia> ListReclamoGarantia(@WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania, @WebParam(name = "cliente", targetNamespace = "http://SOAP/") String cliente,
+           @WebParam(name = "estado", targetNamespace = "http://SOAP/") String estado, @WebParam(name = "fecharegini", targetNamespace = "http://SOAP/") String fecharegini, @WebParam(name = "fecharegfin", targetNamespace = "http://SOAP/") String fecharegfin) throws Exception{
+        ArrayList<ReclamoGarantia> result = new ArrayList<ReclamoGarantia>();
+        
+        ConectaDB cndb = new ConectaDB();
+        Connection connection = cndb.getConexion();
+        String SQL_INSERT = "EXEC SP_CO_LISTARECLAMO_ONLINE ?,?,?,?,?";
+        PreparedStatement statement = connection.prepareStatement(SQL_INSERT,
+                Statement.RETURN_GENERATED_KEYS);
+
+        statement.setEscapeProcessing(true);
+        statement.setQueryTimeout(90);
+        statement.setString(1, compania);
+        statement.setInt(2, Integer.valueOf(cliente));
+        statement.setString(3, estado);
+        statement.setString(4, fecharegini);
+        statement.setString(5, fecharegfin);
+        ResultSet res = statement.executeQuery();
+
+        while (res.next()) {
+            ReclamoGarantia oEnt = new ReclamoGarantia();
+            oEnt.setC_compania(res.getString(1));
+            oEnt.setN_correlativo(res.getLong(2));
+            oEnt.setD_fecha(res.getString(3));
+            oEnt.setN_cliente(res.getInt(4));
+            oEnt.setC_codproducto(res.getString(5));
+            oEnt.setC_lote(res.getString(6));
+            oEnt.setC_procedencia(res.getString(7));
+            oEnt.setN_qtyingreso(res.getDouble(8));
+            oEnt.setC_vendedor(res.getString(9));
+            oEnt.setC_estado(res.getString(10));
+            oEnt.setC_lote1(res.getString(11));
+            oEnt.setC_lote2(res.getString(12));
+            oEnt.setC_lote3(res.getString(13));
+            oEnt.setN_cantlote1(res.getDouble(14));
+            oEnt.setN_cantlote2(res.getDouble(15));
+            oEnt.setN_cantlote3(res.getDouble(16));
+            oEnt.setC_codmarca(res.getString(17));
+            oEnt.setC_codmodelo(res.getString(18));
+            oEnt.setN_pyear(res.getInt(19));
+            oEnt.setC_tiempouso(res.getString(20));
+            oEnt.setC_facturaRef(res.getString(21));
+            oEnt.setC_prediagnostico(res.getString(23));
+            oEnt.setN_formato(res.getInt(24));
+            oEnt.setD_fechaformato(res.getString(25));
+            oEnt.setC_obscliente(res.getString(26));
+            oEnt.setC_flagvisita(res.getString(27));
+            oEnt.setC_tiporeclamo(res.getString(28));
+            oEnt.setC_reembcliente(res.getString(29));
+            oEnt.setC_placavehic(res.getString(30));
+            oEnt.setN_montoreembcli(res.getDouble(31));
+            oEnt.setC_monedareembcli(res.getString(32));
+            oEnt.setC_pruebalab1(res.getString(33));
+            oEnt.setC_pruebalab2(res.getString(34));
+            oEnt.setC_pruebalab3(res.getString(35));
+            oEnt.setC_ensayo01(res.getString(36));
+            oEnt.setC_ensayo02(res.getString(37));
+            oEnt.setC_ensayo03(res.getString(38));
+            oEnt.setC_ensayo04(res.getString(39));
+            oEnt.setC_ensayo05(res.getString(40));
+            oEnt.setC_usuario(res.getString(41));
+            result.add(oEnt);
+        }
+        return result;
+    }
+
+    /*****************************************/
+    /**********MODULO QUEJA CLIENTE***********/
+    /*****************************************/
+    @WebMethod(operationName = "InsertQuejaCliente")
+    public String InsertQuejaCliente(@WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania, @WebParam(name = "correlativo", targetNamespace = "http://SOAP/") String correlativo, @WebParam(name = "accion", targetNamespace = "http://SOAP/") String accion, @WebParam(name = "usuario", targetNamespace = "http://SOAP/") String usuario, @WebParam(name = "nroformato", targetNamespace = "http://SOAP/") String nroformato, @WebParam(name = "cliente", targetNamespace = "http://SOAP/") String cliente, @WebParam(name = "fecha", targetNamespace = "http://SOAP/") String fecha, @WebParam(name = "documentoref", targetNamespace = "http://SOAP/") String documentoref, @WebParam(name = "mediorecepcion", targetNamespace = "http://SOAP/") String mediorecepcion, @WebParam(name = "centrocosto", targetNamespace = "http://SOAP/") String centrocosto, @WebParam(name = "calificacion", targetNamespace = "http://SOAP/") String calificacion, @WebParam(name = "usuarioderiv", targetNamespace = "http://SOAP/") String usuarioderiv, @WebParam(name = "tipocalificacion", targetNamespace = "http://SOAP/") String tipocalificacion, @WebParam(name = "item", targetNamespace = "http://SOAP/") String item, @WebParam(name = "lote", targetNamespace = "http://SOAP/") String lote, @WebParam(name = "cantidad", targetNamespace = "http://SOAP/") String cantidad, @WebParam(name = "descqueja", targetNamespace = "http://SOAP/") String descqueja, @WebParam(name = "observaciones", targetNamespace = "http://SOAP/") String observaciones, @WebParam(name = "estado", targetNamespace = "http://SOAP/") String estado) throws Exception {
+        //TODO write your implementation code here:
+        String result = "NO";
+
+        try {
+            ConectaDB cndb = new ConectaDB();
+            Connection connection = cndb.getConexion();
+            String SQL_INSERT = "EXEC SP_CO_INSERTAQUEJA '"+compania+"',"+correlativo+",'"+accion+"','"+usuario+"','"+nroformato+"',"+cliente+",'"+
+                                fecha+"','"+documentoref+"','"+mediorecepcion+"','"+centrocosto+"','"+calificacion+"','"+usuarioderiv+ "','"+
+                                tipocalificacion+"','"+item+"','"+lote+"',"+cantidad+",'"+descqueja+"','"+observaciones+"','"+estado+"'";
+                               
+            Statement statement = connection.createStatement();
+            ResultSet res = statement.executeQuery(SQL_INSERT);
+
+            while (res.next()) {
+                result = res.getString(1);
+            }
+        } catch (Exception e) {
+            result = e.getMessage();
+        }     
+        return result;
+    }
+
+    @WebMethod(operationName = "TransferirQuejaCliente")
+    public String TransferirQuejaCliente(@WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania, @WebParam(name = "correlativo", targetNamespace = "http://SOAP/") String correlativo, @WebParam(name = "accion", targetNamespace = "http://SOAP/") String accion) throws Exception {
+        String result = "NO";
+        try {
+            ConectaDB cndb = new ConectaDB();
+            Connection connection = cndb.getConexion();
+            String SQL_INSERT = "EXEC SP_CO_TRANSFERIRQUEJA @Compania  = '" + compania + "', @Correlativo = " + correlativo + " , @Accion = '" + accion + "'";
+            Statement statement = connection.createStatement();
+            ResultSet res = statement.executeQuery(SQL_INSERT);
+            while (res.next()) {
+                result = res.getString(1);
+            }
+        } catch (Exception e) {
+            result = e.getMessage();
+        }
+        return result;
+    }
+
+    @WebMethod(operationName = "ListQuejaCliente")
+    public ArrayList<QuejaCliente> ListQuejaCliente(@WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania, @WebParam(name = "cliente", targetNamespace = "http://SOAP/") String cliente, @WebParam(name = "estado", targetNamespace = "http://SOAP/") String estado, @WebParam(name = "fecharegini", targetNamespace = "http://SOAP/") String fecharegini, @WebParam(name = "fecharegfin", targetNamespace = "http://SOAP/") String fecharegfin) throws Exception {
+        ArrayList<QuejaCliente> result = new ArrayList<QuejaCliente>();
+        
+        ConectaDB cndb = new ConectaDB();
+        Connection connection = cndb.getConexion();
+        String SQL_INSERT = "EXEC SP_CO_LISTAQUEJA_ONLINE ?,?,?,?,?";
+        PreparedStatement statement = connection.prepareStatement(SQL_INSERT,
+                Statement.RETURN_GENERATED_KEYS);
+
+        statement.setEscapeProcessing(true);
+        statement.setQueryTimeout(90);
+        statement.setString(1, compania);
+        statement.setInt(2, Integer.valueOf(cliente));
+        statement.setString(3, estado);
+        statement.setString(4, fecharegini);
+        statement.setString(5, fecharegfin);
+        ResultSet res = statement.executeQuery();
+
+        while (res.next()) {
+            QuejaCliente oEnt = new QuejaCliente();
+            oEnt.setC_compania(res.getString(1));
+            oEnt.setN_correlativo(res.getLong(2));
+            oEnt.setC_queja(res.getString(3));
+            oEnt.setN_cliente(res.getInt(4));
+            oEnt.setC_razonsocial(res.getString(5));
+            oEnt.setC_documentoref(res.getString(6));
+            oEnt.setC_mediorecepcion(res.getString(7));
+            oEnt.setC_desqueja(res.getString(8));
+            oEnt.setC_calificacion(res.getString(9));
+            oEnt.setC_tipocalificacion(res.getString(10));
+            oEnt.setC_observaciones(res.getString(11));
+            oEnt.setC_centrocosto(res.getString(12));
+            oEnt.setD_fechareg(res.getString(13));
+            oEnt.setC_item(res.getString(14));
+            oEnt.setC_lote(res.getString(15));
+            oEnt.setN_cantidad(res.getDouble(16));
+            oEnt.setC_usuarioinvestigacion(res.getString(17));
+            oEnt.setD_fechaderivacion(res.getString(18));
+            oEnt.setC_estado(res.getString(19));
+            oEnt.setC_unidadneg(res.getString(20));
+            oEnt.setC_descripcioninvestigacion(res.getString(21));
+            oEnt.setC_procede(res.getString(22));
+            oEnt.setD_fecharespuesta(res.getString(23));
+            oEnt.setC_usuarioinvestigadopor(res.getString(24));
+            oEnt.setD_fechainvestigadopor(res.getString(25));
+            oEnt.setC_flaginvestigando(res.getString(26));
+            oEnt.setC_tipocalificacioncierre(res.getString(27));
+            oEnt.setC_descripcioncierre(res.getString(28));
+            oEnt.setC_usuariocerrado(res.getString(29));
+            oEnt.setD_fechacerrado(res.getString(30));
+            oEnt.setC_codaccion1(res.getString(31));
+            oEnt.setC_codaccion2(res.getString(32));
+            oEnt.setC_codaccion3(res.getString(33));
+            oEnt.setC_codaccion4(res.getString(34));
+            oEnt.setC_cerrado(res.getString(35));
+            oEnt.setC_notificacion(res.getString(36));
+            oEnt.setC_observacionescierre(res.getString(37));
+            result.add(oEnt);
+        }
+        return result;
+    }
     
+    /*****************************************/
+    /**********MODULO SUGERENCIAS*************/
+    /*****************************************/
+    @WebMethod(operationName = "GetListTipoSugerencia")
+    public ArrayList<TMATipoSugerencia> GetListTipoSugerencia() throws Exception{
+        ArrayList<TMATipoSugerencia> LstData = new ArrayList<TMATipoSugerencia>();
+        String query = "Select c_tiposugerencia,c_descripcion,c_estado from dbo.TMA_TIPOSUGERENCIA";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()) {
+            TMATipoSugerencia oEnt = new TMATipoSugerencia();
+            oEnt.setC_tiposugerencia(rs.getString(1));
+            oEnt.setC_descripcion(rs.getString(2));
+            oEnt.setC_estado(rs.getString(3));
+            LstData.add(oEnt);
+        }
+        return LstData;
+    }
     
+    @WebMethod(operationName = "GetCorrelativoSugerencia")
+    public String GetCorrelativoSugerencia() throws Exception {
+        String result = "0";
+        String query = "select n_ultimocorrelativo from dbo.MA_CORRELATIVOS "+
+                       "where c_TipoDocumento = 'SY' and c_seriedocumento = 'RSUG' "+
+                       "and c_aplicacion = 'CO'";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()) {
+            result = rs.getString(1);
+        }
+        return result;
+    }
+
+    @WebMethod(operationName = "InsertSugerenciaCliente")
+    public String InsertSugerenciaCliente(@WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania, @WebParam(name = "correlativo", targetNamespace = "http://SOAP/") String correlativo,  @WebParam(name = "accion", targetNamespace = "http://SOAP/") String accion, @WebParam(name = "usuario", targetNamespace = "http://SOAP/") String usuario, @WebParam(name = "fecha", targetNamespace = "http://SOAP/") String fecha, @WebParam(name = "cliente", targetNamespace = "http://SOAP/") String cliente, @WebParam(name = "tiposugerencia", targetNamespace = "http://SOAP/") String tiposugerencia, @WebParam(name = "descripcion", targetNamespace = "http://SOAP/") String descripcion, @WebParam(name = "estado", targetNamespace = "http://SOAP/") String estado,@WebParam(name = "tipoinfo", targetNamespace = "http://SOAP/") String tipoinfo,@WebParam(name = "observacion", targetNamespace = "http://SOAP/") String observacion) {
+        String result = "NO";
+        try {
+            ConectaDB cndb = new ConectaDB();
+            Connection connection = cndb.getConexion();
+            String SQL_INSERT = "EXEC SP_CO_INSERTASUGERENCIA '"+compania+"',"+correlativo+",'"+accion+"','"+usuario+ "','" + tipoinfo + "','" +fecha+"',"+cliente+",'"+tiposugerencia+"','"+
+                                descripcion+"','" + observacion + "','"+estado+"'";                               
+            Statement statement = connection.createStatement();
+            ResultSet res = statement.executeQuery(SQL_INSERT);
+
+            while (res.next()) {
+                result = res.getString(1);
+            }
+        } catch (Exception e) {
+            result = e.getMessage();
+        }
+        return result;
+    }
+    
+    @WebMethod(operationName = "TransferirSugerenciaCliente")
+    public String TransferirSugerenciaCliente(@WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania, @WebParam(name = "correlativo", targetNamespace = "http://SOAP/") String correlativo, @WebParam(name = "accion", targetNamespace = "http://SOAP/") String accion) throws Exception {
+        String result = "NO";
+        try {
+            ConectaDB cndb = new ConectaDB();
+            Connection connection = cndb.getConexion();
+            String SQL_INSERT = "EXEC SP_CO_TRANSFERIRSUGERENCIA @Compania  = '" + compania + "', @Correlativo = " + correlativo + " , @Accion = '" + accion + "'";
+            Statement statement = connection.createStatement();
+            ResultSet res = statement.executeQuery(SQL_INSERT);
+            while (res.next()) {
+                result = res.getString(1);
+            }
+        } catch (Exception e) {
+            result = e.getMessage();
+        }
+        return result;
+    }
+    
+    @WebMethod(operationName = "ListSugerenciaCliente")
+    public ArrayList<SugerenciaCliente> ListSugerenciaCliente(@WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania, @WebParam(name = "cliente", targetNamespace = "http://SOAP/") String cliente, @WebParam(name = "estado", targetNamespace = "http://SOAP/") String estado, @WebParam(name = "fecharegini", targetNamespace = "http://SOAP/") String fecharegini, @WebParam(name = "fecharegfin", targetNamespace = "http://SOAP/") String fecharegfin, @WebParam(name = "tipoinfo", targetNamespace = "http://SOAP/") String tipoinfo) throws Exception {
+        ArrayList<SugerenciaCliente> result = new ArrayList<SugerenciaCliente>();
+        
+        ConectaDB cndb = new ConectaDB();
+        Connection connection = cndb.getConexion();
+        String SQL_INSERT = "EXEC SP_CO_LISTASUGERENCIA_ONLINE ?,?,?,?,?,?";
+        PreparedStatement statement = connection.prepareStatement(SQL_INSERT,
+                Statement.RETURN_GENERATED_KEYS);
+
+        statement.setEscapeProcessing(true);
+        statement.setQueryTimeout(90);
+        statement.setString(1, compania);
+        statement.setInt(2, Integer.valueOf(cliente));
+        statement.setString(3, estado);
+        statement.setString(4, fecharegini);
+        statement.setString(5, fecharegfin);
+        statement.setString(6, tipoinfo);
+        ResultSet res = statement.executeQuery();
+
+        while (res.next()) {
+            SugerenciaCliente oEnt = new SugerenciaCliente();
+            oEnt.setC_compania(res.getString(1));
+            oEnt.setN_correlativo(res.getLong(2));            
+            oEnt.setN_cliente(res.getInt(3));
+            oEnt.setD_fecha(res.getString(4));
+            oEnt.setC_tiposug(res.getString(5));
+            oEnt.setC_descripcion(res.getString(6));
+            oEnt.setC_usuarioreg(res.getString(7));
+            oEnt.setD_fechareg(res.getString(8));
+            oEnt.setC_estado(res.getString(9));
+            oEnt.setC_usuariorev(res.getString(10));
+            oEnt.setD_fecharev(res.getString(11));
+            oEnt.setC_observacionrev(res.getString(12));
+            oEnt.setC_accionrev(res.getString(13));
+            oEnt.setC_flagfinrev(res.getString(14));
+            oEnt.setC_usuarioAN(res.getString(15));
+            oEnt.setD_fechaAN(res.getString(16));
+            oEnt.setC_observacionAN(res.getString(17));
+            oEnt.setC_usuarioCE(res.getString(18));
+            oEnt.setD_fechaCE(res.getString(19));
+            oEnt.setC_observacionCE(res.getString(20)); 
+            oEnt.setC_tipoinfo(res.getString(21));
+            oEnt.setN_identinfo(res.getLong(22));
+            oEnt.setC_observacion(res.getString(23));
+            result.add(oEnt);
+        }
+        return result;
+    }
+
+    /*****************************************/
+    /**********MODULO CAPACITACION************/
+    /*****************************************/
+    @WebMethod(operationName = "GetListTemaCapacitacion")
+    public ArrayList<TMATemaCapacitacion> GetListTemaCapacitacion() throws Exception{
+        ArrayList<TMATemaCapacitacion> LstData = new ArrayList<TMATemaCapacitacion>();
+        String query = "Select c_temacapacitacion,c_descripcion,c_estado from dbo.TMA_TEMACAPACITACION";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()) {
+            TMATemaCapacitacion oEnt = new TMATemaCapacitacion();
+            oEnt.setC_temacapacitacion(rs.getString(1));
+            oEnt.setC_descripcion(rs.getString(2));
+            oEnt.setC_estado(rs.getString(3));
+            LstData.add(oEnt);
+        }
+        return LstData;
+    }
+    
+    @WebMethod(operationName = "GetListDireccionCli")
+    public ArrayList<TMADireccionCli> GetListDireccionCli() throws Exception{
+        ArrayList<TMADireccionCli> LstData = new ArrayList<TMADireccionCli>();
+        String query = "Select c_compania,n_cliente,n_secuencia,c_descripcion,c_estado from dbo.TMA_DIRECCIONCLI";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()) {
+            TMADireccionCli oEnt = new TMADireccionCli();
+            oEnt.setC_compania(rs.getString(1));
+            oEnt.setN_cliente(rs.getInt(2));
+            oEnt.setN_secuencia(rs.getInt(3));
+            oEnt.setC_descripcion(rs.getString(4));
+            oEnt.setC_estado(rs.getString(5));
+            LstData.add(oEnt);
+        }
+        return LstData;
+    }
+    
+    @WebMethod(operationName = "GetCorrelativoCapacitacion")
+    public String GetCorrelativoCapacitacion() throws Exception {
+        String result = "0";
+        String query = "select n_ultimocorrelativo from dbo.MA_CORRELATIVOS "+
+                       "where c_TipoDocumento = 'SY' and c_seriedocumento = 'RSCA' "+
+                       "and c_aplicacion = 'CO'";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()) {
+            result = rs.getString(1);
+        }
+        return result;
+    }
+
+    @WebMethod(operationName = "InsertCapacitacionCliente")
+    public String InsertCapacitacionCliente(@WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania, @WebParam(name = "correlativo", targetNamespace = "http://SOAP/") String correlativo, @WebParam(name = "accion", targetNamespace = "http://SOAP/") String accion, @WebParam(name = "usuario", targetNamespace = "http://SOAP/") String usuario, @WebParam(name = "fecha", targetNamespace = "http://SOAP/") String fecha, @WebParam(name = "cliente", targetNamespace = "http://SOAP/") String cliente, @WebParam(name = "personas", targetNamespace = "http://SOAP/") String personas, @WebParam(name = "fechaprob", targetNamespace = "http://SOAP/") String fechaprob, @WebParam(name = "horaprob", targetNamespace = "http://SOAP/") String horaprob, @WebParam(name = "lugar") String lugar, @WebParam(name = "direccioncli", targetNamespace = "http://SOAP/") String direccioncli, @WebParam(name = "direccionreg", targetNamespace = "http://SOAP/") String direccionreg, @WebParam(name = "temacapacitacion", targetNamespace = "http://SOAP/") String temacapacitacion, @WebParam(name = "descripciontema", targetNamespace = "http://SOAP/") String descripciontema, @WebParam(name = "estado", targetNamespace = "http://SOAP/") String estado,@WebParam(name = "observacion", targetNamespace = "http://SOAP/") String observacion) {
+        String result = "NO";
+        try {
+            ConectaDB cndb = new ConectaDB();
+            Connection connection = cndb.getConexion();
+            String SQL_INSERT = "EXEC SP_CO_INSERTASOLCAPACITACION '"+compania+"',"+correlativo+",'"+accion+
+                                "','" + usuario + "','"+fecha+
+                                "',"+cliente+",'"+personas+"','"+fechaprob+"','"+horaprob+"','"+lugar+"',"+direccioncli+
+                                ",'" + direccionreg +"','"+temacapacitacion+"','"+descripciontema+"','" + observacion + "','"+estado+"';";
+            Statement statement = connection.createStatement();
+            ResultSet res = statement.executeQuery(SQL_INSERT);
+            while (res.next()) {
+                result = res.getString(1);
+            }
+        } catch (Exception e) {
+            result = e.getMessage();
+        }
+        return result;
+    }
+    
+    @WebMethod(operationName = "TransferirCapacitacionCliente")
+    public String TransferirCapacitacionCliente(@WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania, @WebParam(name = "correlativo", targetNamespace = "http://SOAP/") String correlativo, @WebParam(name = "accion", targetNamespace = "http://SOAP/") String accion) throws Exception {
+        String result = "NO";
+        try {
+            ConectaDB cndb = new ConectaDB();
+            Connection connection = cndb.getConexion();
+            String SQL_INSERT = "EXEC SP_CO_TRANSFERIRSOLCAPACITACION @Compania  = '" + compania + "', @Correlativo = " + correlativo + " , @Accion = '" + accion + "'";
+            Statement statement = connection.createStatement();
+            ResultSet res = statement.executeQuery(SQL_INSERT);
+            while (res.next()) {
+                result = res.getString(1);
+            }
+        } catch (Exception e) {
+            result = e.getMessage();
+        }
+        return result;
+    }
+    
+    @WebMethod(operationName = "ListCapacitacionCliente")
+    public ArrayList<CapacitacionCliente> ListCapacitacionCliente(@WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania, @WebParam(name = "cliente", targetNamespace = "http://SOAP/") String cliente, @WebParam(name = "estado", targetNamespace = "http://SOAP/") String estado, @WebParam(name = "fecharegini", targetNamespace = "http://SOAP/") String fecharegini, @WebParam(name = "fecharegfin", targetNamespace = "http://SOAP/") String fecharegfin) throws Exception {
+        ArrayList<CapacitacionCliente> result = new ArrayList<CapacitacionCliente>();
+        
+        ConectaDB cndb = new ConectaDB();
+        Connection connection = cndb.getConexion();
+        String SQL_INSERT = "EXEC SP_CO_LISTASOLCAPACITACION_ONLINE ?,?,?,?,?";
+        PreparedStatement statement = connection.prepareStatement(SQL_INSERT,
+                Statement.RETURN_GENERATED_KEYS);
+
+        statement.setEscapeProcessing(true);
+        statement.setQueryTimeout(90);
+        statement.setString(1, compania);
+        statement.setInt(2, Integer.valueOf(cliente));
+        statement.setString(3, estado);
+        statement.setString(4, fecharegini);
+        statement.setString(5, fecharegfin);
+        ResultSet res = statement.executeQuery();
+
+        while (res.next()) {
+            CapacitacionCliente oEnt = new CapacitacionCliente();
+            oEnt.setC_compania(res.getString(1));
+            oEnt.setN_correlativo(res.getLong(2));
+            oEnt.setN_cliente(res.getInt(3));
+            oEnt.setD_fecha(res.getString(4));
+            oEnt.setN_personas(res.getInt(5));
+            oEnt.setD_fechaprob(res.getString(6));
+            oEnt.setD_horaprob(res.getString(7));
+            oEnt.setC_lugar(res.getString(8));
+            oEnt.setN_direccioncli(res.getInt(9));
+            oEnt.setC_direccionreg(res.getString(10));
+            oEnt.setC_temacapacitacion(res.getString(11));
+            oEnt.setC_descripciontema(res.getString(12));
+            oEnt.setC_usuarioreg(res.getString(13));
+            oEnt.setD_fechareg(res.getString(14));
+            oEnt.setC_estado(res.getString(15));
+            oEnt.setC_usuariorev(res.getString(16));
+            oEnt.setD_fecharev(res.getString(17));
+            oEnt.setC_observacionrev(res.getString(18));
+            oEnt.setC_accionrev(res.getString(19));
+            oEnt.setC_flagfinrev(res.getString(20));
+            oEnt.setC_usuarioAN(res.getString(21));
+            oEnt.setD_fechaAN(res.getString(22));
+            oEnt.setC_observacionAN(res.getString(23));
+            oEnt.setC_usuarioCE(res.getString(24));
+            oEnt.setD_fechaCE(res.getString(25));
+            oEnt.setC_observacionCE(res.getString(26));  
+            oEnt.setC_observacion(res.getString(27));
+            result.add(oEnt);
+        }
+        return result;
+    }
+    
+    @WebMethod(operationName = "InsertDocsReclamoGar")
+    public String InsertDocsReclamoGar(@WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania, @WebParam(name = "correlativo", targetNamespace = "http://SOAP/") String correlativo, @WebParam(name = "linea", targetNamespace = "http://SOAP/") String linea ,@WebParam(name = "descripcion", targetNamespace = "http://SOAP/") String descripcion ,@WebParam(name = "nombrearchivo", targetNamespace = "http://SOAP/") String nombrearchivo,@WebParam(name = "rutaarchivo", targetNamespace = "http://SOAP/") String rutaarchivo ,@WebParam(name = "ultusuario", targetNamespace = "http://SOAP/") String ultusuario) throws Exception {
+        String result = "NO";
+        try {
+            ConectaDB cndb = new ConectaDB();
+            Connection connection = cndb.getConexion();
+            String SQL_INSERT = "EXEC SP_CO_INSERT_DOCS_RG '"+compania+"',"+correlativo+","+linea+",'"+descripcion+"','"+nombrearchivo+"','"+rutaarchivo+"','"+ultusuario+"'";
+            Statement statement = connection.createStatement();
+            ResultSet res = statement.executeQuery(SQL_INSERT);
+            while (res.next()) {
+                result = res.getString(1);
+            }
+        } catch (Exception e) {
+            result = e.getMessage();
+        }
+        return result;
+    }
+    
+    @WebMethod(operationName = "InsertDocsQuejaCliente")
+    public String InsertDocsQuejaCliente(@WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania, @WebParam(name = "correlativo", targetNamespace = "http://SOAP/") String correlativo, @WebParam(name = "linea", targetNamespace = "http://SOAP/") String linea ,@WebParam(name = "descripcion", targetNamespace = "http://SOAP/") String descripcion ,@WebParam(name = "nombrearchivo", targetNamespace = "http://SOAP/") String nombrearchivo,@WebParam(name = "rutaarchivo", targetNamespace = "http://SOAP/") String rutaarchivo ,@WebParam(name = "ultusuario", targetNamespace = "http://SOAP/") String ultusuario) throws Exception {
+        String result = "NO";
+        try {
+            ConectaDB cndb = new ConectaDB();
+            Connection connection = cndb.getConexion();
+            String SQL_INSERT = "EXEC SP_CO_INSERT_DOCS_QJ '"+compania+"',"+correlativo+","+linea+",'"+descripcion+"','"+nombrearchivo+"','"+rutaarchivo+"','"+ultusuario+"'";
+            Statement statement = connection.createStatement();
+            ResultSet res = statement.executeQuery(SQL_INSERT);
+            while (res.next()) {
+                result = res.getString(1);
+            }
+        } catch (Exception e) {
+            result = e.getMessage();
+        }
+        return result;
+    }
+    
+    @WebMethod(operationName = "GetListFotosRG")
+    public ArrayList<DocsReclamoGarantia> GetListFotosRG( @WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania ,@WebParam(name = "correlativo", targetNamespace = "http://SOAP/") String correlativo ) throws Exception{
+        ArrayList<DocsReclamoGarantia> LstData = new ArrayList<DocsReclamoGarantia>();
+        String query = "select c_compania, n_numero, n_linea, isnull(c_descripcion,'') c_descripcion, c_nombre_archivo, c_ruta_archivo, c_ultimousuario , d_ultimafechamodificacion "+
+                        "from  lys..CO_RECLAMOSGARANTIA_DOC where c_compania = '"+compania+"' and n_numero ="+correlativo;
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()) {
+            DocsReclamoGarantia oEnt = new DocsReclamoGarantia();
+            oEnt.setC_compania(rs.getString(1));
+            oEnt.setN_numero(rs.getInt(2));
+            oEnt.setN_linea(rs.getInt(3));
+            oEnt.setC_descripcion(rs.getString(4));
+            oEnt.setC_nombre_archivo(rs.getString(5));
+            oEnt.setC_ruta_archivo(rs.getString(6));
+            oEnt.setC_ultimousuario(rs.getString(7));
+            oEnt.setD_ultimafechamodificacion(rs.getString(8));
+            LstData.add(oEnt);
+        }
+        return LstData;
+    }
+    
+    @WebMethod(operationName = "GetListFotosQJ")
+    public ArrayList<DocsQuejaCliente> GetListFotosQJ( @WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania ,@WebParam(name = "correlativo", targetNamespace = "http://SOAP/") String correlativo ) throws Exception{
+        ArrayList<DocsQuejaCliente> LstData = new ArrayList<DocsQuejaCliente>();
+        String query = "select c_compania, n_queja, n_linea, isnull(c_descripcion,'') c_descripcion, c_nombre_archivo, c_ruta_archivo, c_ultimousuario ,d_ultimafechamodificacion "+
+                        "from  lys..CO_QUEJACLIENTE_DOC where c_compania = '"+compania+"' and n_queja ="+correlativo;
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()) {
+            DocsQuejaCliente oEnt = new DocsQuejaCliente();
+            oEnt.setC_compania(rs.getString(1));
+            oEnt.setN_queja(rs.getInt(2));
+            oEnt.setN_linea(rs.getInt(3));
+            oEnt.setC_descripcion(rs.getString(4));
+            oEnt.setC_nombre_archivo(rs.getString(5));
+            oEnt.setC_ruta_archivo(rs.getString(6));
+            oEnt.setC_ultimousuario(rs.getString(7));
+            oEnt.setD_ultimafechamodificacion(rs.getString(8));
+            LstData.add(oEnt);
+        }
+        return LstData;
+    }
 
 }
+
+
