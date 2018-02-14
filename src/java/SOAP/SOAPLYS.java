@@ -10,8 +10,10 @@ import com.lys.beans.CapacitacionCliente;
 import com.lys.beans.CentroCostoDB;
 import com.lys.beans.CorreoApReqLog;
 import com.lys.beans.CorreoUsuarioCCosto;
+import com.lys.beans.DocsCapacitacion;
 import com.lys.beans.DocsQuejaCliente;
 import com.lys.beans.DocsReclamoGarantia;
+import com.lys.beans.DocsSugerencia;
 import com.lys.beans.EFacSerLot;
 import com.lys.beans.EmpAsigSolicitud;
 import com.lys.beans.EmpleadoMant;
@@ -338,8 +340,20 @@ public class SOAPLYS {
                 else   if(tipo.equals("QJ")){
                    rutaserver =  GetParametroTexto("00100000", "CO","DOCQUJRUTA").substring(2);
                 }
-                else   if(tipo.equals("QJ")){
-                   rutaserver =  GetParametroTexto("00100000", "CO","DOCQUJRUTA").substring(2);
+                else   if(tipo.equals("SU")){
+                   rutaserver =  GetParametroTexto("00100000", "CO","RSSUGRUTA").substring(2);
+                }
+                 else   if(tipo.equals("SE")){
+                   rutaserver =  GetParametroTexto("00100000", "CO","RSSCERUTA").substring(2);
+                }
+                 else   if(tipo.equals("MP")){
+                   rutaserver =  GetParametroTexto("00100000", "CO","RSMPURUTA").substring(2);
+                }
+                 else   if(tipo.equals("CT")){
+                   rutaserver =  GetParametroTexto("00100000", "CO","RSCTERUTA").substring(2);
+                }
+                 else   if(tipo.equals("CP")){
+                   rutaserver =  GetParametroTexto("00100000", "CO","RSOLCPRUTA").substring(2);
                 }
                 
         String msg = "";
@@ -352,20 +366,17 @@ public class SOAPLYS {
            filePathServer = File.separator + File.separator + "IBSERVER_1" +"\\Servidor de Archivos\\"+ rutaserver  + fileName+".jpg";
 
         }
-
         try {
             FileOutputStream fos = new FileOutputStream(filePathServer);
             BufferedOutputStream outputStream = new BufferedOutputStream(fos);
             outputStream.write(imgeByte);
             outputStream.close();
-
             msg = "Received file: " + filePathServer;
             System.out.println("Received file: " + filePathServer);
 
         } catch (Exception ex) {
             System.err.println(ex);
             msg = ex.getMessage();
-            //    throw new WebServiceException(ex);
         }
         return msg;
     }
@@ -1103,6 +1114,21 @@ public class SOAPLYS {
                 }
                 else if (tipo.equals("QJ")){
                     rutaserver =  GetParametroTexto("00100000", "CO","DOCQUJRUTA").substring(2);
+                }
+                else   if(tipo.equals("SU")){
+                   rutaserver =  GetParametroTexto("00100000", "CO","RSSUGRUTA").substring(2);
+                }
+                 else   if(tipo.equals("SE")){
+                   rutaserver =  GetParametroTexto("00100000", "CO","RSSCERUTA").substring(2);
+                }
+                 else   if(tipo.equals("MP")){
+                   rutaserver =  GetParametroTexto("00100000", "CO","RSMPURUTA").substring(2);
+                }
+                 else   if(tipo.equals("CT")){
+                   rutaserver =  GetParametroTexto("00100000", "CO","RSCTERUTA").substring(2);
+                }
+                 else   if(tipo.equals("CP")){
+                   rutaserver =  GetParametroTexto("00100000", "CO","RSOLCPRUTA").substring(2);
                 }
         String filePathServer = File.separator + File.separator + "IBSERVER_1" + File.separator + "Servidor de Archivos" + File.separator + rutaserver + File.separator + filename;
         Path path = Paths.get(filePathServer);
@@ -2463,6 +2489,7 @@ public class SOAPLYS {
             oEnt.setC_cerrado(res.getString(35));
             oEnt.setC_notificacion(res.getString(36));
             oEnt.setC_observacionescierre(res.getString(37));
+             oEnt.setC_estadofin(res.getString(38));
             result.add(oEnt);
         }
         return result;
@@ -2641,7 +2668,7 @@ public class SOAPLYS {
     }
 
     @WebMethod(operationName = "InsertCapacitacionCliente")
-    public String InsertCapacitacionCliente(@WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania, @WebParam(name = "correlativo", targetNamespace = "http://SOAP/") String correlativo, @WebParam(name = "accion", targetNamespace = "http://SOAP/") String accion, @WebParam(name = "usuario", targetNamespace = "http://SOAP/") String usuario, @WebParam(name = "fecha", targetNamespace = "http://SOAP/") String fecha, @WebParam(name = "cliente", targetNamespace = "http://SOAP/") String cliente, @WebParam(name = "personas", targetNamespace = "http://SOAP/") String personas, @WebParam(name = "fechaprob", targetNamespace = "http://SOAP/") String fechaprob, @WebParam(name = "horaprob", targetNamespace = "http://SOAP/") String horaprob, @WebParam(name = "lugar") String lugar, @WebParam(name = "direccioncli", targetNamespace = "http://SOAP/") String direccioncli, @WebParam(name = "direccionreg", targetNamespace = "http://SOAP/") String direccionreg, @WebParam(name = "temacapacitacion", targetNamespace = "http://SOAP/") String temacapacitacion, @WebParam(name = "descripciontema", targetNamespace = "http://SOAP/") String descripciontema, @WebParam(name = "estado", targetNamespace = "http://SOAP/") String estado,@WebParam(name = "observacion", targetNamespace = "http://SOAP/") String observacion) {
+    public String InsertCapacitacionCliente(@WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania, @WebParam(name = "correlativo", targetNamespace = "http://SOAP/") String correlativo, @WebParam(name = "accion", targetNamespace = "http://SOAP/") String accion, @WebParam(name = "usuario", targetNamespace = "http://SOAP/") String usuario, @WebParam(name = "fecha", targetNamespace = "http://SOAP/") String fecha, @WebParam(name = "cliente", targetNamespace = "http://SOAP/") String cliente, @WebParam(name = "personas", targetNamespace = "http://SOAP/") String personas, @WebParam(name = "fechaprob", targetNamespace = "http://SOAP/") String fechaprob, @WebParam(name = "horaprob", targetNamespace = "http://SOAP/") String horaprob, @WebParam(name = "lugar", targetNamespace = "http://SOAP/") String lugar, @WebParam(name = "direccioncli", targetNamespace = "http://SOAP/") String direccioncli, @WebParam(name = "direccionreg", targetNamespace = "http://SOAP/") String direccionreg, @WebParam(name = "temacapacitacion", targetNamespace = "http://SOAP/") String temacapacitacion, @WebParam(name = "descripciontema", targetNamespace = "http://SOAP/") String descripciontema, @WebParam(name = "estado", targetNamespace = "http://SOAP/") String estado,@WebParam(name = "observacion", targetNamespace = "http://SOAP/") String observacion) {
         String result = "NO";
         try {
             ConectaDB cndb = new ConectaDB();
@@ -2768,6 +2795,24 @@ public class SOAPLYS {
         return result;
     }
     
+     @WebMethod(operationName = "InsertDocsSugerencia")
+    public String InsertDocsSugerencia(@WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania, @WebParam(name = "correlativo", targetNamespace = "http://SOAP/") String correlativo, @WebParam(name = "linea", targetNamespace = "http://SOAP/") String linea ,@WebParam(name = "descripcion", targetNamespace = "http://SOAP/") String descripcion ,@WebParam(name = "nombrearchivo", targetNamespace = "http://SOAP/") String nombrearchivo,@WebParam(name = "rutaarchivo", targetNamespace = "http://SOAP/") String rutaarchivo ,@WebParam(name = "ultusuario", targetNamespace = "http://SOAP/") String ultusuario) throws Exception {
+        String result = "NO";
+        try {
+            ConectaDB cndb = new ConectaDB();
+            Connection connection = cndb.getConexion();
+            String SQL_INSERT = "EXEC SP_CO_INSERT_DOCS_SG '"+compania+"',"+correlativo+","+linea+",'"+descripcion+"','"+nombrearchivo+"','"+rutaarchivo+"','"+ultusuario+"'";
+            Statement statement = connection.createStatement();
+            ResultSet res = statement.executeQuery(SQL_INSERT);
+            while (res.next()) {
+                result = res.getString(1);
+            }
+        } catch (Exception e) {
+            result = e.getMessage();
+        }
+        return result;
+    }
+    
     @WebMethod(operationName = "GetListFotosRG")
     public ArrayList<DocsReclamoGarantia> GetListFotosRG( @WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania ,@WebParam(name = "correlativo", targetNamespace = "http://SOAP/") String correlativo ) throws Exception{
         ArrayList<DocsReclamoGarantia> LstData = new ArrayList<DocsReclamoGarantia>();
@@ -2811,6 +2856,73 @@ public class SOAPLYS {
         }
         return LstData;
     }
+    
+    
+    
+    
+    @WebMethod(operationName = "GetListFotosSG")
+    public ArrayList<DocsSugerencia> GetListFotosSG( @WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania ,@WebParam(name = "correlativo", targetNamespace = "http://SOAP/") String correlativo ) throws Exception{
+        ArrayList<DocsSugerencia> LstData = new ArrayList<DocsSugerencia>();
+        String query = "select c_compania, n_sugerencia, n_linea, isnull(c_descripcion,'') c_descripcion, c_nombre_archivo, c_ruta_archivo, c_ultimousuario ,d_ultimafechamodificacion "+
+                        "from  lys..co_sugerenciacliente_doc where c_compania = '"+compania+"' and n_sugerencia ="+correlativo;
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()) {
+            DocsSugerencia oEnt = new DocsSugerencia();
+            oEnt.setC_compania(rs.getString(1));
+            oEnt.setN_sugerencia(rs.getInt(2));
+            oEnt.setN_linea(rs.getInt(3));
+            oEnt.setC_descripcion(rs.getString(4));
+            oEnt.setC_nombre_archivo(rs.getString(5));
+            oEnt.setC_ruta_archivo(rs.getString(6));
+            oEnt.setC_ultimousuario(rs.getString(7));
+            oEnt.setD_ultimafechamodificacion(rs.getString(8));
+            LstData.add(oEnt);
+        }
+        return LstData;
+    }
+    
+    @WebMethod(operationName = "InsertDocsCapacitacion")
+    public String InsertDocsCapacitacion(@WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania, @WebParam(name = "correlativo", targetNamespace = "http://SOAP/") String correlativo, @WebParam(name = "linea", targetNamespace = "http://SOAP/") String linea ,@WebParam(name = "descripcion", targetNamespace = "http://SOAP/") String descripcion ,@WebParam(name = "nombrearchivo", targetNamespace = "http://SOAP/") String nombrearchivo,@WebParam(name = "rutaarchivo", targetNamespace = "http://SOAP/") String rutaarchivo ,@WebParam(name = "ultusuario", targetNamespace = "http://SOAP/") String ultusuario) throws Exception {
+        String result = "NO";
+        try {
+            ConectaDB cndb = new ConectaDB();
+            Connection connection = cndb.getConexion();
+            String SQL_INSERT = "EXEC SP_CO_INSERT_DOCS_CP '"+compania+"',"+correlativo+","+linea+",'"+descripcion+"','"+nombrearchivo+"','"+rutaarchivo+"','"+ultusuario+"'";
+            Statement statement = connection.createStatement();
+            ResultSet res = statement.executeQuery(SQL_INSERT);
+            while (res.next()) {
+                result = res.getString(1);
+            }
+        } catch (Exception e) {
+            result = e.getMessage();
+        }
+        return result;
+    }
+    
+    @WebMethod(operationName = "GetListFotosCP")
+    public ArrayList<DocsCapacitacion> GetListFotosCP( @WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania ,@WebParam(name = "correlativo", targetNamespace = "http://SOAP/") String correlativo ) throws Exception{
+        ArrayList<DocsCapacitacion> LstData = new ArrayList<DocsCapacitacion>();
+        String query = "select c_compania, n_solicitud, n_linea, isnull(c_descripcion,'') c_descripcion, c_nombre_archivo, c_ruta_archivo, c_ultimousuario ,d_ultimafechamodificacion "+
+                        "from  lys..co_solcapacitacioncli_doc where c_compania = '"+compania+"' and n_solicitud ="+correlativo;
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()) {
+            DocsCapacitacion oEnt = new DocsCapacitacion();
+            oEnt.setC_compania(rs.getString(1));
+            oEnt.setN_solicitud(rs.getInt(2));
+            oEnt.setN_linea(rs.getInt(3));
+            oEnt.setC_descripcion(rs.getString(4));
+            oEnt.setC_nombre_archivo(rs.getString(5));
+            oEnt.setC_ruta_archivo(rs.getString(6));
+            oEnt.setC_ultimousuario(rs.getString(7));
+            oEnt.setD_ultimafechamodificacion(rs.getString(8));
+            LstData.add(oEnt);
+        }
+        return LstData;
+    }
+    
+    
 
 }
 

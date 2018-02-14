@@ -47,7 +47,7 @@ public class InsertCapacitacionCliente {
     private String fechaprob;
     @XmlElement(name = "horaprob", namespace = "http://SOAP/")
     private String horaprob;
-    @XmlElement(name = "lugar", namespace = "")
+    @XmlElement(name = "lugar", namespace = "http://SOAP/")
     private String lugar;
     @XmlElement(name = "direccioncli", namespace = "http://SOAP/")
     private String direccioncli;
