@@ -19,6 +19,7 @@ import com.lys.beans.EmpAsigSolicitud;
 import com.lys.beans.EmpleadoMant;
 import com.lys.beans.HistorialInspGen;
 import com.lys.beans.HistorialInspMaq;
+import com.lys.beans.IMEMovil;
 import com.lys.beans.Inspecciones;
 import com.lys.beans.InspeccionesGenCab;
 import com.lys.beans.InspeccionesGenDet;
@@ -28,6 +29,7 @@ import com.lys.beans.Maquina;
 import com.lys.beans.Menu;
 import com.lys.beans.MenuDB;
 import com.lys.beans.Parametros;
+import com.lys.beans.ParametrosSist;
 import com.lys.beans.PeriodoInspeccionDB;
 import com.lys.beans.QuejaCliente;
 import com.lys.beans.Rechazos;
@@ -271,10 +273,10 @@ public class SOAPLYS {
      * Web service operation
      */
     @WebMethod(operationName = "GetDataAccesos")
-    public List<AccesosDB> GetDataAccesos() throws Exception {
+    public List<AccesosDB> GetDataAccesos(@WebParam(name = "usuario", targetNamespace = "http://SOAP/") String usuario) throws Exception {
         //TODO write your implementation code here:
         List<AccesosDB> dataAcceso = new ArrayList<AccesosDB>();
-        String query = "SELECT * FROM  dbo.MTP_ACCESO";
+        String query = "SELECT * FROM  MTP_ACCESO  where c_usuario = '"+usuario+"'";
         GetResultSet cresult = new GetResultSet();
         ResultSet rs = cresult.CreateConection(query);
         while (rs.next()) {
@@ -2922,6 +2924,153 @@ public class SOAPLYS {
         return LstData;
     }
     
+    
+    @WebMethod(operationName = "InsertDatosAuditoria")
+    public String InsertDatosAuditoria(@WebParam(name = "origen", targetNamespace = "http://SOAP/") String origen, @WebParam(name = "codIntApp", targetNamespace = "http://SOAP/") String codIntApp, @WebParam(name = "tipo", targetNamespace = "http://SOAP/") String tipo ,@WebParam(name = "imei", targetNamespace = "http://SOAP/") String imei ,@WebParam(name = "movil", targetNamespace = "http://SOAP/") String movil,@WebParam(name = "usuario", targetNamespace = "http://SOAP/") String usuario ,@WebParam(name = "hora", targetNamespace = "http://SOAP/") String hora,@WebParam(name = "seriechip", targetNamespace = "http://SOAP/") String seriechip ) throws Exception {
+        String result = "NO";
+        try {
+            ConectaDB cndb = new ConectaDB();
+            Connection connection = cndb.getConexion();
+            String SQL_INSERT = "EXEC SP_INSERTAR_DATOSAUDITORIA '"+origen+"','"+codIntApp+"','"+tipo+"','"+imei+"','"+movil+"','"+usuario+"','"+hora+"','"+seriechip+"'";
+            Statement statement = connection.createStatement();
+            ResultSet res = statement.executeQuery(SQL_INSERT);
+            while (res.next()) {
+                result = res.getString(1);
+            }
+        } catch (Exception e) {
+            result = e.getMessage();
+        }
+        return result;
+    }
+    
+    @WebMethod(operationName = "ValidacionUsuarioIMEI")
+    public String ValidacionUsuarioIMEI(@WebParam(name = "usuario", targetNamespace = "http://SOAP/") String usuario, @WebParam(name = "clave", targetNamespace = "http://SOAP/") String clave, @WebParam(name = "imei", targetNamespace = "http://SOAP/") String imei ,@WebParam(name = "numeromov", targetNamespace = "http://SOAP/") String numeromov ,@WebParam(name = "seriechip", targetNamespace = "http://SOAP/") String seriechip) throws Exception {
+        String result = "NO";
+        try {
+            ConectaDB cndb = new ConectaDB();
+            Connection connection = cndb.getConexion();
+            String SQL_INSERT = "EXEC SP_LOGIN_ONLINE '"+usuario+"','"+clave+"','"+imei+"','"+numeromov+"','"+seriechip+"'";
+            Statement statement = connection.createStatement();
+            ResultSet res = statement.executeQuery(SQL_INSERT);
+            while (res.next()) {
+                result = res.getString(1);
+            }
+        } catch (Exception e) {
+            result = e.getMessage();
+        }
+        return result;
+    }
+    
+    @WebMethod(operationName = "GetListIMEIMoviles")
+    public ArrayList<IMEMovil> GetListIMEIMoviles(@WebParam(name = "imei", targetNamespace = "http://SOAP/") String imei ) throws Exception {
+        //TODO write your implementation code here:
+        ArrayList<IMEMovil> dataIMEI = new ArrayList<IMEMovil>();
+        String query = "SELECT c_imei, c_tipo, c_numero, c_usuarioreg, d_fechareg, c_estado, " +
+                        " c_ultimousuario, d_ultimafechamodificacion , " +
+                        " c_seriechip FROM  lys..ma_imeicelular where c_imei = '"+imei+"'";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()) {
+
+            IMEMovil m = new IMEMovil();
+
+            m.setC_imei(rs.getString(1));
+            m.setC_tipo(rs.getString(2));
+            m.setC_numero(rs.getString(3));
+            m.setC_usuarioreg(rs.getString(4));
+            m.setD_fechareg(rs.getString(5));
+            m.setC_estado(rs.getString(6));
+            m.setC_ultimousuario(rs.getString(7));
+            m.setD_ultimafechamodificacion(rs.getString(8));
+            m.setC_seriechip(rs.getString(9));
+
+            dataIMEI.add(m);
+
+        }
+
+        return dataIMEI;
+    }
+    
+    @WebMethod(operationName = "VerificarIMEIRegistrada")
+    public String VerificarIMEIRegistrada(@WebParam(name = "imei", targetNamespace = "http://SOAP/") String imei) throws Exception {
+        String result = "0";
+        String query = "select count(*) n_contador  from  lys..ma_imeicelular where c_imei ='"+imei+"'";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()) {
+            result = rs.getString(1);
+        }
+        return result;
+    }
+    
+    
+    @WebMethod(operationName = "InsertIMEIMovil")
+    public String InsertIMEIMovil(@WebParam(name = "imei", targetNamespace = "http://SOAP/") String imei, @WebParam(name = "tipo", targetNamespace = "http://SOAP/") String tipo, @WebParam(name = "numero", targetNamespace = "http://SOAP/") String numero ,@WebParam(name = "usuarioreg", targetNamespace = "http://SOAP/") String usuarioreg ,@WebParam(name = "estado", targetNamespace = "http://SOAP/") String estado,@WebParam(name = "ultusuario", targetNamespace = "http://SOAP/") String ultusuario ,@WebParam(name = "ultfecha", targetNamespace = "http://SOAP/") String ultfecha,@WebParam(name = "seriechip", targetNamespace = "http://SOAP/") String seriechip ) throws Exception {
+        String result = "NO";
+        try {
+            ConectaDB cndb = new ConectaDB();
+            Connection connection = cndb.getConexion();
+            String SQL_INSERT = "EXEC SP_INSERT_IMEICELULAR '"+imei+"','"+tipo+"','"+numero+"','"+usuarioreg+"','"+estado+"','"+ultusuario+"','"+ultfecha+"','"+seriechip+"'";
+            Statement statement = connection.createStatement();
+            ResultSet res = statement.executeQuery(SQL_INSERT);
+            while (res.next()) {
+                result = res.getString(1);
+            }
+        } catch (Exception e) {
+            result = e.getMessage();
+        }
+        return result;
+    }
+    
+    @WebMethod(operationName = "GetListaParametrosMov")
+    public ArrayList<ParametrosSist> GetListaParametrosMov( ) throws Exception {
+        //TODO write your implementation code here:
+        ArrayList<ParametrosSist> datalist = new ArrayList<ParametrosSist>();
+        String query = "select c_compania ,c_aplicacion,c_parametrocodigo,c_descripcion,c_texto, " +
+                        " c_Ultimousuario,d_Ultimafechamodificacion , n_numero ,d_fecha " +
+                        " from lys..ma_parametros " +
+                        "where c_aplicacion ='CO' and c_parametrocodigo in ('FMAXIMETMP','TMPSINCRON')" ;
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()) {
+
+            ParametrosSist p = new ParametrosSist();
+
+            p.setC_compania(rs.getString(1));
+            p.setC_aplicacion(rs.getString(2));
+            p.setC_parametrocodigo(rs.getString(3));
+            p.setC_descripcion(rs.getString(4));
+            p.setC_texto(rs.getString(5));
+            p.setC_ultusuario(rs.getString(6));
+            p.setC_ultfechamodificacion(rs.getString(7));
+            p.setN_numero(rs.getDouble(8));
+            p.setD_fecha(rs.getString(9));
+
+            datalist.add(p);
+
+        }
+
+        return datalist;
+    }
+    
+    
+    @WebMethod(operationName = "InsertEventoAuditoria")
+    public String InsertEventoAuditoria(@WebParam(name = "origen", targetNamespace = "http://SOAP/") String origen ,@WebParam(name = "imei", targetNamespace = "http://SOAP/") String imei  ,@WebParam(name = "numero", targetNamespace = "http://SOAP/") String numero, @WebParam(name = "seriechip", targetNamespace = "http://SOAP/") String seriechip,@WebParam(name = "hora", targetNamespace = "http://SOAP/") String hora,@WebParam(name = "accion", targetNamespace = "http://SOAP/") String accion ) throws Exception {
+        String result = "NO";
+        try {
+            ConectaDB cndb = new ConectaDB();
+            Connection connection = cndb.getConexion();
+            String SQL_INSERT = "EXEC SP_INSERTAR_EVENTO_AUDITORIA '"+origen+"','"+imei+"','"+numero+"','"+seriechip+"','"+hora+"','"+accion+"'";
+            Statement statement = connection.createStatement();
+            ResultSet res = statement.executeQuery(SQL_INSERT);
+            while (res.next()) {
+                result = res.getString(1);
+            }
+        } catch (Exception e) {
+            result = e.getMessage();
+        }
+        return result;
+    }
     
 
 }
