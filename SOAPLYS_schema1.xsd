@@ -35,6 +35,10 @@
 
   <xs:element name="Exception" type="tns:Exception"/>
 
+  <xs:element name="GenHemtlRepVentPromo" type="tns:GenHemtlRepVentPromo"/>
+
+  <xs:element name="GenHemtlRepVentPromoResponse" type="tns:GenHemtlRepVentPromoResponse"/>
+
   <xs:element name="GetCentroCosto" type="tns:GetCentroCosto"/>
 
   <xs:element name="GetCentroCostoResponse" type="tns:GetCentroCostoResponse"/>
@@ -175,6 +179,10 @@
 
   <xs:element name="GetListFotosSGResponse" type="tns:GetListFotosSGResponse"/>
 
+  <xs:element name="GetListIMEIMoviles" type="tns:GetListIMEIMoviles"/>
+
+  <xs:element name="GetListIMEIMovilesResponse" type="tns:GetListIMEIMovilesResponse"/>
+
   <xs:element name="GetListMarcas" type="tns:GetListMarcas"/>
 
   <xs:element name="GetListMarcasResponse" type="tns:GetListMarcasResponse"/>
@@ -207,9 +215,17 @@
 
   <xs:element name="GetListaModelosResponse" type="tns:GetListaModelosResponse"/>
 
+  <xs:element name="GetListaParametrosMov" type="tns:GetListaParametrosMov"/>
+
+  <xs:element name="GetListaParametrosMovResponse" type="tns:GetListaParametrosMovResponse"/>
+
   <xs:element name="GetListaPruebasLab" type="tns:GetListaPruebasLab"/>
 
   <xs:element name="GetListaPruebasLabResponse" type="tns:GetListaPruebasLabResponse"/>
+
+  <xs:element name="GetListaUsuariosVend" type="tns:GetListaUsuariosVend"/>
+
+  <xs:element name="GetListaUsuariosVendResponse" type="tns:GetListaUsuariosVendResponse"/>
 
   <xs:element name="GetListaVendedores" type="tns:GetListaVendedores"/>
 
@@ -223,6 +239,10 @@
 
   <xs:element name="GetMaquinasResponse" type="tns:GetMaquinasResponse"/>
 
+  <xs:element name="GetOpcionesConsulta" type="tns:GetOpcionesConsulta"/>
+
+  <xs:element name="GetOpcionesConsultaResponse" type="tns:GetOpcionesConsultaResponse"/>
+
   <xs:element name="GetPeriodosInspeccion" type="tns:GetPeriodosInspeccion"/>
 
   <xs:element name="GetPeriodosInspeccionResponse" type="tns:GetPeriodosInspeccionResponse"/>
@@ -234,6 +254,10 @@
   <xs:element name="GetTipoRevisionG" type="tns:GetTipoRevisionG"/>
 
   <xs:element name="GetTipoRevisionGResponse" type="tns:GetTipoRevisionGResponse"/>
+
+  <xs:element name="GetUnidadNegUsuario" type="tns:GetUnidadNegUsuario"/>
+
+  <xs:element name="GetUnidadNegUsuarioResponse" type="tns:GetUnidadNegUsuarioResponse"/>
 
   <xs:element name="GetUsuarioCompComercial" type="tns:GetUsuarioCompComercial"/>
 
@@ -259,6 +283,10 @@
 
   <xs:element name="InsertCapacitacionClienteResponse" type="tns:InsertCapacitacionClienteResponse"/>
 
+  <xs:element name="InsertDatosAuditoria" type="tns:InsertDatosAuditoria"/>
+
+  <xs:element name="InsertDatosAuditoriaResponse" type="tns:InsertDatosAuditoriaResponse"/>
+
   <xs:element name="InsertDocsCapacitacion" type="tns:InsertDocsCapacitacion"/>
 
   <xs:element name="InsertDocsCapacitacionResponse" type="tns:InsertDocsCapacitacionResponse"/>
@@ -278,6 +306,14 @@
   <xs:element name="InsertEmpSolicitud" type="tns:InsertEmpSolicitud"/>
 
   <xs:element name="InsertEmpSolicitudResponse" type="tns:InsertEmpSolicitudResponse"/>
+
+  <xs:element name="InsertEventoAuditoria" type="tns:InsertEventoAuditoria"/>
+
+  <xs:element name="InsertEventoAuditoriaResponse" type="tns:InsertEventoAuditoriaResponse"/>
+
+  <xs:element name="InsertIMEIMovil" type="tns:InsertIMEIMovil"/>
+
+  <xs:element name="InsertIMEIMovilResponse" type="tns:InsertIMEIMovilResponse"/>
 
   <xs:element name="InsertInspGenCab" type="tns:InsertInspGenCab"/>
 
@@ -383,6 +419,10 @@
 
   <xs:element name="ValidaRechazoReqLogResponse" type="tns:ValidaRechazoReqLogResponse"/>
 
+  <xs:element name="ValidacionUsuarioIMEI" type="tns:ValidacionUsuarioIMEI"/>
+
+  <xs:element name="ValidacionUsuarioIMEIResponse" type="tns:ValidacionUsuarioIMEIResponse"/>
+
   <xs:element name="ValidarAprobacionReq" type="tns:ValidarAprobacionReq"/>
 
   <xs:element name="ValidarAprobacionReqResponse" type="tns:ValidarAprobacionReqResponse"/>
@@ -390,6 +430,10 @@
   <xs:element name="ValidarEmpleadoMant" type="tns:ValidarEmpleadoMant"/>
 
   <xs:element name="ValidarEmpleadoMantResponse" type="tns:ValidarEmpleadoMantResponse"/>
+
+  <xs:element name="VerificarIMEIRegistrada" type="tns:VerificarIMEIRegistrada"/>
+
+  <xs:element name="VerificarIMEIRegistradaResponse" type="tns:VerificarIMEIRegistradaResponse"/>
 
   <xs:element name="VerificarItemExiste" type="tns:VerificarItemExiste"/>
 
@@ -536,6 +580,27 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="GetUnidadNegUsuario">
+    <xs:sequence>
+      <xs:element name="compania" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetUnidadNegUsuarioResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:unidadNegocio" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="unidadNegocio">
+    <xs:sequence>
+      <xs:element name="c_compania" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_descripcion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_estado" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_unidadnegocio" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="TransferirReclamoGarantia">
     <xs:sequence>
       <xs:element name="compania" type="xs:string" form="qualified" minOccurs="0"/>
@@ -569,7 +634,9 @@
   </xs:complexType>
 
   <xs:complexType name="GetDataAccesos">
-    <xs:sequence/>
+    <xs:sequence>
+      <xs:element name="usuario" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="GetDataAccesosResponse">
@@ -802,6 +869,25 @@
   </xs:complexType>
 
   <xs:complexType name="EnvioCorreoAprobReqLogResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GenHemtlRepVentPromo">
+    <xs:sequence>
+      <xs:element name="compania" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="ciasecundaria" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="undnegoc" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="vendedor" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="periodo" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="moneda" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="usuario" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="formato" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GenHemtlRepVentPromoResponse">
     <xs:sequence>
       <xs:element name="return" type="xs:string" minOccurs="0"/>
     </xs:sequence>
@@ -1175,6 +1261,47 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="GetListaUsuariosVend">
+    <xs:sequence>
+      <xs:element name="compania" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="periodo" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="usuario" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="undnego" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetListaUsuariosVendResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:usuarioPromotor" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="usuarioPromotor">
+    <xs:sequence>
+      <xs:element name="c_nombusuario" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_usuario" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="InsertDatosAuditoria">
+    <xs:sequence>
+      <xs:element name="origen" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="codIntApp" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="tipo" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="imei" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="movil" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="usuario" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="hora" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="seriechip" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="InsertDatosAuditoriaResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="GetTipoIp">
     <xs:sequence>
       <xs:element name="sTipo" type="xs:string" form="qualified" minOccurs="0"/>
@@ -1205,18 +1332,6 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="ValidarEmpleadoMant">
-    <xs:sequence>
-      <xs:element name="usuario" type="xs:string" form="qualified" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="ValidarEmpleadoMantResponse">
-    <xs:sequence>
-      <xs:element name="return" type="xs:string" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
-
   <xs:complexType name="GetListNotificacionQueja">
     <xs:sequence/>
   </xs:complexType>
@@ -1237,6 +1352,18 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="ValidarEmpleadoMant">
+    <xs:sequence>
+      <xs:element name="usuario" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ValidarEmpleadoMantResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="hello">
     <xs:sequence>
       <xs:element name="name" type="xs:string" minOccurs="0"/>
@@ -1244,6 +1371,22 @@
   </xs:complexType>
 
   <xs:complexType name="helloResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ValidacionUsuarioIMEI">
+    <xs:sequence>
+      <xs:element name="usuario" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="clave" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="imei" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="numeromov" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="seriechip" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ValidacionUsuarioIMEIResponse">
     <xs:sequence>
       <xs:element name="return" type="xs:string" minOccurs="0"/>
     </xs:sequence>
@@ -1288,6 +1431,25 @@
   <xs:complexType name="GetUsuarioCompaniaResponse">
     <xs:sequence>
       <xs:element name="return" type="tns:usuarioCompania" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="InsertEventoAuditoria">
+    <xs:sequence>
+      <xs:element name="origen" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="imei" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="numero" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="seriechip" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="hora" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="accion" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="usuario" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="codintapp" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="InsertEventoAuditoriaResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -1475,6 +1637,18 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="VerificarIMEIRegistrada">
+    <xs:sequence>
+      <xs:element name="imei" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="VerificarIMEIRegistradaResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="ListReclamoGarantia">
     <xs:sequence>
       <xs:element name="compania" type="xs:string" form="qualified" minOccurs="0"/>
@@ -1616,6 +1790,27 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="GetOpcionesConsulta">
+    <xs:sequence>
+      <xs:element name="compania" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetOpcionesConsultaResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:opcionConsulta" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="opcionConsulta">
+    <xs:sequence>
+      <xs:element name="c_compania" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_descripcion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_numero" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_tipo" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="InsertDocsQuejaCliente">
     <xs:sequence>
       <xs:element name="compania" type="xs:string" form="qualified" minOccurs="0"/>
@@ -1631,6 +1826,30 @@
   <xs:complexType name="InsertDocsQuejaClienteResponse">
     <xs:sequence>
       <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetListaParametrosMov">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="GetListaParametrosMovResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:parametrosSist" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="parametrosSist">
+    <xs:sequence>
+      <xs:element name="c_aplicacion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_compania" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_descripcion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_parametrocodigo" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_texto" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_ultfechamodificacion" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_ultusuario" type="xs:string" minOccurs="0"/>
+      <xs:element name="d_fecha" type="xs:string" minOccurs="0"/>
+      <xs:element name="n_numero" type="xs:double"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -2219,24 +2438,6 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="InsertDocsSugerencia">
-    <xs:sequence>
-      <xs:element name="compania" type="xs:string" form="qualified" minOccurs="0"/>
-      <xs:element name="correlativo" type="xs:string" form="qualified" minOccurs="0"/>
-      <xs:element name="linea" type="xs:string" form="qualified" minOccurs="0"/>
-      <xs:element name="descripcion" type="xs:string" form="qualified" minOccurs="0"/>
-      <xs:element name="nombrearchivo" type="xs:string" form="qualified" minOccurs="0"/>
-      <xs:element name="rutaarchivo" type="xs:string" form="qualified" minOccurs="0"/>
-      <xs:element name="ultusuario" type="xs:string" form="qualified" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="InsertDocsSugerenciaResponse">
-    <xs:sequence>
-      <xs:element name="return" type="xs:string" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
-
   <xs:complexType name="GetUsuarios">
     <xs:sequence/>
   </xs:complexType>
@@ -2255,6 +2456,24 @@
       <xs:element name="flagmantto" type="xs:string" minOccurs="0"/>
       <xs:element name="nombre" type="xs:string" minOccurs="0"/>
       <xs:element name="nroPersona" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="InsertDocsSugerencia">
+    <xs:sequence>
+      <xs:element name="compania" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="correlativo" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="linea" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="descripcion" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="nombrearchivo" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="rutaarchivo" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="ultusuario" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="InsertDocsSugerenciaResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -2304,6 +2523,32 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="GetListIMEIMoviles">
+    <xs:sequence>
+      <xs:element name="imei" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GetListIMEIMovilesResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:imeMovil" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="imeMovil">
+    <xs:sequence>
+      <xs:element name="c_estado" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_imei" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_numero" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_seriechip" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_tipo" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_ultimousuario" type="xs:string" minOccurs="0"/>
+      <xs:element name="c_usuarioreg" type="xs:string" minOccurs="0"/>
+      <xs:element name="d_fechareg" type="xs:string" minOccurs="0"/>
+      <xs:element name="d_ultimafechamodificacion" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="InsertSugerenciaCliente">
     <xs:sequence>
       <xs:element name="compania" type="xs:string" form="qualified" minOccurs="0"/>
@@ -2321,6 +2566,25 @@
   </xs:complexType>
 
   <xs:complexType name="InsertSugerenciaClienteResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="InsertIMEIMovil">
+    <xs:sequence>
+      <xs:element name="imei" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="tipo" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="numero" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="usuarioreg" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="estado" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="ultusuario" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="ultfecha" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="seriechip" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="InsertIMEIMovilResponse">
     <xs:sequence>
       <xs:element name="return" type="xs:string" minOccurs="0"/>
     </xs:sequence>

@@ -28,6 +28,7 @@ import com.lys.beans.InspeccionesMaqDet;
 import com.lys.beans.Maquina;
 import com.lys.beans.Menu;
 import com.lys.beans.MenuDB;
+import com.lys.beans.OpcionConsulta;
 import com.lys.beans.Parametros;
 import com.lys.beans.ParametrosSist;
 import com.lys.beans.PeriodoInspeccionDB;
@@ -56,8 +57,10 @@ import com.lys.beans.TMATipoReclamo;
 import com.lys.beans.TMATipoSugerencia;
 import com.lys.beans.TMAVendedor;
 import com.lys.beans.TipoRevisionGBD;
+import com.lys.beans.UnidadNegocio;
 import com.lys.beans.UsuarioCompania;
 import com.lys.beans.UsuarioDB;
+import com.lys.beans.UsuarioPromotor;
 import com.lys.beans.UsuarioSolicitante;
 import com.lys.conection.ConectaDB;
 import com.lys.conection.GetResultSet;
@@ -108,8 +111,9 @@ public class SOAPLYS {
         InputStream entrada = null;
         Path currentRelativePath = Paths.get("");
         String pathF = currentRelativePath.toAbsolutePath().toString();
+        ConectaDB cn = new ConectaDB();
         try {
-            entrada = new FileInputStream(pathF + File.separator + "webapps" + File.separator + "LysWsRest" + File.separator + "propiedades" + File.separator + "configuracion.properties");
+            entrada = new FileInputStream(pathF + File.separator + "webapps" + File.separator + cn.getNombreWebService() + File.separator + "propiedades" + File.separator + "configuracion.properties");
             try {
                 propiedades.load(entrada);
             } catch (Exception ex) {
@@ -136,19 +140,16 @@ public class SOAPLYS {
         ResultSet rs = cresult.CreateConection(Sql);//this.CreateConection(Sql);
 
         while (rs.next()) {
-
             Parametros par = new Parametros(rs.getString(1), rs.getString(2));
             listPar.add(par);
-
         }
         Parametros[] l2 = new Parametros[listPar.size()];
-
+        
         for (int i = 0; i < listPar.size(); i++) {
-
             l2[i] = listPar.get(i);
-
         }
-//ExceptionBean
+        
+        System.out.println("ListUsers = " + String.valueOf(l2.length));
         return l2;
     }
 
@@ -160,25 +161,21 @@ public class SOAPLYS {
 
         //-------------------------
         List<Menu> list = new ArrayList<Menu>();
-
         String query = "EXEC dbo.SP_LISTAR_MENU '" + CodUsuario + "'";
 
         GetResultSet cresult = new GetResultSet();
         ResultSet rs = cresult.CreateConection(query);
         while (rs.next()) {
-
             Menu men = new Menu(rs.getString(1), rs.getString(2), rs.getString(3));
             list.add(men);
-
         }
 
         ListMenu = new Menu[list.size()];
         for (int i = 0; i < list.size(); i++) {
-
             ListMenu[i] = list.get(i);
-
         }
 
+        System.out.println("ListaMenu = " + String.valueOf(ListMenu.length));
         return ListMenu;
     }
 
@@ -194,12 +191,11 @@ public class SOAPLYS {
         GetResultSet cresult = new GetResultSet();
         ResultSet rs = cresult.CreateConection(query);
         while (rs.next()) {
-
             SubMenu smenu = new SubMenu(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4));
             listSub.add(smenu);
-
         }
-
+        
+        System.out.println("ListSubMenu = " + String.valueOf(listSub.size()));
         return listSub;
     }
 
@@ -217,24 +213,22 @@ public class SOAPLYS {
         GetResultSet Menus = new GetResultSet();
         msj = Menus.ExecProcedure(sqlMenu);
 
+        System.out.println("ActualizarMenuAcceso = " + msj);
         return msj;
-
     }
 
     @WebMethod(operationName = "ListSubMenuBotones")
     public List<SubMenuBotones> ListSubMenuBotones(@WebParam(name = "CodPadre", targetNamespace = "http://SOAP/") String CodPadre, @WebParam(name = "CodSubMenu", targetNamespace = "http://SOAP/") String CodSubMenu, @WebParam(name = "CodUsuario", targetNamespace = "http://SOAP/") String CodUsuario) throws Exception {
-
         List<SubMenuBotones> listSBotones = new ArrayList<SubMenuBotones>();
 
         String query = "EXEC dbo.SP_LISTAR_SUBMENU_ITEMS '" + CodPadre + "' , '" + CodSubMenu + "' , '" + CodUsuario + "'";
         GetResultSet cresult = new GetResultSet();
         ResultSet rs = cresult.CreateConection(query);
         while (rs.next()) {
-
             SubMenuBotones smenu = new SubMenuBotones(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4));
             listSBotones.add(smenu);
-
         }
+        System.out.println("ListSubMenuBotones = " + String.valueOf(listSBotones.size()));
         return listSBotones;
     }
 
@@ -252,7 +246,6 @@ public class SOAPLYS {
         ResultSet rs = cresult.CreateConection(query);
 
         while (rs.next()) {
-
             MenuDB mn = new MenuDB();
             mn.setAppCodigo(rs.getString(1));
             mn.setNivel1(rs.getString(2));
@@ -263,9 +256,9 @@ public class SOAPLYS {
             mn.setNombreMenu(rs.getString(7));
             mn.setDescripcion(rs.getString(8));
             dataMenu.add(mn);
-
         }
-
+           
+        System.out.println("GetDataMenu = " + String.valueOf(dataMenu.size()));
         return dataMenu;
     }
 
@@ -273,16 +266,23 @@ public class SOAPLYS {
      * Web service operation
      */
     @WebMethod(operationName = "GetDataAccesos")
+    //public List<AccesosDB> GetDataAccesos() throws Exception {
     public List<AccesosDB> GetDataAccesos(@WebParam(name = "usuario", targetNamespace = "http://SOAP/") String usuario) throws Exception {
         //TODO write your implementation code here:
-        List<AccesosDB> dataAcceso = new ArrayList<AccesosDB>();
-        String query = "SELECT * FROM  MTP_ACCESO  where c_usuario = '"+usuario+"'";
-        GetResultSet cresult = new GetResultSet();
-        ResultSet rs = cresult.CreateConection(query);
+        ArrayList<AccesosDB> dataAcceso = new ArrayList<AccesosDB>();
+        ConectaDB cndb = new ConectaDB();
+        Connection connection = cndb.getConexion();
+        String SQL_INSERT = "EXEC MT_ACCESOS_X_USUARIO ?";
+        PreparedStatement statement = connection.prepareStatement(SQL_INSERT,
+                Statement.RETURN_GENERATED_KEYS);
+
+        statement.setEscapeProcessing(true);
+        statement.setQueryTimeout(90);
+        statement.setString(1, usuario);
+   
+        ResultSet rs = statement.executeQuery();
         while (rs.next()) {
-
             AccesosDB ac = new AccesosDB();
-
             ac.setUsuario(rs.getString(1));
             ac.setAppCodigo(rs.getString(2));
             ac.setNivelAcc(rs.getString(3));
@@ -291,11 +291,10 @@ public class SOAPLYS {
             ac.setModificar(rs.getString(6));
             ac.setEliminar(rs.getString(7));
             ac.setOtros(rs.getString(8));
-
             dataAcceso.add(ac);
-
         }
 
+        System.out.println("GetDataAccesos = " + String.valueOf(dataAcceso.size()));
         return dataAcceso;
     }
 
@@ -542,7 +541,6 @@ public class SOAPLYS {
         GetResultSet cresult = new GetResultSet();
         ResultSet rs = cresult.CreateConection(query);
         while (rs.next()) {
-
             UsuarioDB us = new UsuarioDB();
             us.setCodigoUsuario(rs.getString(1));
             us.setNombre(rs.getString(2));
@@ -551,9 +549,9 @@ public class SOAPLYS {
             us.setEstado(rs.getString(5));
             us.setFlagmantto(rs.getString(6));
             listUsers.add(us);
-
         }
 
+        System.out.println("GetUsuarios = " + String.valueOf(listUsers.size()));
         return listUsers;
     }
 
@@ -1145,6 +1143,7 @@ public class SOAPLYS {
     @WebMethod(operationName = "GetTipoIp")
     public String GetTipoIp(@WebParam(name = "sTipo", targetNamespace = "http://SOAP/") String sTipo) throws Exception {
          //TODO write your implementation code here:
+         ConectaDB conc = new ConectaDB();
         String sIpLocal = "", sIpExt = "";
         String sResult = "";
         Properties propiedades = new Properties();
@@ -1152,7 +1151,7 @@ public class SOAPLYS {
         Path currentRelativePath = Paths.get("");
         String pathF = currentRelativePath.toAbsolutePath().toString();
         try {
-            entrada = new FileInputStream(pathF + File.separator + "webapps" + File.separator + "LysWsRest" + File.separator + "propiedades" + File.separator + "configuracion.properties");
+            entrada = new FileInputStream(pathF + File.separator + "webapps" + File.separator + conc.getNombreWebService() + File.separator + "propiedades" + File.separator + "configuracion.properties");
             propiedades.load(entrada);
             sIpLocal = propiedades.getProperty("iplocal");
             sIpExt = propiedades.getProperty("ipexterna");
@@ -1271,12 +1270,12 @@ public class SOAPLYS {
         ResultSet rs = cresult.CreateConection(query);
 
         while (rs.next()) {
-
             UsuarioCompania uc = new UsuarioCompania();
             uc.setC_compania(rs.getString(1));
             uc.setC_nombres(rs.getString(2));
             result.add(uc);
         }
+        System.out.println("GetUsuarioCompania = " + String.valueOf(result.size()));
         return result;
     }
     
@@ -1317,12 +1316,12 @@ public class SOAPLYS {
         ResultSet rs = cresult.CreateConection(query);
 
         while (rs.next()) {
-
             UsuarioCompania uc = new UsuarioCompania();
             uc.setC_compania(rs.getString(1));
             uc.setC_nombres(rs.getString(2));
             result.add(uc);
         }
+        System.out.println("GetUsuarioCompComercial = " + String.valueOf(result.size()));
         return result;
     }
     
@@ -1883,8 +1882,9 @@ public class SOAPLYS {
         InputStream entrada = null;
         Path currentRelativePath = Paths.get("");
         String pathF = currentRelativePath.toAbsolutePath().toString();
+        ConectaDB condb = new ConectaDB();
         try {
-            entrada = new FileInputStream(pathF + File.separator + "webapps" + File.separator + "LysWsRest" + File.separator + "propiedades" + File.separator + "configuracion.properties");
+            entrada = new FileInputStream(pathF + File.separator + "webapps" + File.separator + condb + File.separator + "propiedades" + File.separator + "configuracion.properties");
             propiedades.load(entrada);
             UserMail = propiedades.getProperty("usuarioMail");
              ClaveMail = propiedades.getProperty("claveMail");
@@ -1996,8 +1996,9 @@ public class SOAPLYS {
         InputStream entrada = null;
         Path currentRelativePath = Paths.get("");
         String pathF = currentRelativePath.toAbsolutePath().toString();
+        ConectaDB cn = new ConectaDB();
         try {
-            entrada = new FileInputStream(pathF + File.separator + "webapps" + File.separator + "LysWsRest" + File.separator + "propiedades" + File.separator + "configuracion.properties");
+            entrada = new FileInputStream(pathF + File.separator + "webapps" + File.separator + cn.getNombreWebService() + File.separator + "propiedades" + File.separator + "configuracion.properties");
             propiedades.load(entrada);
             CompGeneral = propiedades.getProperty("Compania");
            // sIpExt = propiedades.getProperty("ipexterna");
@@ -2006,7 +2007,8 @@ public class SOAPLYS {
            // Logger.getLogger(SOAPLYS.class.getName()).log(Level.SEVERE, null, ex);
             sResult = ex.getMessage();
         } 
-         sResult = CompGeneral;
+        sResult = CompGeneral;
+        System.out.println("GetDefaultCompania = " + sResult);
         return sResult;
     }
     
@@ -2029,8 +2031,8 @@ public class SOAPLYS {
             result = e.getMessage();
         }
 
+        System.out.println("ActulizarMaestros = " + result);
         return result;
-
     }
     
      @WebMethod(operationName = "GetClientes")
@@ -2041,15 +2043,14 @@ public class SOAPLYS {
         GetResultSet cresult = new GetResultSet();
         ResultSet rs = cresult.CreateConection(query);
         while (rs.next()) {
-
             TMACliente c = new TMACliente();
             c.setC_compania(rs.getString(1));
             c.setN_cliente( rs.getInt(2));
             c.setC_razonsocial(rs.getString(3));
             listC.add(c);
-
         }
-
+        
+        System.out.println("GetClientes = " + String.valueOf(listC.size()));
         return listC;
     }
     
@@ -3055,12 +3056,12 @@ public class SOAPLYS {
     
     
     @WebMethod(operationName = "InsertEventoAuditoria")
-    public String InsertEventoAuditoria(@WebParam(name = "origen", targetNamespace = "http://SOAP/") String origen ,@WebParam(name = "imei", targetNamespace = "http://SOAP/") String imei  ,@WebParam(name = "numero", targetNamespace = "http://SOAP/") String numero, @WebParam(name = "seriechip", targetNamespace = "http://SOAP/") String seriechip,@WebParam(name = "hora", targetNamespace = "http://SOAP/") String hora,@WebParam(name = "accion", targetNamespace = "http://SOAP/") String accion ) throws Exception {
+    public String InsertEventoAuditoria(@WebParam(name = "origen", targetNamespace = "http://SOAP/") String origen ,@WebParam(name = "imei", targetNamespace = "http://SOAP/") String imei  ,@WebParam(name = "numero", targetNamespace = "http://SOAP/") String numero, @WebParam(name = "seriechip", targetNamespace = "http://SOAP/") String seriechip,@WebParam(name = "hora", targetNamespace = "http://SOAP/") String hora,@WebParam(name = "accion", targetNamespace = "http://SOAP/") String accion,@WebParam(name = "usuario", targetNamespace = "http://SOAP/") String usuario ,@WebParam(name = "codintapp", targetNamespace = "http://SOAP/") String codintapp ) throws Exception {
         String result = "NO";
         try {
             ConectaDB cndb = new ConectaDB();
             Connection connection = cndb.getConexion();
-            String SQL_INSERT = "EXEC SP_INSERTAR_EVENTO_AUDITORIA '"+origen+"','"+imei+"','"+numero+"','"+seriechip+"','"+hora+"','"+accion+"'";
+            String SQL_INSERT = "EXEC SP_INSERTAR_EVENTO_AUDITORIA '"+origen+"','"+imei+"','"+numero+"','"+seriechip+"','"+hora+"','"+accion+"','"+usuario+"','"+codintapp+"'";
             Statement statement = connection.createStatement();
             ResultSet res = statement.executeQuery(SQL_INSERT);
             while (res.next()) {
@@ -3070,6 +3071,98 @@ public class SOAPLYS {
             result = e.getMessage();
         }
         return result;
+    }
+    
+    
+    @WebMethod(operationName = "GetUnidadNegUsuario")
+    public ArrayList<UnidadNegocio> GetUnidadNegUsuario(@WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania ) throws Exception {
+        //TODO write your implementation code here:
+        ArrayList<UnidadNegocio> dataUnd = new ArrayList<UnidadNegocio>();
+        String query = "SELECT    c_compania , c_unidadnegocio,c_descripcion ,c_estado " +
+                        " from lys..ma_unidadnegocio" +
+                        " where c_estado = 'A' " +
+                        " and c_compania = '"+compania+"'"+
+                        " and c_flaggrupo_rep = 'S'";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()) {
+            UnidadNegocio un = new UnidadNegocio();
+            un.setC_compania(rs.getString(1));
+            un.setC_unidadnegocio(rs.getString(2));
+            un.setC_descripcion(rs.getString(3));
+            un.setC_estado(rs.getString(4));
+            dataUnd.add(un);
+        }
+
+        return dataUnd;
+    }
+    
+    @WebMethod(operationName = "GetListaUsuariosVend")
+    public ArrayList<UsuarioPromotor> GetListaUsuariosVend(@WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania, @WebParam(name = "periodo", targetNamespace = "http://SOAP/") String periodo, @WebParam(name = "usuario", targetNamespace = "http://SOAP/") String usuario, @WebParam(name = "undnego", targetNamespace = "http://SOAP/") String undnego) throws Exception {
+        ArrayList<UsuarioPromotor> result = new ArrayList<UsuarioPromotor>();
+        
+        ConectaDB cndb = new ConectaDB();
+        Connection connection = cndb.getConexion();
+        String SQL_INSERT = "EXEC lys..SP_CO_VENDEDORES_PERIODO_MOVILYS ?,?,?,?";
+        PreparedStatement statement = connection.prepareStatement(SQL_INSERT,
+                Statement.RETURN_GENERATED_KEYS);
+
+        statement.setEscapeProcessing(true);
+        statement.setQueryTimeout(90);
+        statement.setString(1, compania);
+        statement.setString(2, periodo);
+        statement.setString(3, usuario);
+         statement.setString(4, undnego);
+        
+        ResultSet res = statement.executeQuery();
+
+        while (res.next()) {
+            UsuarioPromotor oEnt = new UsuarioPromotor();
+            oEnt.setC_usuario(res.getString(1));
+            oEnt.setC_nombusuario(res.getString(2));
+            result.add(oEnt);
+        }
+        return result;
+    }
+    
+     @WebMethod(operationName = "GenHemtlRepVentPromo")
+    public String GenHemtlRepVentPromo(@WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania, @WebParam(name = "ciasecundaria", targetNamespace = "http://SOAP/") String ciasecundaria, @WebParam(name = "undnegoc", targetNamespace = "http://SOAP/") String undnegoc ,@WebParam(name = "vendedor", targetNamespace = "http://SOAP/") String vendedor ,@WebParam(name = "periodo", targetNamespace = "http://SOAP/") String periodo,@WebParam(name = "moneda", targetNamespace = "http://SOAP/") String moneda,@WebParam(name = "usuario", targetNamespace = "http://SOAP/") String usuario,@WebParam(name = "formato", targetNamespace = "http://SOAP/") String formato) throws Exception {
+        String result = "NO";
+        try {
+            ConectaDB cndb = new ConectaDB();
+            Connection connection = cndb.getConexion();
+            String SQL_INSERT = "EXEC lys..SP_CO_REP_AVANCVENT_MOVILYS '"+compania+"','%','"+undnegoc+"','%','"+periodo+"','"+moneda+"','"+usuario+"','"+formato+"'";
+            Statement statement = connection.createStatement();
+            ResultSet res = statement.executeQuery(SQL_INSERT);
+            while (res.next()) {
+                result = res.getString(1);
+            }
+        } catch (Exception e) {
+            result = e.getMessage();
+        }
+        return result;
+    }
+    
+    
+    @WebMethod(operationName = "GetOpcionesConsulta")
+    public ArrayList<OpcionConsulta> GetOpcionesConsulta(@WebParam(name = "compania", targetNamespace = "http://SOAP/") String compania    ) throws Exception {
+        //TODO write your implementation code here:
+        ArrayList<OpcionConsulta> dataopc = new ArrayList<OpcionConsulta>();
+        String query = "select c_compania, c_tipo, c_numero, c_descripcion " +
+                        "from   lys..co_opcionconsulta_movilys " +
+                        "where c_compania = '"+compania+"'; ";
+        GetResultSet cresult = new GetResultSet();
+        ResultSet rs = cresult.CreateConection(query);
+        while (rs.next()) {
+            OpcionConsulta opc = new OpcionConsulta();
+            opc.setC_compania(rs.getString(1));
+            opc.setC_tipo(rs.getString(2));
+            opc.setC_numero(rs.getString(3));
+            opc.setC_descripcion(rs.getString(4));
+            dataopc.add(opc);
+        }
+
+        return dataopc;
     }
     
 
